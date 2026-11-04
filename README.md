@@ -1,0 +1,151 @@
+# beffroi/tui
+
+The terminal client of the administration of a Beffroi instance, built on [symfony/tui](https://symfony.com/doc/current/tui.html).
+The administration of a tenant is an HTTP API of the instance, served apart from its endpoints and its pages and
+guarded like them, and a screen or a TUI is one of its clients (design's decision 0038, epic
+[beffroi#194](https://github.com/beffroi-auth/beffroi/issues/194)). This is the TUI.
+
+It is the `apps/tui` directory of the monorepo. It installs none of the packages of the provider and reads none of
+its code: it talks to an instance over HTTP, as any client of its provider does, and Deptrac holds it to that.
+
+## What it is to the provider
+
+A **confidential client of one installation**. `register` draws an ES256 key on the machine it runs on and
+registers the client with the public half (RFC 7591), which is how RFC 8252 §8.4 lets a native application be a
+confidential client; the private half is kept in a profile, `$XDG_CONFIG_HOME/beffroi/tui/<profile>.json`
+(`~/.config/beffroi/tui/` when the variable is not set), in a directory only its owner may open, and a profile the
+group or anyone else may read is refused, as ssh refuses a private key.
+
+Every sign-in is held to the client side of FAPI 2.0 Security Profile §5.3.3:
+
+- the metadata of the provider are read from its well-known document, its issuer must be the one registered, and
+  a provider that does not announce pushed requests, S256, `private_key_jwt` and DPoP under ES256, the `iss` of RFC
+  9207 and the `acr` `phr` is not talked to;
+- the request is pushed (RFC 9126), authenticated by `private_key_jwt` with the issuer as its audience, carries a
+  PKCE S256 challenge, a state and a nonce drawn for it, `prompt=login`, the `acr` `phr` as an essential claim, and
+  the administration API of the instance as its `resource` (RFC 8707 §2);
+- the browser of the machine signs the administrator in at the provider, and comes back to the loopback interface,
+  `http://127.0.0.1:<port>/callback`, at the port the client registered (RFC 8252 §7.3), where only the response
+  carrying the state of the request is taken;
+- the response is read issuer first, then state; the code is exchanged with a DPoP proof, and a token that is not
+  bound is refused; the ID token is validated (OIDC Core §3.1.3.7), its `acr` included;
+- the tokens are bound to a key drawn when the program starts and held in memory only, are never written, and are
+  handed back to the provider when the administrator quits or when a step after the exchange fails (RFC 7009);
+- the access token is refreshed with the refresh token of the sign-in, by a request that proves the same key, before
+  it expires and once more when the administration API refuses it (RFC 6749 §6); the tokens handed back when the
+  administrator quits are the last ones held. A deployment that hands its confidential clients no refresh token
+  without `offline_access` leaves the session to the lifetime of its access token.
+
+There is no device grant, no `client_credentials` and no shared secret: decision 0038 excludes all three for an
+administrator.
+
+## Who may use it
+
+The provider says it, never this program. The audience of the administration API is reserved to the administrators
+of the tenant (decision 0038): the provider addresses a token to it only for a member of one of the groups the
+deployment names, signed in with a passkey, by a token bound to a key. A person who does not administer the tenant
+signs in and is answered `access_denied`, and the screen says what makes an administrator. The deployment of the
+instance names the API and the groups:
+
+```bash
+BEFFROI_TENANT_ADMINISTRATION_RESOURCE=https://admin.example.com
+BEFFROI_TENANT_ADMINISTRATORS='["administrators"]'
+```
+
+A local group is created and filled from the console of the instance; a group an upstream provider or SCIM holds
+the members of works the same way:
+
+```bash
+bin/console beffroi:group:create administrators
+bin/console beffroi:group:add-member administrators alice
+bin/console beffroi:group:remove-member administrators alice
+```
+
+## What it shows
+
+The program opens on a home page and signs the administrator in when asked. The screen is then exactly as tall and as
+wide as the terminal, and nothing on it ever pushes it up: a header line names the instance and who signed in, the
+last line says the keys that answer where the focus is, and what lies between adapts to the terminal.
+
+- From 90 columns, the sections are a column on the left; under 90, they are tabs above the section shown.
+- From 130 columns, the parts of a section stand side by side (a table and what it opens, a person and their
+  access, the health and the acts); under 130, one above the other.
+- A table shows the rows that fit and says which ones (`1-12 / 40`), keeps the selected row in sight, drops the
+  columns that matter least when the width does not hold them and cuts an identifier in its middle; a list of
+  definitions folds a long value onto the lines it can spare, lays itself in two columns or says how many it left
+  out; the figures of the monitoring are boxed when a third of the height holds them, and written on one line
+  otherwise. Under 70 columns the home page drops the symbol.
+
+| Section | What it shows | Read from |
+|---|---|---|
+| Instance | the issuer, the administration API, the client, its redirect URI and its key, the key the tokens are bound to | the profile and the session |
+| Session | who signed in, by which proof (`acr`, `amr`), the scope and the expiry of the access token held | the session |
+| Tenant | its name, issuer, login floor, groups of administrators, administration API and how long the journal keeps an act, beside the classes of authentication | `GET /tenant` |
+| Clients | a table of the clients, by name, identifier, source and dates; Enter on one opens what it registered beside or under it | `GET /clients`, `GET /clients/{client_id}` |
+| Signing keys | a table of the keys, each state marked and worded: `■` active, `□` staged, `▨` retiring, `┄` retired | `GET /keys` |
+| Users | a person looked up by username, their claims and groups, beside their credentials; `s` reads their open sessions, `j` their last acts, `c` goes back to the credentials | `GET /users?username=`, `GET /users/{id}/sessions`, `GET /users/{id}/journal` |
+| Monitoring | figures (people, clients, open sessions, keys, messages waiting), the points `beffroi:doctor` looks at, each `■ ok` or `■ failed` with what it found, and the acts over what the journal keeps as bars, the failures in red | `GET /health`, `GET /statistics` |
+
+The administration API is the one the profile names, read with the access token under the DPoP scheme and a proof
+made for each request (RFC 9449 §7.1); a nonce it asks for is sent once (§9). A section is read the first time it is
+shown, and again when the administrator presses `r`; what it read stays shown while another section is, and its
+heading says when it was read. Monitoring is what the instance knows of itself at the moment it is asked (decision
+0040): nothing is kept between two reads, nothing is watched, and nothing is exported.
+
+Reading a person, their sessions or their journal delivers that person: each read is an act of their journal which
+names the administrator (decisions 0022 and 0038). The Users section says so before anything is read, reads nothing
+until the administrator types a username, and reads the sessions and the journal only when asked.
+
+The colours are the brand's: ultramarine for the header, the focus and the bars, the signal for a point that holds,
+and the accent text in the colour the brand gives the background the terminal reports (OSC 11). A terminal that does
+not report it keeps plain bold accents and the red of its own palette; `NO_COLOR` draws everything in reverse video
+and bold. A state is never said by a colour alone.
+
+| Key | Does |
+|---|---|
+| ↑ ↓ (← → on tabs) | choose a section, or move in a table |
+| Enter | go into the section shown; open the row chosen, or look the username up |
+| Tab, Shift+Tab | move between the widgets of the section and the navigation |
+| Page Up, Page Down, Home, End | move in a table by a screen, or to its ends |
+| Esc | go back to the navigation; on the navigation, quit |
+| r | read the section shown again (typed as a letter in the username field) |
+| q | quit (typed as a letter in the username field); Ctrl+C quits from anywhere |
+
+Everything it shows that it did not write, a claim, a member of the metadata, a name a third party registered, what
+the administration API answers, reaches the terminal through `TerminalText`, which leaves no escape sequence and no
+bidirectional control in it, and a line of the console through `ConsoleText`, which escapes its markup too.
+
+## Running it
+
+```bash
+php apps/tui/bin/beffroi-tui register https://op.example https://admin.example     # once per machine and instance
+php apps/tui/bin/beffroi-tui                                                       # the administration, profile "default"
+php apps/tui/bin/beffroi-tui administer --profile staging                          # another profile
+```
+
+`register` takes the issuer of the tenant and the identifier of its administration API, the value the deployment
+gives `BEFFROI_TENANT_ADMINISTRATION_RESOURCE`: the provider announces the API nowhere, so whoever registers the
+program names it, and the client registers it among its resources.
+
+An option of `administer` given without the name of the command is written with its value attached,
+`--profile=staging`: the console reads the first word that is not an option as the name of a command.
+
+`register` asks for the initial access token the tenant issued for it, or reads it from
+`BEFFROI_TUI_INITIAL_ACCESS_TOKEN`, never from the command line. The token is one issued for the administration
+(`beffroi:client:token:issue <name> --administration`, decisions 0009 and 0038): the client it registers is given the
+administration API, which a client never registers itself. `--port` fixes the port
+of the loopback interface, which a free one is taken for otherwise; `--cafile` names a file of certificate
+authorities the instance is trusted under, which nobody else may write, and which the development stack needs:
+
+```bash
+php apps/tui/bin/beffroi-tui register https://op.localhost https://admin.op.localhost --profile dev --cafile var/caddy-root.crt
+php apps/tui/bin/beffroi-tui administer --profile dev
+```
+
+The home page shows the symbol, the instance and the profile; Enter opens the sign-in in the browser, and starts it
+again after a failure. The administrator signs in with a passkey: a password alone is answered
+`unmet_authentication_requirements`. On a machine without a browser, the address of the sign-in is shown, and the loopback port can be forwarded from the
+machine where the browser is (`ssh -L <port>:127.0.0.1:<port>`).
+
+The screen speaks English or French, from `LC_ALL`, `LC_MESSAGES` or `LANG`, and draws without colours when
+`NO_COLOR` is set (https://no-color.org).

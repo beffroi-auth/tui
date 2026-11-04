@@ -1,0 +1,38 @@
+{
+    "name": "beffroi/tui",
+    "description": "The terminal client of the administration of a Beffroi instance: a confidential client of its provider, signed in by a phishing-resistant proof, holding tokens bound to a key of its run.",
+    "type": "project",
+    "license": "MIT",
+    "homepage": "https://github.com/beffroi-auth/beffroi",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=8.4",
+        "ext-mbstring": "*",
+        "ext-openssl": "*",
+        "ext-sodium": "*",
+        "amphp/http-client": "^5.3.2",
+        "amphp/process": "^2.0",
+        "amphp/socket": "^2.3",
+        "psr/clock": "^1.0",
+        "revolt/event-loop": "^1.0",
+        "symfony/clock": "8.2.*",
+        "symfony/config": "8.2.*",
+        "symfony/console": "8.2.*",
+        "symfony/http-client": "8.2.*",
+        "symfony/translation": "8.2.*",
+        "symfony/tui": "^8.1",
+        "web-token/jwt-library": "^4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Beffroi\\Tui\\": "src/"
+        }
+    },
+    "bin": [
+        "bin/beffroi-tui"
+    ],
+    "config": {
+        "sort-packages": true
+    }
+}

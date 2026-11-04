@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Beffroi\Tui\Profile\ProfileException;
+use Beffroi\Tui\Wiring;
+
+// Installed on its own (apps/tui/vendor) or run from the monorepo, whose autoloader maps it too.
+$autoloader = is_file(__DIR__ . '/../vendor/autoload.php') ? __DIR__ . '/../vendor/autoload.php' : __DIR__ . '/../../../vendor/autoload.php';
+require $autoloader;
+
+try {
+    $application = Wiring::application(getenv());
+} catch (ProfileException $exception) {
+    fwrite(STDERR, $exception->getMessage() . "\n");
+    exit(1);
+}
+
+exit($application->run());
