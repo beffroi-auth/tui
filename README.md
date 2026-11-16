@@ -83,11 +83,11 @@ last line says the keys that answer where the focus is, and what lies between ad
 | Tenant | its name, issuer, login floor, groups of administrators, administration API and how long the journal keeps an act, beside the classes of authentication | `GET /tenant` |
 | Clients | a table of the clients, by name, identifier, source and dates; Enter on one opens what it registered beside or under it | `GET /clients`, `GET /clients/{client_id}` |
 | Signing keys | a table of the keys, each state marked and worded: `■` active, `□` staged, `▨` retiring, `┄` retired | `GET /keys` |
-| Users | a person looked up by username, their claims and groups, beside their credentials; `s` reads their open sessions, `j` their last acts, `c` goes back to the credentials | `GET /users?username=`, `GET /users/{id}/sessions`, `GET /users/{id}/journal` |
+| Users | a person looked up by username, their claims and groups, beside their credentials; `s` reads their open sessions, `j` their last acts, `c` goes back to the credentials; `x` on a credential asks to revoke it, `x` on an open session asks to end it | `GET /users?username=`, `GET /users/{id}/sessions`, `GET /users/{id}/journal`, `DELETE /users/{id}/credentials/{credential}`, `DELETE /users/{id}/sessions/{session}` |
 | Monitoring | figures (people, clients, open sessions, keys, messages waiting), the points `beffroi:doctor` looks at, each `■ ok` or `■ failed` with what it found, and the acts over what the journal keeps as bars, the failures in red | `GET /health`, `GET /statistics` |
 
-The administration API is the one the profile names, read with the access token under the DPoP scheme and a proof
-made for each request (RFC 9449 §7.1); a nonce it asks for is sent once (§9). A section is read the first time it is
+The administration API is the one the profile names, read and written with the access token under the DPoP scheme
+and a proof made for each request (RFC 9449 §7.1); a nonce it asks for is sent once (§9). A section is read the first time it is
 shown, and again when the administrator presses `r`; what it read stays shown while another section is, and its
 heading says when it was read. Monitoring is what the instance knows of itself at the moment it is asked (decision
 0040): nothing is kept between two reads, nothing is watched, and nothing is exported.
@@ -95,6 +95,12 @@ heading says when it was read. Monitoring is what the instance knows of itself a
 Reading a person, their sessions or their journal delivers that person: each read is an act of their journal which
 names the administrator (decisions 0022 and 0038). The Users section says so before anything is read, reads nothing
 until the administrator types a username, and reads the sessions and the journal only when asked.
+
+Revoking a credential or ending an open session is an act of the person too, which names the administrator, and the
+applications the session signed in to are told by the back-channel. Each is asked first, with what it would change:
+`y` makes the change, and any other key forgets the question. The row then says what the API answered, the moment of
+the revocation or the session gone, without reading the person again. A password is replaced, never revoked, and the
+section says so rather than asking.
 
 The colours are the brand's: ultramarine for the header, the focus and the bars, the signal for a point that holds,
 and the accent text in the colour the brand gives the background the terminal reports (OSC 11). A terminal that does
@@ -109,6 +115,8 @@ and bold. A state is never said by a colour alone.
 | Page Up, Page Down, Home, End | move in a table by a screen, or to its ends |
 | Esc | go back to the navigation; on the navigation, quit |
 | r | read the section shown again (typed as a letter in the username field) |
+| x | on a credential, ask to revoke it; on an open session, ask to end it |
+| y | make the change just asked for; any other key forgets it |
 | q | quit (typed as a letter in the username field); Ctrl+C quits from anywhere |
 
 Everything it shows that it did not write, a claim, a member of the metadata, a name a third party registered, what
@@ -125,7 +133,7 @@ php apps/tui/bin/beffroi-tui administer --profile staging                       
 
 `register` takes the issuer of the tenant and the identifier of its administration API, the value the deployment
 gives `BEFFROI_TENANT_ADMINISTRATION_RESOURCE`: the provider announces the API nowhere, so whoever registers the
-program names it, and the client registers it among its resources.
+program names it, and asks for it when an administrator signs in; the client never registers it among its resources.
 
 An option of `administer` given without the name of the command is written with its value attached,
 `--profile=staging`: the console reads the first word that is not an option as the name of a command.
