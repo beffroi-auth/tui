@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Beffroi\Tui\Screen;
 
+use Beffroi\Tui\Text\TerminalText;
 use DateTimeImmutable;
 use function preg_match;
 
 /**
  * An instant the administration API wrote, an RFC 3339 date and time (§5.6), shown as every instant of the screen is
- * (`Moment`). A value that is not one is shown as it was written, a value the API did not have as a dash: what the
- * API writes is read for what it is, never as one of the relative dates PHP would also read ("tomorrow").
+ * (`Moment`). A value that is not one is shown as it was written, through `TerminalText` as everything the API answers,
+ * and a value the API did not have as a dash: what the API writes is read for what it is, never as one of the relative
+ * dates PHP would also read ("tomorrow").
  */
 final readonly class ApiMoment
 {
@@ -20,7 +22,7 @@ final readonly class ApiMoment
     {
         $moment = self::read($written);
 
-        return $moment === null ? $written ?? '-' : Moment::of($moment);
+        return $moment === null ? self::asWritten($written) : Moment::of($moment);
     }
 
     /**
@@ -30,7 +32,12 @@ final readonly class ApiMoment
     {
         $moment = self::read($written);
 
-        return $moment === null ? $written ?? '-' : Moment::short($moment);
+        return $moment === null ? self::asWritten($written) : Moment::short($moment);
+    }
+
+    private static function asWritten(?string $written): string
+    {
+        return $written === null ? '-' : TerminalText::line($written)->value;
     }
 
     private static function read(?string $written): ?DateTimeImmutable
