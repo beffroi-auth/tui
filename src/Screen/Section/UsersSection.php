@@ -142,6 +142,9 @@ final class UsersSection implements SectionInterface
         foreach ($this->tables as $view => $table) {
             $access[] = $view === self::CREDENTIALS ? $table : $table->addStyleClass(Shell::HIDDEN);
             $table->onInput(fn (string $data): bool => $this->asked($data));
+            $table->onLeave(function (): void {
+                $this->confirmation->forget();
+            });
         }
         $this->access = new Panel($access, weight: 3);
         $this->person->widget->addStyleClass(Shell::HIDDEN);
