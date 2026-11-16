@@ -72,6 +72,11 @@ final class TableWidget extends AbstractWidget implements FocusableInterface, Ve
     private ?Closure $moved = null;
 
     /**
+     * @var list<array{string, string}>
+     */
+    private array $sectionKeys = [];
+
+    /**
      * @param list<TableColumn> $columns
      * @param bool              $selectable whether a row can be chosen, which only a table with something behind its rows offers
      */
@@ -138,6 +143,27 @@ final class TableWidget extends AbstractWidget implements FocusableInterface, Ve
         $this->moved = $callback;
 
         return $this;
+    }
+
+    /**
+     * The keys a section answers on this table beside its own, which the last line of the screen says while the table
+     * has the focus.
+     *
+     * @param list<array{string, string}> $keys each key as it is written, and what it does
+     */
+    public function setSectionKeys(array $keys): static
+    {
+        $this->sectionKeys = $keys;
+
+        return $this;
+    }
+
+    /**
+     * @return list<array{string, string}>
+     */
+    public function sectionKeys(): array
+    {
+        return $this->sectionKeys;
     }
 
     /**

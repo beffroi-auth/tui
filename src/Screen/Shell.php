@@ -330,6 +330,9 @@ final class Shell
         if ($focus instanceof TableWidget && $focus->isChoosable()) {
             $keys[] = ['⏎', $this->translate('keys.open')];
         }
+        if ($focus instanceof TableWidget) {
+            $keys = [...$keys, ...$focus->sectionKeys()];
+        }
 
         return [
             ...$keys,

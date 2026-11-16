@@ -2,7 +2,7 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file source-language="en" target-language="fr" datatype="plaintext" original="tui">
     <header>
-      <note>Every string the terminal administration shows, and the page of the loopback interface the browser is answered with once it brought the authorization response back. ICU message format: {issuer} is the issuer of the tenant, {profile} the name the profile of the instance was kept under, {administrator} the name of who signed in, {acr} the class of their authentication, {url} the address of the authorization endpoint, {redirect_uri} the redirect URI of the client, {reason} why the sign-in or a read of the administration API failed, {minutes} and {time} how long the access token is worth and until when, {days} a number of days, {count} a number of rows, {client} the identifier of a client, {username} the username the administrator typed, {since} the start of the window the statistics count over. value.more is a printf pattern, %d being how many items were left out. A string named refusal.&lt;error&gt; is what the screen says to do when the provider refuses a sign-in with that error, api.refusal.&lt;error&gt; when the administration API refuses a request with it, act.&lt;name&gt; how the screen names an act of the journal, and key.status.&lt;state&gt; how it names the state of a signing key.</note>
+      <note>Every string the terminal administration shows, and the page of the loopback interface the browser is answered with once it brought the authorization response back. ICU message format: {issuer} is the issuer of the tenant, {profile} the name the profile of the instance was kept under, {administrator} the name of who signed in, {acr} the class of their authentication, {url} the address of the authorization endpoint, {redirect_uri} the redirect URI of the client, {reason} why the sign-in or a read of the administration API failed, {minutes} and {time} how long the access token is worth and until when, {time} also when a session was authenticated, {days} a number of days, {count} a number of rows, {client} the identifier of a client, {username} the username the administrator typed or the API answered, {kind} and {name} the kind and the name of a credential, {address} the address a session was last seen from, {since} the start of the window the statistics count over. value.more is a printf pattern, %d being how many items were left out. A string named refusal.&lt;error&gt; is what the screen says to do when the provider refuses a sign-in with that error, api.refusal.&lt;error&gt; when the administration API refuses a request with it, act.&lt;name&gt; how the screen names an act of the journal, and key.status.&lt;state&gt; how it names the state of a signing key.</note>
     </header>
     <body>
       <trans-unit id="4a92db3047" resname="keys.sign_in">
@@ -28,6 +28,14 @@
       <trans-unit id="6f0d427562" resname="keys.reload">
         <source>keys.reload</source>
         <target>relire</target>
+      </trans-unit>
+      <trans-unit id="c25602ecdc" resname="keys.revoke">
+        <source>keys.revoke</source>
+        <target>révoquer</target>
+      </trans-unit>
+      <trans-unit id="95381c9d35" resname="keys.end_session">
+        <source>keys.end_session</source>
+        <target>terminer la session</target>
       </trans-unit>
       <trans-unit id="00d2372d2b" resname="keys.search">
         <source>keys.search</source>
@@ -201,6 +209,10 @@ La réponse revient à {redirect_uri}.</target>
       <trans-unit id="0312212e32" resname="api.reading">
         <source>api.reading</source>
         <target>Lecture de l'API d'administration…</target>
+      </trans-unit>
+      <trans-unit id="085bf71d8b" resname="api.writing">
+        <source>api.writing</source>
+        <target>Écriture dans l'API d'administration…</target>
       </trans-unit>
       <trans-unit id="9d028fc03b" resname="api.failed">
         <source>api.failed</source>
@@ -490,6 +502,18 @@ La réponse revient à {redirect_uri}.</target>
         <source>credential.revoked_at</source>
         <target>Révoqué</target>
       </trans-unit>
+      <trans-unit id="175d0f2f6f" resname="credential.revoke_asked">
+        <source>credential.revoke_asked</source>
+        <target>Révoquer le credential {kind} {name} de {username} ? Il ne servira plus jamais à se connecter. y confirme, toute autre touche annule.</target>
+      </trans-unit>
+      <trans-unit id="3e0dd68604" resname="credential.revoked_now">
+        <source>credential.revoked_now</source>
+        <target>Le credential {kind} {name} de {username} est révoqué : il ne servira plus jamais à se connecter. L'acte vous nomme dans son journal.</target>
+      </trans-unit>
+      <trans-unit id="8c01143ee9" resname="credential.not_revocable">
+        <source>credential.not_revocable</source>
+        <target>Un mot de passe se remplace, il ne se révoque pas, et un credential révoqué le reste.</target>
+      </trans-unit>
       <trans-unit id="73e96ee47c" resname="user_sessions.none">
         <source>user_sessions.none</source>
         <target>Aucune session n'est ouverte à son nom.</target>
@@ -509,6 +533,14 @@ La réponse revient à {redirect_uri}.</target>
       <trans-unit id="d0df095ef8" resname="user_sessions.expires_at">
         <source>user_sessions.expires_at</source>
         <target>Expire</target>
+      </trans-unit>
+      <trans-unit id="76fa0fb8d7" resname="user_sessions.end_asked">
+        <source>user_sessions.end_asked</source>
+        <target>Terminer la session de {username} authentifiée le {time} depuis {address} ? Les applications où elle s'est connectée en sont averties par le back-channel. y confirme, toute autre touche annule.</target>
+      </trans-unit>
+      <trans-unit id="e92672de75" resname="user_sessions.ended_now">
+        <source>user_sessions.ended_now</source>
+        <target>La session de {username} est terminée, et les applications où elle s'était connectée en sont averties par le back-channel. L'acte vous nomme dans son journal.</target>
       </trans-unit>
       <trans-unit id="6212d9308b" resname="provenance.address">
         <source>provenance.address</source>

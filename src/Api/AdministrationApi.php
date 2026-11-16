@@ -20,10 +20,10 @@ use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
- * The administration API of the instance (decision 0038), at the identifier the profile names, read with the tokens of
- * the administrator's session. Every request carries the access token under the DPoP scheme, and a proof of the key it
- * is bound to made for that request and that token (RFC 9449 §7.1, §4.2), with the last nonce the API handed out
- * (§9).
+ * The administration API of the instance (decision 0038), at the identifier the profile names, read and written with the
+ * tokens of the administrator's session. Every request carries the access token under the DPoP scheme, and a proof of
+ * the key it is bound to made for that request and that token (RFC 9449 §7.1, §4.2), with the last nonce the API handed
+ * out (§9).
  *
  * The API that asks for a nonce is sent the request once more, its proof carrying it (§9); the API that refuses the
  * access token as no longer worth anything (RFC 6750 §3.1, "invalid_token") is sent it once more with a token the
@@ -51,14 +51,41 @@ final readonly class AdministrationApi
      */
     public function read(string $path, array $query = []): Document
     {
-        $url = rtrim($this->identifier, '/') . $path . ($query === [] ? '' : '?' . http_build_query($query, '', '&', PHP_QUERY_RFC3986));
+        return $this->request('GET', $this->url($path) . ($query === [] ? '' : '?' . http_build_query($query, '', '&', PHP_QUERY_RFC3986)))->expect(200);
+    }
+
+    /**
+     * What the API answers once it removed the resource from what it serves: a session ended, a credential revoked.
+     *
+     * @param string $path the path of the resource under the API, its segments already encoded
+     *
+     * @throws ProtocolException when the API refuses the request, answers what this program does not read, or answers nothing
+     */
+    public function delete(string $path): Document
+    {
+        return $this->request('DELETE', $this->url($path))->expect(200);
+    }
+
+    private function url(string $path): string
+    {
+        return rtrim($this->identifier, '/') . $path;
+    }
+
+    /**
+     * The request, and the same request once more with a token the session refreshed since the API refused the one it
+     * carried: a refusal changed nothing, so a request that changes something is sent again as safely as a read.
+     *
+     * @throws ProtocolException when the provider refuses to refresh the token, or the API cannot be reached
+     */
+    private function request(string $method, string $url): ProviderAnswer
+    {
         $token = $this->tokens->accessToken();
-        $answer = $this->send($url, $token);
+        $answer = $this->send($method, $url, $token);
         if ($answer->status === 401 && $answer->error() === 'invalid_token' && $this->tokens->replace($token)) {
-            $answer = $this->send($url, $this->tokens->accessToken());
+            $answer = $this->send($method, $url, $this->tokens->accessToken());
         }
 
-        return $answer->expect(200);
+        return $answer;
     }
 
     /**
@@ -66,11 +93,11 @@ final readonly class AdministrationApi
      *
      * @throws UnreachableEndpointException
      */
-    private function send(string $url, #[SensitiveParameter] string $token): ProviderAnswer
+    private function send(string $method, string $url, #[SensitiveParameter] string $token): ProviderAnswer
     {
-        $answer = $this->once($url, $token);
+        $answer = $this->once($method, $url, $token);
         if ($answer->status === 401 && $answer->error() === 'use_dpop_nonce') {
-            return $this->once($url, $token);
+            return $this->once($method, $url, $token);
         }
 
         return $answer;
@@ -79,14 +106,14 @@ final readonly class AdministrationApi
     /**
      * @throws UnreachableEndpointException
      */
-    private function once(string $url, #[SensitiveParameter] string $token): ProviderAnswer
+    private function once(string $method, string $url, #[SensitiveParameter] string $token): ProviderAnswer
     {
         try {
-            $response = $this->http->request('GET', $url, [
+            $response = $this->http->request($method, $url, [
                 'headers' => [
                     'Accept' => 'application/json',
                     'Authorization' => 'DPoP ' . $token,
-                    'DPoP' => $this->proofs->proof('GET', $url, $token),
+                    'DPoP' => $this->proofs->proof($method, $url, $token),
                 ],
             ]);
             $answer = new ProviderAnswer(

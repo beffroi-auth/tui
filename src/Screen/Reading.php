@@ -50,14 +50,15 @@ final class Reading
 
     /**
      * @param Closure(AdministrationApi): void $read what is read, and handed to the widgets of the section
+     * @param string                           $while the string of the catalogue the line says while the API is asked, another one for a request that changes something
      */
-    public function again(SectionContext $context, Closure $read): void
+    public function again(SectionContext $context, Closure $read, string $while = 'api.reading'): void
     {
         if ($this->reading !== null && ! $this->reading->isComplete()) {
             return;
         }
         $this->asked = true;
-        $this->message->say($context->translate('api.reading'));
+        $this->message->say($context->translate($while));
         $context->render();
         $this->reading = async(function () use ($context, $read): void {
             try {
