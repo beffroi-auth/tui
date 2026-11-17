@@ -106,8 +106,9 @@ A person is created from the field under the one that looks a person up: Enter c
 credential, and the section shows the person the API answered, which no read of them follows. `t` asks to issue the
 link that lets the person shown pose a passkey (decision 0026): whoever holds it poses one on their account once,
 until it expires, and a link issued for them before opens nothing any more. Once `y` confirmed it, the link takes the
-place of the person, as its text and as a QR code the device that will hold the passkey scans, black on white inside
-its quiet zone, or, in a terminal too small for it, as the room the code needs. It leaves the screen with the focus,
+place of the person, as its text and as a QR code the device that will hold the passkey scans, black on white, or in
+reverse video without colours, inside its quiet zone, or, in a terminal too small for it, as the room the code
+needs. It leaves the screen with the focus,
 and Enter gives the person back. Creating the person and issuing the link are acts of theirs that name the
 administrator.
 
