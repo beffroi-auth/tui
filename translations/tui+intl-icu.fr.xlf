@@ -440,7 +440,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="5006d0443c" resname="users.views">
         <source>users.views</source>
-        <target>c credentials · s sessions · j journal · t lien d'enrôlement</target>
+        <target>c credentials · s sessions · j journal · t lien d'enrôlement · p lien de mot de passe</target>
       </trans-unit>
       <trans-unit id="76f48b0e4e" resname="user.username">
         <source>user.username</source>
@@ -793,6 +793,22 @@ La réponse revient à {redirect_uri}.</target>
       <trans-unit id="32368ee43d" resname="ticket.too_small">
         <source>ticket.too_small</source>
         <target>Le terminal est trop petit pour le code : il lui faut {columns} colonnes et {rows} lignes.</target>
+      </trans-unit>
+      <trans-unit id="ad6876c7a6" resname="keys.password_ticket">
+        <source>keys.password_ticket</source>
+        <target>lien de mot de passe</target>
+      </trans-unit>
+      <trans-unit id="30bca564e9" resname="password_ticket.issue_asked">
+        <source>password_ticket.issue_asked</source>
+        <target>Émettre un lien qui permet à {username} de poser un nouveau mot de passe ? Qui le détient en pose un sur son compte jusqu'à son expiration, ce qui termine chacune de ses sessions, et un lien de mot de passe émis avant pour cette personne n'ouvre plus rien. y confirme, toute autre touche annule.</target>
+      </trans-unit>
+      <trans-unit id="a4f1bff86b" resname="password_ticket.title">
+        <source>password_ticket.title</source>
+        <target>Lien de mot de passe de {username}</target>
+      </trans-unit>
+      <trans-unit id="7b95b18006" resname="password_ticket.shown">
+        <source>password_ticket.shown</source>
+        <target>{link} ouvre jusqu'au {time}. Scannez le code avec l'appareil où la personne tapera son nouveau mot de passe : le lien quitte l'écran avec le focus. L'acte vous nomme dans son journal.</target>
       </trans-unit>
     </body>
   </file>

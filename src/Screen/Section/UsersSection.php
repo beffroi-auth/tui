@@ -47,8 +47,8 @@ use function trim;
  *
  * The administrator revokes a credential or ends an open session from its row, once they confirmed it: each change is
  * an act of the person that names them too, and the row says what the API answered without reading the person again.
- * They create a person from a field of their own, and issue the link that lets the person shown pose a passkey, which
- * the section shows as a QR code in place of the person until the focus leaves it (decision 0026).
+ * They create a person from a field of their own, and issue the link that lets the person shown pose a passkey or a new
+ * password, which the section shows as a QR code in place of the person until the focus leaves it (decision 0026).
  */
 final class UsersSection implements SectionInterface
 {
@@ -57,6 +57,17 @@ final class UsersSection implements SectionInterface
     private const string SESSIONS = 'sessions';
 
     private const string JOURNAL = 'journal';
+
+    /**
+     * The key that asks for the link of each kind of ticket (decision 0026): the segment of its route under the person,
+     * and the prefix of what the screen says of it.
+     *
+     * @var array<string, array{string, string}>
+     */
+    private const array TICKETS = [
+        't' => ['enrolment-ticket', 'ticket'],
+        'p' => ['password-ticket', 'password_ticket'],
+    ];
 
     private readonly SectionFrame $frame;
 
@@ -213,10 +224,10 @@ final class UsersSection implements SectionInterface
         $this->frame->title($context->translate('section.users'));
         $this->input->setPrompt($context->translate('users.prompt'));
         $this->create->setPrompt($context->translate('users.create_prompt'));
-        $ticket = ['t', $context->translate('keys.ticket')];
-        $this->tables[self::CREDENTIALS]->setSectionKeys([['x', $context->translate('keys.revoke')], $ticket]);
-        $this->tables[self::SESSIONS]->setSectionKeys([['x', $context->translate('keys.end_session')], $ticket]);
-        $this->tables[self::JOURNAL]->setSectionKeys([$ticket]);
+        $tickets = [['t', $context->translate('keys.ticket')], ['p', $context->translate('keys.password_ticket')]];
+        $this->tables[self::CREDENTIALS]->setSectionKeys([['x', $context->translate('keys.revoke')], ...$tickets]);
+        $this->tables[self::SESSIONS]->setSectionKeys([['x', $context->translate('keys.end_session')], ...$tickets]);
+        $this->tables[self::JOURNAL]->setSectionKeys($tickets);
         $this->code->setSectionKeys([['⏎', $context->translate('keys.close')]]);
         if ($this->shown === null) {
             $this->notice->say($context->translate('users.notice'));
@@ -243,8 +254,8 @@ final class UsersSection implements SectionInterface
 
     /**
      * The keys of a view of the access of the person: `c` its credentials, `s` its open sessions, `j` its journal, `x`
-     * the change of the row chosen and `t` a link that lets the person pose a passkey, each change confirmed by `y` and
-     * forgotten by any other key.
+     * the change of the row chosen, `t` a link that lets the person pose a passkey and `p` one that lets them pose a
+     * new password, each change confirmed by `y` and forgotten by any other key.
      */
     private function asked(string $data): bool
     {
@@ -255,9 +266,10 @@ final class UsersSection implements SectionInterface
         if ($this->confirmation->answer($context, $data)) {
             return true;
         }
-        if ($data === 't') {
+        $ticket = self::TICKETS[$data] ?? null;
+        if ($ticket !== null) {
             $this->closeTicket($context);
-            $this->askForATicket($context);
+            $this->askForATicket($context, $ticket[0], $ticket[1]);
 
             return true;
         }
@@ -469,9 +481,13 @@ final class UsersSection implements SectionInterface
     }
 
     /**
-     * The link of a ticket asked to be confirmed: a link issued before for the person opens nothing once it is.
+     * The link of a ticket asked to be confirmed: a link of the kind issued before for the person opens nothing once it
+     * is.
+     *
+     * @param string $route  the segment of the route of the kind under the person
+     * @param string $speech the prefix of what the screen says of the kind
      */
-    private function askForATicket(SectionContext $context): void
+    private function askForATicket(SectionContext $context, string $route, string $speech): void
     {
         $person = $this->shown;
         if ($person === null) {
@@ -479,20 +495,20 @@ final class UsersSection implements SectionInterface
         }
         $this->confirmation->ask(
             $context,
-            $context->translate('ticket.issue_asked', ['username' => $this->username]),
-            function (SectionContext $context) use ($person): void {
-                $this->issueTicket($context, $person);
+            $context->translate($speech . '.issue_asked', ['username' => $this->username]),
+            function (SectionContext $context) use ($person, $route, $speech): void {
+                $this->issueTicket($context, $person, $route, $speech);
             },
         );
     }
 
-    private function issueTicket(SectionContext $context, string $person): void
+    private function issueTicket(SectionContext $context, string $person, string $route, string $speech): void
     {
         $this->accessReading->again(
             $context,
-            function (AdministrationApi $api) use ($context, $person): void {
-                $ticket = $api->post(sprintf('/users/%s/enrolment-ticket', rawurlencode($person)));
-                $this->showTicket($context, TerminalText::line($ticket->string('link'))->value, $ticket->nullableString('expires_at'));
+            function (AdministrationApi $api) use ($context, $person, $route, $speech): void {
+                $ticket = $api->post(sprintf('/users/%s/%s', rawurlencode($person), $route));
+                $this->showTicket($context, TerminalText::line($ticket->string('link'))->value, $ticket->nullableString('expires_at'), $speech);
             },
             'api.writing',
         );
@@ -502,13 +518,13 @@ final class UsersSection implements SectionInterface
      * The link in place of the person, as a code the device that will hold the passkey scans and as the text it is, the
      * code holding what the text says.
      */
-    private function showTicket(SectionContext $context, string $link, ?string $expiresAt): void
+    private function showTicket(SectionContext $context, string $link, ?string $expiresAt, string $speech): void
     {
         $this->code->setText($link);
         [$columns, $rows] = $this->code->room();
         $this->code->setTooSmall($context->translate('ticket.too_small', ['columns' => $columns, 'rows' => $rows]));
-        $this->ticket->title($context->translate('ticket.title', ['username' => $this->username]));
-        $this->ticketMessage->say($context->translate('ticket.shown', ['link' => $link, 'time' => ApiMoment::of($expiresAt)]));
+        $this->ticket->title($context->translate($speech . '.title', ['username' => $this->username]));
+        $this->ticketMessage->say($context->translate($speech . '.shown', ['link' => $link, 'time' => ApiMoment::of($expiresAt)]));
         $this->person->widget->addStyleClass(Shell::HIDDEN);
         $this->access->widget->addStyleClass(Shell::HIDDEN);
         $this->ticket->widget->removeStyleClass(Shell::HIDDEN);
