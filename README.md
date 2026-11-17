@@ -5,8 +5,10 @@ The administration of a tenant is an HTTP API of the instance, served apart from
 guarded like them, and a screen or a TUI is one of its clients (design's decision 0038, epic
 [beffroi#194](https://github.com/beffroi-auth/beffroi/issues/194)). This is the TUI.
 
-It is the `apps/tui` directory of the monorepo. It installs none of the packages of the provider and reads none of
-its code: it talks to an instance over HTTP, as any client of its provider does, and Deptrac holds it to that.
+It is the `apps/tui` directory of the monorepo, [beffroi-auth/beffroi](https://github.com/beffroi-auth/beffroi), and
+`beffroi-auth/tui` is a mirror of that directory, read only, pushed by git split. It installs none of the packages of the
+provider and reads none of its code: it talks to an instance over HTTP, as any client of its provider does, and Deptrac
+holds it to that.
 
 ## What it is to the provider
 
