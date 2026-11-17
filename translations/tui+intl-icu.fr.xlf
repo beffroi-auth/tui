@@ -866,6 +866,10 @@ La réponse revient à {redirect_uri}.</target>
         <source>act.administration.membership_read</source>
         <target>membres lus par un administrateur</target>
       </trans-unit>
+      <trans-unit id="782779451c" resname="act.administration.consents_read">
+        <source>act.administration.consents_read</source>
+        <target>consentements lus par un administrateur</target>
+      </trans-unit>
       <trans-unit id="b4a4247bb4" resname="act.administration.journal_read">
         <source>act.administration.journal_read</source>
         <target>journaux lus par un administrateur</target>
