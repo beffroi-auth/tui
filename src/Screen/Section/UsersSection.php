@@ -52,6 +52,7 @@ use function trim;
  *
  * The form of the account of the person shown takes the place of their access until the focus leaves it: Enter changes
  * the member chosen, and `s` writes every change in one merge patch, an act of the person that names the administrator.
+ * `d` asks to disable the person, which ends every session of theirs, or to enable them again when they are disabled.
  */
 final class UsersSection implements SectionInterface
 {
@@ -286,14 +287,7 @@ final class UsersSection implements SectionInterface
         $this->frame->title($context->translate('section.users'));
         $this->input->setPrompt($context->translate('users.prompt'));
         $this->create->setPrompt($context->translate('users.create_prompt'));
-        $tickets = [];
-        foreach (self::TICKETS as $key => [, $speech]) {
-            $tickets[] = [$key, $context->translate('keys.' . $speech)];
-        }
-        $edit = ['e', $context->translate('keys.edit')];
-        $this->tables[self::CREDENTIALS]->setSectionKeys([['x', $context->translate('keys.revoke')], $edit, ...$tickets]);
-        $this->tables[self::SESSIONS]->setSectionKeys([['x', $context->translate('keys.end_session')], $edit, ...$tickets]);
-        $this->tables[self::JOURNAL]->setSectionKeys([$edit, ...$tickets]);
+        $this->accessKeys($context);
         $this->formTable->setSectionKeys([['s', $context->translate('keys.save')]]);
         $this->formTable->setColumnLabels([
             $context->translate('account_form.member'),
@@ -335,9 +329,9 @@ final class UsersSection implements SectionInterface
 
     /**
      * The keys of a view of the access of the person: `c` its credentials, `s` its open sessions, `j` its journal, `x`
-     * the change of the row chosen, `e` the form of their account, `t` a link that lets the person pose a passkey, `p`
-     * one that lets them pose a new password and `o` one that lets them set up an authenticator app, each change but the
-     * form confirmed by `y` and forgotten by any other key.
+     * the change of the row chosen, `e` the form of their account, `d` their disabling or enabling, `t` a link that lets
+     * the person pose a passkey, `p` one that lets them pose a new password and `o` one that lets them set up an
+     * authenticator app, each change but the form confirmed by `y` and forgotten by any other key.
      */
     private function asked(string $data): bool
     {
@@ -358,6 +352,12 @@ final class UsersSection implements SectionInterface
         if ($data === 'e') {
             $this->closeTicket($context);
             $this->openForm($context);
+
+            return true;
+        }
+        if ($data === 'd') {
+            $this->closeTicket($context);
+            $this->askToDisableOrEnable($context);
 
             return true;
         }
@@ -519,6 +519,7 @@ final class UsersSection implements SectionInterface
             'username' => $this->username,
         ]));
         $this->definitions->setDefinitions(self::person($person, $context), $context->translate('value.more'));
+        $this->accessKeys($context);
         $this->person->widget->removeStyleClass(Shell::HIDDEN);
         $this->access->widget->removeStyleClass(Shell::HIDDEN);
         $this->showView(self::CREDENTIALS, $context);
@@ -767,10 +768,20 @@ final class UsersSection implements SectionInterface
     }
 
     /**
-     * The person as the API answered them once changed, their account and claims in place of those last read beside
-     * their groups and credentials, and the keys back on their access.
+     * The form saved, the person shown as the API answered them, and the keys back on their access.
      */
     private function saved(SectionContext $context, Document $account): void
+    {
+        $this->showAccount($context, $account);
+        $this->closeForm($context);
+        $this->notice->say($context->translate('account_form.saved', ['username' => $this->username]));
+    }
+
+    /**
+     * The person as the API answered them once changed: their account and claims in place of those last read, beside
+     * their groups and credentials.
+     */
+    private function showAccount(SectionContext $context, Document $account): void
     {
         $person = new Document([...($this->document->members ?? []), ...$account->members]);
         $this->document = $person;
@@ -779,8 +790,75 @@ final class UsersSection implements SectionInterface
             'username' => $this->username,
         ]));
         $this->definitions->setDefinitions(self::person($person, $context), $context->translate('value.more'));
-        $this->closeForm($context);
-        $this->notice->say($context->translate('account_form.saved', ['username' => $this->username]));
+        $this->accessKeys($context);
+    }
+
+    /**
+     * What the keys of the access of the person do, `d` saying whether it disables them or enables them again.
+     */
+    private function accessKeys(SectionContext $context): void
+    {
+        $person = [
+            ['e', $context->translate('keys.edit')],
+            ['d', $context->translate($this->isDisabled() ? 'keys.enable' : 'keys.disable')],
+        ];
+        foreach (self::TICKETS as $key => [, $speech]) {
+            $person[] = [$key, $context->translate('keys.' . $speech)];
+        }
+        $this->tables[self::CREDENTIALS]->setSectionKeys([['x', $context->translate('keys.revoke')], ...$person]);
+        $this->tables[self::SESSIONS]->setSectionKeys([['x', $context->translate('keys.end_session')], ...$person]);
+        $this->tables[self::JOURNAL]->setSectionKeys($person);
+    }
+
+    /**
+     * Whether the person last read is disabled, as the API last answered them.
+     */
+    private function isDisabled(): bool
+    {
+        return $this->document?->nullableBool('enabled') === false;
+    }
+
+    /**
+     * Disabling the person ends every session of theirs, so it is asked first, as enabling them again is.
+     */
+    private function askToDisableOrEnable(SectionContext $context): void
+    {
+        $person = $this->shown;
+        if ($person === null) {
+            return;
+        }
+        $disable = ! $this->isDisabled();
+        $this->confirmation->ask(
+            $context,
+            $context->translate($disable ? 'user.disable_asked' : 'user.enable_asked', ['username' => $this->username]),
+            function (SectionContext $context) use ($person, $disable): void {
+                $this->disableOrEnable($context, $person, $disable);
+            },
+        );
+    }
+
+    /**
+     * The person disabled, every session of theirs ended with it, or enabled again, shown as the API answered them.
+     */
+    private function disableOrEnable(SectionContext $context, string $person, bool $disable): void
+    {
+        $this->accessReading->again(
+            $context,
+            function (AdministrationApi $api) use ($context, $person, $disable): void {
+                $path = sprintf('/users/%s/disabled', rawurlencode($person));
+                $account = $disable ? $api->put($path) : $api->delete($path);
+                if ($this->shown !== $person) {
+                    return;
+                }
+                $this->showAccount($context, $account);
+                if ($disable) {
+                    $this->sessions = [];
+                    $this->tables[self::SESSIONS]->setRows([], $context->translate('user_sessions.none'));
+                }
+                $this->notice->say($context->translate($disable ? 'user.disabled_now' : 'user.enabled_now', ['username' => $this->username]));
+            },
+            'api.writing',
+        );
     }
 
     /**

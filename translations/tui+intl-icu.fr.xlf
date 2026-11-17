@@ -440,7 +440,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="5006d0443c" resname="users.views">
         <source>users.views</source>
-        <target>c credentials · s sessions · j journal · e modifier · t lien d'enrôlement · p lien de mot de passe · o lien d'OTP</target>
+        <target>c credentials · s sessions · j journal · e modifier · d désactiver ou réactiver · t lien d'enrôlement · p lien de mot de passe · o lien d'OTP</target>
       </trans-unit>
       <trans-unit id="76f48b0e4e" resname="user.username">
         <source>user.username</source>
@@ -505,6 +505,22 @@ La réponse revient à {redirect_uri}.</target>
       <trans-unit id="175d0f2f6f" resname="credential.revoke_asked">
         <source>credential.revoke_asked</source>
         <target>Révoquer le credential {kind} {name} de {username} ? Il ne servira plus jamais à se connecter. y confirme, toute autre touche annule.</target>
+      </trans-unit>
+      <trans-unit id="007d52a0ec" resname="user.disable_asked">
+        <source>user.disable_asked</source>
+        <target>Désactiver {username} ? Cette personne ne peut plus se connecter, et chacune de ses sessions prend fin, les applications où elle s'était connectée en étant averties par le back-channel. y confirme, toute autre touche annule.</target>
+      </trans-unit>
+      <trans-unit id="2d34b34147" resname="user.enable_asked">
+        <source>user.enable_asked</source>
+        <target>Réactiver {username} ? Cette personne peut de nouveau se connecter, et aucune de ses sessions ne revient. y confirme, toute autre touche annule.</target>
+      </trans-unit>
+      <trans-unit id="d1fecc6b7f" resname="user.disabled_now">
+        <source>user.disabled_now</source>
+        <target>Le compte de {username} est désactivé, et chacune de ses sessions a pris fin. L'acte vous nomme dans son journal.</target>
+      </trans-unit>
+      <trans-unit id="57a28227e3" resname="user.enabled_now">
+        <source>user.enabled_now</source>
+        <target>Le compte de {username} est réactivé. L'acte vous nomme dans son journal.</target>
       </trans-unit>
       <trans-unit id="3e0dd68604" resname="credential.revoked_now">
         <source>credential.revoked_now</source>
@@ -909,6 +925,14 @@ La réponse revient à {redirect_uri}.</target>
       <trans-unit id="3b3ae070bb" resname="keys.edit">
         <source>keys.edit</source>
         <target>modifier</target>
+      </trans-unit>
+      <trans-unit id="8c49e12437" resname="keys.disable">
+        <source>keys.disable</source>
+        <target>désactiver</target>
+      </trans-unit>
+      <trans-unit id="0b81272754" resname="keys.enable">
+        <source>keys.enable</source>
+        <target>réactiver</target>
       </trans-unit>
       <trans-unit id="94d7be3f7b" resname="keys.change">
         <source>keys.change</source>

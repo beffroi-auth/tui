@@ -92,6 +92,19 @@ final readonly class AdministrationApi
     }
 
     /**
+     * What the API answers once the resource of the path holds what it names, a request without a body: the account of a
+     * person disabled.
+     *
+     * @param string $path the path of the resource under the API, its segments already encoded
+     *
+     * @throws ProtocolException when the API refuses the request, answers what this program does not read, or answers nothing
+     */
+    public function put(string $path): Document
+    {
+        return $this->request('PUT', $this->url($path))->expect(200);
+    }
+
+    /**
      * What the API answers once it changed the resource as the merge patch says (RFC 7396): the account of a person.
      *
      * @param string                  $path  the path of the resource under the API, its segments already encoded
