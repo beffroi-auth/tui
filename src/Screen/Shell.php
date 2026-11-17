@@ -23,6 +23,7 @@ use function is_int;
 use Psr\Clock\ClockInterface;
 use function sprintf;
 use Symfony\Component\Tui\Event\InputEvent;
+use Symfony\Component\Tui\Input\KeyParser;
 use Symfony\Component\Tui\Input\Keybindings;
 use Symfony\Component\Tui\Style\StyleSheet;
 use Symfony\Component\Tui\Tui;
@@ -66,6 +67,13 @@ final class Shell
      * Above the keys of the administration (0), which leave the screen on Esc: Esc goes back to the navigation first.
      */
     private const int KEYS_PRIORITY = 10;
+
+    /**
+     * Above every key: a terminal that speaks the keyboard protocol of kitty also says when a key is let go, and a key
+     * let go presses nothing. A section reads the keys it is given as they come, and would take it for another key: a
+     * question would be forgotten as soon as the key that asked it is let go, before its `y`.
+     */
+    private const int RELEASE_PRIORITY = 20;
 
     private readonly ContainerWidget $page;
 
@@ -163,6 +171,12 @@ final class Shell
         $this->tui = $tui;
         $this->navigation->followTheTerminal(static fn (): int => $tui->getTerminal()->getColumns());
         $tui->add($this->page);
+        $parser = new KeyParser();
+        $tui->addListener(static function (InputEvent $event) use ($parser): void {
+            if ($parser->isKeyRelease($event->getData())) {
+                $event->stopPropagation();
+            }
+        }, self::RELEASE_PRIORITY);
         $tui->addListener(function (InputEvent $event) use ($tui): void {
             $this->answer($event, $tui);
         }, self::KEYS_PRIORITY);
