@@ -83,7 +83,7 @@ last line says the keys that answer where the focus is, and what lies between ad
 | Tenant | its name, issuer, login floor, groups of administrators, administration API and how long the journal keeps an act, beside the classes of authentication | `GET /tenant` |
 | Clients | a table of the clients, by name, identifier, source and dates; Enter on one opens what it registered beside or under it | `GET /clients`, `GET /clients/{client_id}` |
 | Signing keys | a table of the keys, each state marked and worded: `■` active, `□` staged, `▨` retiring, `┄` retired | `GET /keys` |
-| Users | a person looked up by username, their claims and groups, beside their credentials; `s` reads their open sessions, `j` their last acts, `c` goes back to the credentials; `x` on a credential asks to revoke it, `x` on an open session asks to end it; a person created from a field of its own; `t` asks to issue the link that lets the person pose a passkey, `p` the one that lets them pose a new password, `o` the one that lets them set up an authenticator app, each shown as a QR code; `e` opens the form of their account, whose changes `s` saves; `d` asks to disable them, which ends every session of theirs, or to enable them again | `GET /users?username=`, `GET /users/{id}/sessions`, `GET /users/{id}/journal`, `DELETE /users/{id}/credentials/{credential}`, `DELETE /users/{id}/sessions/{session}`, `POST /users`, `POST /users/{id}/enrolment-ticket`, `POST /users/{id}/password-ticket`, `POST /users/{id}/totp-ticket`, `PATCH /users/{id}`, `PUT /users/{id}/disabled`, `DELETE /users/{id}/disabled` |
+| Users | a person looked up by username, their claims and groups, beside their credentials; `s` reads their open sessions, `j` their last acts, `a` the applications they agreed to, `c` goes back to the credentials; `x` on a credential asks to revoke it, `x` on an open session asks to end it, `x` on an application asks to take its consent back; a person created from a field of its own; `t` asks to issue the link that lets the person pose a passkey, `p` the one that lets them pose a new password, `o` the one that lets them set up an authenticator app, each shown as a QR code; `e` opens the form of their account, whose changes `s` saves; `d` asks to disable them, which ends every session of theirs, or to enable them again | `GET /users?username=`, `GET /users/{id}/sessions`, `GET /users/{id}/journal`, `GET /users/{id}/consents`, `DELETE /users/{id}/credentials/{credential}`, `DELETE /users/{id}/consents/{consent}`, `DELETE /users/{id}/sessions/{session}`, `POST /users`, `POST /users/{id}/enrolment-ticket`, `POST /users/{id}/password-ticket`, `POST /users/{id}/totp-ticket`, `PATCH /users/{id}`, `PUT /users/{id}/disabled`, `DELETE /users/{id}/disabled` |
 | Groups | a table of the groups, by name, source, how many members each holds and whether they administer the tenant; Enter on one reads its members beside or under it; `n` creates a group from a field, `a` adds a member to the group chosen by their username, `x` on a member asks to take them out | `GET /groups`, `GET /groups/{id}/members`, `POST /groups`, `POST /groups/{id}/members`, `DELETE /groups/{id}/members/{person}` |
 | Monitoring | figures (people, clients, open sessions, keys, messages waiting), the points `beffroi:doctor` looks at, each `■ ok` or `■ failed` with what it found, and the acts over what the journal keeps as bars, the failures in red | `GET /health`, `GET /statistics` |
 
@@ -93,9 +93,9 @@ shown, and again when the administrator presses `r`; what it read stays shown wh
 heading says when it was read. Monitoring is what the instance knows of itself at the moment it is asked (decision
 0040): nothing is kept between two reads, nothing is watched, and nothing is exported.
 
-Reading a person, their sessions or their journal delivers that person: each read is an act of their journal which
+Reading a person, their sessions, their journal or the applications they agreed to delivers that person: each read is an act of their journal which
 names the administrator (decisions 0022 and 0038). The Users section says so before anything is read, reads nothing
-until the administrator types a username, and reads the sessions and the journal only when asked. Listing the groups
+until the administrator types a username, and reads the sessions, the journal and the applications only when asked. Listing the groups
 delivers nobody; reading the members of a group delivers each of them, so the Groups section reads them only when
 Enter asks, and says so before.
 
@@ -139,7 +139,7 @@ and bold. A state is never said by a colour alone.
 | Page Up, Page Down, Home, End | move in a table by a screen, or to its ends |
 | Esc | go back to the navigation; on the navigation, quit |
 | r | read the section shown again (typed as a letter in the username field) |
-| x | on a credential, ask to revoke it; on an open session, ask to end it; on a member of a group, ask to take them out |
+| x | on a credential, ask to revoke it; on an open session, ask to end it; on an application, ask to take its consent back; on a member of a group, ask to take them out |
 | t | on a person, ask to issue the link that lets them pose a passkey |
 | p | on a person, ask to issue the link that lets them pose a new password |
 | o | on a person, ask to issue the link that lets them set up an authenticator app |
@@ -147,7 +147,7 @@ and bold. A state is never said by a colour alone.
 | d | on a person, ask to disable them, or to enable them again when they are disabled |
 | s | in the form of an account, save what was changed |
 | n | on the groups, ask for the name of a group to create |
-| a | on a group or its members, ask for the username of a member to add |
+| a | on a person, read the applications they agreed to; on a group or its members, ask for the username of a member to add |
 | y | make the change just asked for; any other key forgets it |
 | q | quit (typed as a letter in the username field); Ctrl+C quits from anywhere |
 

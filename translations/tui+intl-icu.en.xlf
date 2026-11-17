@@ -37,6 +37,10 @@
         <source>keys.end_session</source>
         <target>end the session</target>
       </trans-unit>
+      <trans-unit id="368694274b" resname="keys.take_back">
+        <source>keys.take_back</source>
+        <target>take back</target>
+      </trans-unit>
       <trans-unit id="00d2372d2b" resname="keys.search">
         <source>keys.search</source>
         <target>look up</target>
@@ -442,9 +446,13 @@ The answer comes back to {redirect_uri}.</target>
         <source>users.view.journal</source>
         <target>Last acts · read written in their journal</target>
       </trans-unit>
+      <trans-unit id="f52346556b" resname="users.view.consents">
+        <source>users.view.consents</source>
+        <target>Applications agreed to · read written in their journal</target>
+      </trans-unit>
       <trans-unit id="5006d0443c" resname="users.views">
         <source>users.views</source>
-        <target>c credentials · s sessions · j journal · e edit · d disable or enable · t enrolment link · p password link · o OTP link</target>
+        <target>c credentials · s sessions · j journal · a applications · e edit · d disable or enable · t enrolment link · p password link · o OTP link</target>
       </trans-unit>
       <trans-unit id="d1c1ad850b" resname="groups.list">
         <source>groups.list</source>
@@ -673,6 +681,42 @@ The answer comes back to {redirect_uri}.</target>
       <trans-unit id="e92672de75" resname="user_sessions.ended_now">
         <source>user_sessions.ended_now</source>
         <target>The session of {username} is ended, and the applications it signed in to are told by the back-channel. The act names you in their journal.</target>
+      </trans-unit>
+      <trans-unit id="2263941e06" resname="user_consents.none">
+        <source>user_consents.none</source>
+        <target>No application holds a consent of theirs.</target>
+      </trans-unit>
+      <trans-unit id="00d691bb9b" resname="user_consents.application">
+        <source>user_consents.application</source>
+        <target>Application</target>
+      </trans-unit>
+      <trans-unit id="ecc69cff80" resname="user_consents.client">
+        <source>user_consents.client</source>
+        <target>Client</target>
+      </trans-unit>
+      <trans-unit id="b32ccd0a71" resname="user_consents.scope">
+        <source>user_consents.scope</source>
+        <target>Scope</target>
+      </trans-unit>
+      <trans-unit id="c8ce920326" resname="user_consents.granted_at">
+        <source>user_consents.granted_at</source>
+        <target>Granted</target>
+      </trans-unit>
+      <trans-unit id="b44de7a1b4" resname="user_consents.renewable">
+        <source>user_consents.renewable</source>
+        <target>Renewable</target>
+      </trans-unit>
+      <trans-unit id="c941eddde8" resname="user_consents.awaiting">
+        <source>user_consents.awaiting</source>
+        <target>Awaiting</target>
+      </trans-unit>
+      <trans-unit id="409cc43649" resname="user_consents.revoke_asked">
+        <source>user_consents.revoke_asked</source>
+        <target>Take back what {username} granted {application}? What it was issued under the consent is revoked, an access token already issued lives to its expiry, and its next request asks them again. y confirms, any other key cancels.</target>
+      </trans-unit>
+      <trans-unit id="24195785e7" resname="user_consents.revoked_now">
+        <source>user_consents.revoked_now</source>
+        <target>What {username} granted {application} is taken back, and what it was issued under it is revoked. The act names you in their journal.</target>
       </trans-unit>
       <trans-unit id="6212d9308b" resname="provenance.address">
         <source>provenance.address</source>

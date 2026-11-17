@@ -40,13 +40,14 @@ use function trim;
 
 /**
  * A person of the tenant, looked up by their username: who they are on one side, with the claims their account holds
- * and their groups, and on the other their credentials, or, when the administrator asks for them, their open sessions
- * or their last acts. Each of those reads is an act in the journal of the person that names the administrator
- * (decisions 0022 and 0038), which the screen says before the first one, and the sessions and the journal are read only
- * when asked for.
+ * and their groups, and on the other their credentials, or, when the administrator asks for them, their open sessions,
+ * their last acts or the applications they agreed to. Each of those reads is an act in the journal of the person that
+ * names the administrator (decisions 0022 and 0038), which the screen says before the first one, and the sessions, the
+ * journal and the applications are read only when asked for.
  *
- * The administrator revokes a credential or ends an open session from its row, once they confirmed it: each change is
- * an act of the person that names them too, and the row says what the API answered without reading the person again.
+ * The administrator revokes a credential, ends an open session or takes a consent back from its row, once they
+ * confirmed it: each change is an act of the person that names them too, and the row says what the API answered without
+ * reading the person again.
  * They create a person from a field of their own, and issue the link that lets the person shown pose a passkey or a new
  * password, which the section shows as a QR code in place of the person until the focus leaves it (decision 0026).
  *
@@ -61,6 +62,8 @@ final class UsersSection implements SectionInterface
     private const string SESSIONS = 'sessions';
 
     private const string JOURNAL = 'journal';
+
+    private const string CONSENTS = 'consents';
 
     /**
      * The key that asks for the link of each kind of ticket (decision 0026): the segment of its route under the person,
@@ -162,6 +165,11 @@ final class UsersSection implements SectionInterface
      */
     private array $sessions = [];
 
+    /**
+     * @var list<array{id: string, cells: list<string>}> each consent in force shown, in the order of its row
+     */
+    private array $consents = [];
+
     private ?SectionContext $context = null;
 
     public function __construct()
@@ -199,6 +207,14 @@ final class UsersSection implements SectionInterface
                 new TableColumn('author', 10, 6),
                 new TableColumn('address', 10, 4),
                 new TableColumn('place', 10, 3),
+            ]),
+            self::CONSENTS => new TableWidget([
+                new TableColumn('application', 12, 9),
+                new TableColumn('client', 10, 5),
+                new TableColumn('scope', 12, 8),
+                new TableColumn('granted', 16, 6),
+                new TableColumn('renewable', 6, 4),
+                new TableColumn('awaiting', 6, 3),
             ]),
         ];
         $this->person = new Panel([$this->definitions], weight: 2);
@@ -372,6 +388,7 @@ final class UsersSection implements SectionInterface
             'c' => self::CREDENTIALS,
             's' => self::SESSIONS,
             'j' => self::JOURNAL,
+            'a' => self::CONSENTS,
             default => null,
         };
         if ($view === null) {
@@ -383,8 +400,8 @@ final class UsersSection implements SectionInterface
     }
 
     /**
-     * The change of the row chosen, asked to be confirmed: an open session is ended, a credential a revocation applies
-     * to is revoked, and an act of the journal changes nothing.
+     * The change of the row chosen, asked to be confirmed: an open session is ended, a consent is taken back, a
+     * credential a revocation applies to is revoked, and an act of the journal changes nothing.
      */
     private function askToChange(SectionContext $context): void
     {
@@ -404,6 +421,21 @@ final class UsersSection implements SectionInterface
                 ]),
                 function (SectionContext $context) use ($person, $session): void {
                     $this->endSession($context, $person, $session['id']);
+                },
+            );
+
+            return;
+        }
+        if ($this->view === self::CONSENTS && isset($this->consents[$row])) {
+            $consent = $this->consents[$row];
+            $this->confirmation->ask(
+                $context,
+                $context->translate('user_consents.revoke_asked', [
+                    'username' => $this->username,
+                    'application' => $consent['cells'][0],
+                ]),
+                function (SectionContext $context) use ($person, $consent): void {
+                    $this->takeBack($context, $person, $consent['id'], $consent['cells'][0]);
                 },
             );
 
@@ -444,6 +476,26 @@ final class UsersSection implements SectionInterface
                 $this->sessions = array_values(array_filter($this->sessions, static fn (array $shown): bool => $shown['id'] !== $session));
                 $this->tables[self::SESSIONS]->setRows(array_column($this->sessions, 'cells'), $context->translate('user_sessions.none'));
                 $this->notice->say($context->translate('user_sessions.ended_now', ['username' => $this->username]));
+            },
+            'api.writing',
+        );
+    }
+
+    /**
+     * The consent is taken back, and leaves the rows: the API answers the consent it took back.
+     */
+    private function takeBack(SectionContext $context, string $person, string $consent, string $application): void
+    {
+        $this->accessReading->again(
+            $context,
+            function (AdministrationApi $api) use ($context, $person, $consent, $application): void {
+                $api->delete(sprintf('/users/%s/consents/%s', rawurlencode($person), rawurlencode($consent)));
+                $this->consents = array_values(array_filter($this->consents, static fn (array $shown): bool => $shown['id'] !== $consent));
+                $this->tables[self::CONSENTS]->setRows(array_column($this->consents, 'cells'), $context->translate('user_consents.none'));
+                $this->notice->say($context->translate('user_consents.revoked_now', [
+                    'username' => $this->username,
+                    'application' => $application,
+                ]));
             },
             'api.writing',
         );
@@ -535,6 +587,8 @@ final class UsersSection implements SectionInterface
         $this->tables[self::CREDENTIALS]->setRows(array_column($this->credentials, 'cells'), $context->translate('user.no_credential'));
         $this->sessions = [];
         $this->tables[self::SESSIONS]->setRows([], $context->translate('user_sessions.none'));
+        $this->consents = [];
+        $this->tables[self::CONSENTS]->setRows([], $context->translate('user_consents.none'));
         $this->frame->title($context->translate('section.users'), $context->translate('section.read_at', ['time' => Moment::time($context->clock->now())]));
         $context->handOver($from, $this->tables[self::CREDENTIALS]);
     }
@@ -808,6 +862,7 @@ final class UsersSection implements SectionInterface
         $this->tables[self::CREDENTIALS]->setSectionKeys([['x', $context->translate('keys.revoke')], ...$person]);
         $this->tables[self::SESSIONS]->setSectionKeys([['x', $context->translate('keys.end_session')], ...$person]);
         $this->tables[self::JOURNAL]->setSectionKeys($person);
+        $this->tables[self::CONSENTS]->setSectionKeys([['x', $context->translate('keys.take_back')], ...$person]);
     }
 
     /**
@@ -943,6 +998,20 @@ final class UsersSection implements SectionInterface
 
                 return;
             }
+            if ($view === self::CONSENTS) {
+                $this->tables[self::CONSENTS]->setColumnLabels([
+                    $context->translate('user_consents.application'),
+                    $context->translate('user_consents.client'),
+                    $context->translate('user_consents.scope'),
+                    $context->translate('user_consents.granted_at'),
+                    $context->translate('user_consents.renewable'),
+                    $context->translate('user_consents.awaiting'),
+                ]);
+                $this->consents = array_map(self::consent(...), $answer->documents('consents'));
+                $this->tables[self::CONSENTS]->setRows(array_column($this->consents, 'cells'), $context->translate('user_consents.none'));
+
+                return;
+            }
             $this->tables[self::JOURNAL]->setColumnLabels([
                 $context->translate('journal.when'),
                 $context->translate('journal.act'),
@@ -1055,6 +1124,29 @@ final class UsersSection implements SectionInterface
                 TerminalText::line($provenance?->nullableString('user_agent') ?? '-')->value,
             ],
         ];
+    }
+
+    /**
+     * @return array{id: string, cells: list<string>}
+     */
+    private static function consent(Document $consent): array
+    {
+        return [
+            'id' => $consent->string('id'),
+            'cells' => [
+                TerminalText::line($consent->nullableString('client_name') ?? '-')->value,
+                TerminalText::line($consent->nullableString('client_id') ?? '-')->value,
+                TerminalText::line($consent->nullableString('scope') ?? '-')->value,
+                ApiMoment::short($consent->nullableString('granted_at')),
+                self::count($consent->nullableInt('renewable')),
+                self::count($consent->nullableInt('awaiting')),
+            ],
+        ];
+    }
+
+    private static function count(?int $count): string
+    {
+        return $count === null ? '-' : (string) $count;
     }
 
     /**
