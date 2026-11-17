@@ -440,7 +440,7 @@ The answer comes back to {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="5006d0443c" resname="users.views">
         <source>users.views</source>
-        <target>c credentials · s sessions · j journal</target>
+        <target>c credentials · s sessions · j journal · t enrolment link</target>
       </trans-unit>
       <trans-unit id="76f48b0e4e" resname="user.username">
         <source>user.username</source>
@@ -753,6 +753,46 @@ The answer comes back to {redirect_uri}.</target>
       <trans-unit id="4cb6dccf46" resname="refusal.invalid_target">
         <source>refusal.invalid_target</source>
         <target>The instance does not let this client ask for its administration API: register this machine again with the identifier the deployment of the instance names (BEFFROI_TENANT_ADMINISTRATION_RESOURCE).</target>
+      </trans-unit>
+      <trans-unit id="d294c4e880" resname="users.create_prompt">
+        <source>users.create_prompt</source>
+        <target>New person: </target>
+      </trans-unit>
+      <trans-unit id="90b9aa9fcf" resname="keys.create">
+        <source>keys.create</source>
+        <target>create</target>
+      </trans-unit>
+      <trans-unit id="ec96e2480b" resname="users.created">
+        <source>users.created</source>
+        <target>{username} is created, with no credential: t issues the link that lets them pose a passkey. The act names you in their journal.</target>
+      </trans-unit>
+      <trans-unit id="ca31f9ed2c" resname="users.taken">
+        <source>users.taken</source>
+        <target>The tenant has a person of the username {username} already.</target>
+      </trans-unit>
+      <trans-unit id="9efde57f13" resname="keys.ticket">
+        <source>keys.ticket</source>
+        <target>enrolment link</target>
+      </trans-unit>
+      <trans-unit id="4f217845f9" resname="keys.close">
+        <source>keys.close</source>
+        <target>close</target>
+      </trans-unit>
+      <trans-unit id="7e9fa6ef26" resname="ticket.issue_asked">
+        <source>ticket.issue_asked</source>
+        <target>Issue a link that lets {username} pose a passkey? Whoever holds it poses one on their account until it expires, and a link issued for them before opens nothing any more. y confirms, any other key cancels.</target>
+      </trans-unit>
+      <trans-unit id="ed47535515" resname="ticket.title">
+        <source>ticket.title</source>
+        <target>Enrolment link of {username}</target>
+      </trans-unit>
+      <trans-unit id="86b6d0f5ff" resname="ticket.shown">
+        <source>ticket.shown</source>
+        <target>{link} opens until {time}. Scan the code with the device that will hold the passkey: the link leaves the screen with the focus. The act names you in their journal.</target>
+      </trans-unit>
+      <trans-unit id="32368ee43d" resname="ticket.too_small">
+        <source>ticket.too_small</source>
+        <target>The terminal is too small for the code: it needs {columns} columns and {rows} lines.</target>
       </trans-unit>
     </body>
   </file>

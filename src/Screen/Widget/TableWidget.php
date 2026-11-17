@@ -32,7 +32,7 @@ use function uasort;
  * A table whose rows can be chosen takes the arrows, the page keys, Home and End once it has the focus, and tells what
  * Enter chose. Every cell that did not come from this program reaches it through `TerminalText`.
  */
-final class TableWidget extends AbstractWidget implements FocusableInterface, VerticallyExpandableInterface
+final class TableWidget extends AbstractWidget implements FocusableInterface, VerticallyExpandableInterface, SectionKeysInterface
 {
     use ExpandsVerticallyTrait;
     use FocusableTrait {
@@ -165,9 +165,6 @@ final class TableWidget extends AbstractWidget implements FocusableInterface, Ve
         return $this;
     }
 
-    /**
-     * @return list<array{string, string}>
-     */
     public function sectionKeys(): array
     {
         return $this->sectionKeys;

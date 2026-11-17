@@ -83,7 +83,7 @@ last line says the keys that answer where the focus is, and what lies between ad
 | Tenant | its name, issuer, login floor, groups of administrators, administration API and how long the journal keeps an act, beside the classes of authentication | `GET /tenant` |
 | Clients | a table of the clients, by name, identifier, source and dates; Enter on one opens what it registered beside or under it | `GET /clients`, `GET /clients/{client_id}` |
 | Signing keys | a table of the keys, each state marked and worded: `■` active, `□` staged, `▨` retiring, `┄` retired | `GET /keys` |
-| Users | a person looked up by username, their claims and groups, beside their credentials; `s` reads their open sessions, `j` their last acts, `c` goes back to the credentials; `x` on a credential asks to revoke it, `x` on an open session asks to end it | `GET /users?username=`, `GET /users/{id}/sessions`, `GET /users/{id}/journal`, `DELETE /users/{id}/credentials/{credential}`, `DELETE /users/{id}/sessions/{session}` |
+| Users | a person looked up by username, their claims and groups, beside their credentials; `s` reads their open sessions, `j` their last acts, `c` goes back to the credentials; `x` on a credential asks to revoke it, `x` on an open session asks to end it; a person created from a field of its own; `t` asks to issue the link that lets the person pose a passkey, shown as a QR code | `GET /users?username=`, `GET /users/{id}/sessions`, `GET /users/{id}/journal`, `DELETE /users/{id}/credentials/{credential}`, `DELETE /users/{id}/sessions/{session}`, `POST /users`, `POST /users/{id}/enrolment-ticket` |
 | Monitoring | figures (people, clients, open sessions, keys, messages waiting), the points `beffroi:doctor` looks at, each `■ ok` or `■ failed` with what it found, and the acts over what the journal keeps as bars, the failures in red | `GET /health`, `GET /statistics` |
 
 The administration API is the one the profile names, read and written with the access token under the DPoP scheme
@@ -102,6 +102,15 @@ applications the session signed in to are told by the back-channel. Each is aske
 the revocation or the session gone, without reading the person again. A password is replaced, never revoked, and the
 section says so rather than asking.
 
+A person is created from the field under the one that looks a person up: Enter creates the username typed, with no
+credential, and the section shows the person the API answered, which no read of them follows. `t` asks to issue the
+link that lets the person shown pose a passkey (decision 0026): whoever holds it poses one on their account once,
+until it expires, and a link issued for them before opens nothing any more. Once `y` confirmed it, the link takes the
+place of the person, as its text and as a QR code the device that will hold the passkey scans, black on white inside
+its quiet zone, or, in a terminal too small for it, as the room the code needs. It leaves the screen with the focus,
+and Enter gives the person back. Creating the person and issuing the link are acts of theirs that name the
+administrator.
+
 The colours are the brand's: ultramarine for the header, the focus and the bars, the signal for a point that holds,
 and the accent text in the colour the brand gives the background the terminal reports (OSC 11). A terminal that does
 not report it keeps plain bold accents and the red of its own palette; `NO_COLOR` draws everything in reverse video
@@ -110,12 +119,13 @@ and bold. A state is never said by a colour alone.
 | Key | Does |
 |---|---|
 | ↑ ↓ (← → on tabs) | choose a section, or move in a table |
-| Enter | go into the section shown; open the row chosen, or look the username up |
+| Enter | go into the section shown; open the row chosen, look the username up, or create the person typed; close the code of a link |
 | Tab, Shift+Tab | move between the widgets of the section and the navigation |
 | Page Up, Page Down, Home, End | move in a table by a screen, or to its ends |
 | Esc | go back to the navigation; on the navigation, quit |
 | r | read the section shown again (typed as a letter in the username field) |
 | x | on a credential, ask to revoke it; on an open session, ask to end it |
+| t | on a person, ask to issue the link that lets them pose a passkey |
 | y | make the change just asked for; any other key forgets it |
 | q | quit (typed as a letter in the username field); Ctrl+C quits from anywhere |
 

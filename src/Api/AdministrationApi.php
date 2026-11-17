@@ -12,6 +12,10 @@ use Beffroi\Tui\Protocol\UnreachableEndpointException;
 use Beffroi\Tui\SignIn\HeldTokens;
 use function http_build_query;
 use function implode;
+use function json_encode;
+use const JSON_THROW_ON_ERROR;
+use const JSON_UNESCAPED_SLASHES;
+use const JSON_UNESCAPED_UNICODE;
 use const PHP_QUERY_RFC3986;
 use function rtrim;
 use SensitiveParameter;
@@ -66,6 +70,23 @@ final readonly class AdministrationApi
         return $this->request('DELETE', $this->url($path))->expect(200);
     }
 
+    /**
+     * What the API answers once it created what the request asked for: a person, a ticket.
+     *
+     * @param string                    $path     the path of the resource under the API, its segments already encoded
+     * @param array<string, scalar>|null $document what is asked for, sent as a JSON object; no body when null
+     *
+     * @throws ProtocolException when the API refuses the request, answers what this program does not read, or answers nothing
+     */
+    public function post(string $path, ?array $document = null): Document
+    {
+        return $this->request(
+            'POST',
+            $this->url($path),
+            $document === null ? null : json_encode($document, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+        )->expect(201);
+    }
+
     private function url(string $path): string
     {
         return rtrim($this->identifier, '/') . $path;
@@ -77,12 +98,12 @@ final readonly class AdministrationApi
      *
      * @throws ProtocolException when the provider refuses to refresh the token, or the API cannot be reached
      */
-    private function request(string $method, string $url): ProviderAnswer
+    private function request(string $method, string $url, ?string $body = null): ProviderAnswer
     {
         $token = $this->tokens->accessToken();
-        $answer = $this->send($method, $url, $token);
+        $answer = $this->send($method, $url, $token, $body);
         if ($answer->status === 401 && $answer->error() === 'invalid_token' && $this->tokens->replace($token)) {
-            $answer = $this->send($method, $url, $this->tokens->accessToken());
+            $answer = $this->send($method, $url, $this->tokens->accessToken(), $body);
         }
 
         return $answer;
@@ -93,11 +114,11 @@ final readonly class AdministrationApi
      *
      * @throws UnreachableEndpointException
      */
-    private function send(string $method, string $url, #[SensitiveParameter] string $token): ProviderAnswer
+    private function send(string $method, string $url, #[SensitiveParameter] string $token, ?string $body): ProviderAnswer
     {
-        $answer = $this->once($method, $url, $token);
+        $answer = $this->once($method, $url, $token, $body);
         if ($answer->status === 401 && $answer->error() === 'use_dpop_nonce') {
-            return $this->once($method, $url, $token);
+            return $this->once($method, $url, $token, $body);
         }
 
         return $answer;
@@ -106,16 +127,24 @@ final readonly class AdministrationApi
     /**
      * @throws UnreachableEndpointException
      */
-    private function once(string $method, string $url, #[SensitiveParameter] string $token): ProviderAnswer
+    private function once(string $method, string $url, #[SensitiveParameter] string $token, ?string $body): ProviderAnswer
     {
+        $headers = [
+            'Accept' => 'application/json',
+            'Authorization' => 'DPoP ' . $token,
+            'DPoP' => $this->proofs->proof($method, $url, $token),
+        ];
         try {
-            $response = $this->http->request($method, $url, [
-                'headers' => [
-                    'Accept' => 'application/json',
-                    'Authorization' => 'DPoP ' . $token,
-                    'DPoP' => $this->proofs->proof($method, $url, $token),
-                ],
-            ]);
+            $response = $this->http->request(
+                $method,
+                $url,
+                $body === null
+                    ? ['headers' => $headers]
+                    : [
+                        'headers' => [...$headers, 'Content-Type' => 'application/json'],
+                        'body' => $body,
+                    ],
+            );
             $answer = new ProviderAnswer(
                 self::NAME,
                 $response->getStatusCode(),

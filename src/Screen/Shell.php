@@ -10,6 +10,8 @@ use Beffroi\Tui\Screen\Widget\BarWidget;
 use Beffroi\Tui\Screen\Widget\KeysWidget;
 use Beffroi\Tui\Screen\Widget\MessageWidget;
 use Beffroi\Tui\Screen\Widget\NavigationWidget;
+use Beffroi\Tui\Screen\Widget\FieldWidget;
+use Beffroi\Tui\Screen\Widget\SectionKeysInterface;
 use Beffroi\Tui\Screen\Widget\TableWidget;
 use Beffroi\Tui\SignIn\AdministratorSession;
 use Beffroi\Tui\Text\Catalogue;
@@ -323,14 +325,18 @@ final class Shell
             return [...$keys, ['r', $this->translate('keys.reload')], ['q', $this->translate('keys.quit')]];
         }
         if ($focus instanceof InputWidget) {
-            return [['⏎', $this->translate('keys.search')], ['tab', $this->translate('keys.next')], ['esc', $this->translate('keys.back')]];
+            return [
+                ['⏎', $this->translate($focus instanceof FieldWidget ? $focus->submits : 'keys.search')],
+                ['tab', $this->translate('keys.next')],
+                ['esc', $this->translate('keys.back')],
+            ];
         }
 
-        $keys = [['↑↓', $this->translate('keys.browse')]];
+        $keys = $focus instanceof TableWidget ? [['↑↓', $this->translate('keys.browse')]] : [];
         if ($focus instanceof TableWidget && $focus->isChoosable()) {
             $keys[] = ['⏎', $this->translate('keys.open')];
         }
-        if ($focus instanceof TableWidget) {
+        if ($focus instanceof SectionKeysInterface) {
             $keys = [...$keys, ...$focus->sectionKeys()];
         }
 

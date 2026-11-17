@@ -440,7 +440,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="5006d0443c" resname="users.views">
         <source>users.views</source>
-        <target>c credentials · s sessions · j journal</target>
+        <target>c credentials · s sessions · j journal · t lien d'enrôlement</target>
       </trans-unit>
       <trans-unit id="76f48b0e4e" resname="user.username">
         <source>user.username</source>
@@ -753,6 +753,46 @@ La réponse revient à {redirect_uri}.</target>
       <trans-unit id="4cb6dccf46" resname="refusal.invalid_target">
         <source>refusal.invalid_target</source>
         <target>L'instance ne laisse pas ce client demander son API d'administration : enregistrez de nouveau ce poste avec l'identifiant que le déploiement de l'instance nomme (BEFFROI_TENANT_ADMINISTRATION_RESOURCE).</target>
+      </trans-unit>
+      <trans-unit id="d294c4e880" resname="users.create_prompt">
+        <source>users.create_prompt</source>
+        <target>Nouvelle personne : </target>
+      </trans-unit>
+      <trans-unit id="90b9aa9fcf" resname="keys.create">
+        <source>keys.create</source>
+        <target>créer</target>
+      </trans-unit>
+      <trans-unit id="ec96e2480b" resname="users.created">
+        <source>users.created</source>
+        <target>{username} est créée, sans credential : t émet le lien qui lui fait poser une passkey. L'acte vous nomme dans son journal.</target>
+      </trans-unit>
+      <trans-unit id="ca31f9ed2c" resname="users.taken">
+        <source>users.taken</source>
+        <target>Le tenant a déjà une personne du nom d'utilisateur {username}.</target>
+      </trans-unit>
+      <trans-unit id="9efde57f13" resname="keys.ticket">
+        <source>keys.ticket</source>
+        <target>lien d'enrôlement</target>
+      </trans-unit>
+      <trans-unit id="4f217845f9" resname="keys.close">
+        <source>keys.close</source>
+        <target>fermer</target>
+      </trans-unit>
+      <trans-unit id="7e9fa6ef26" resname="ticket.issue_asked">
+        <source>ticket.issue_asked</source>
+        <target>Émettre un lien qui permet à {username} de poser une passkey ? Qui le détient en pose une sur son compte jusqu'à son expiration, et un lien émis avant pour cette personne n'ouvre plus rien. y confirme, toute autre touche annule.</target>
+      </trans-unit>
+      <trans-unit id="ed47535515" resname="ticket.title">
+        <source>ticket.title</source>
+        <target>Lien d'enrôlement de {username}</target>
+      </trans-unit>
+      <trans-unit id="86b6d0f5ff" resname="ticket.shown">
+        <source>ticket.shown</source>
+        <target>{link} ouvre jusqu'au {time}. Scannez le code avec l'appareil qui tiendra la passkey : le lien quitte l'écran avec le focus. L'acte vous nomme dans son journal.</target>
+      </trans-unit>
+      <trans-unit id="32368ee43d" resname="ticket.too_small">
+        <source>ticket.too_small</source>
+        <target>Le terminal est trop petit pour le code : il lui faut {columns} colonnes et {rows} lignes.</target>
       </trans-unit>
     </body>
   </file>

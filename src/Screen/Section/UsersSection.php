@@ -19,7 +19,9 @@ use Beffroi\Tui\Screen\SectionInterface;
 use Beffroi\Tui\Screen\Shell;
 use Beffroi\Tui\Screen\Widget\Definition;
 use Beffroi\Tui\Screen\Widget\DefinitionsWidget;
+use Beffroi\Tui\Screen\Widget\FieldWidget;
 use Beffroi\Tui\Screen\Widget\MessageWidget;
+use Beffroi\Tui\Screen\Widget\QrCodeWidget;
 use Beffroi\Tui\Screen\Widget\TableColumn;
 use Beffroi\Tui\Screen\Widget\TableWidget;
 use Beffroi\Tui\Text\TerminalText;
@@ -45,6 +47,8 @@ use function trim;
  *
  * The administrator revokes a credential or ends an open session from its row, once they confirmed it: each change is
  * an act of the person that names them too, and the row says what the API answered without reading the person again.
+ * They create a person from a field of their own, and issue the link that lets the person shown pose a passkey, which
+ * the section shows as a QR code in place of the person until the focus leaves it (decision 0026).
  */
 final class UsersSection implements SectionInterface
 {
@@ -57,6 +61,8 @@ final class UsersSection implements SectionInterface
     private readonly SectionFrame $frame;
 
     private readonly InputWidget $input;
+
+    private readonly FieldWidget $create;
 
     private readonly MessageWidget $notice;
 
@@ -71,6 +77,17 @@ final class UsersSection implements SectionInterface
     private readonly Reading $accessReading;
 
     private readonly Confirmation $confirmation;
+
+    private readonly Panel $ticket;
+
+    private readonly MessageWidget $ticketMessage;
+
+    private readonly QrCodeWidget $code;
+
+    /**
+     * Whether the link of a ticket is on the screen, in place of the person.
+     */
+    private bool $ticketShown = false;
 
     /**
      * @var array<string, TableWidget> the table of each view of the access of the person
@@ -105,6 +122,7 @@ final class UsersSection implements SectionInterface
     {
         $this->frame = new SectionFrame();
         $this->input = new InputWidget();
+        $this->create = new FieldWidget('keys.create');
         $this->notice = new MessageWidget();
         $this->definitions = new DefinitionsWidget(true);
         $this->accessMessage = new MessageWidget();
@@ -147,14 +165,34 @@ final class UsersSection implements SectionInterface
             });
         }
         $this->access = new Panel($access, weight: 3);
+        $this->ticketMessage = new MessageWidget();
+        $this->code = new QrCodeWidget();
+        $this->code->onInput(fn (string $data): bool => $this->asked($data));
+        $this->code->onClose(function (): void {
+            if ($this->context !== null) {
+                $this->closeTicket($this->context);
+            }
+        });
+        $this->code->onLeave(function (): void {
+            $this->forgetTicket();
+        });
+        $this->ticket = new Panel([$this->ticketMessage, $this->code], weight: 3);
         $this->person->widget->addStyleClass(Shell::HIDDEN);
         $this->access->widget->addStyleClass(Shell::HIDDEN);
+        $this->ticket->widget->addStyleClass(Shell::HIDDEN);
         $this->frame->add($this->input);
+        $this->frame->add($this->create);
         $this->frame->add($this->notice);
         $this->frame->add(Panel::split([$this->person, $this->access]));
+        $this->frame->add($this->ticket->widget);
         $this->input->onSubmit(function (SubmitEvent $event): void {
             if ($this->context !== null) {
                 $this->lookUp($this->context, trim($event->getValue()));
+            }
+        });
+        $this->create->onSubmit(function (SubmitEvent $event): void {
+            if ($this->context !== null) {
+                $this->createPerson($this->context, trim($event->getValue()));
             }
         });
     }
@@ -174,8 +212,12 @@ final class UsersSection implements SectionInterface
         $this->context = $context;
         $this->frame->title($context->translate('section.users'));
         $this->input->setPrompt($context->translate('users.prompt'));
-        $this->tables[self::CREDENTIALS]->setSectionKeys([['x', $context->translate('keys.revoke')]]);
-        $this->tables[self::SESSIONS]->setSectionKeys([['x', $context->translate('keys.end_session')]]);
+        $this->create->setPrompt($context->translate('users.create_prompt'));
+        $ticket = ['t', $context->translate('keys.ticket')];
+        $this->tables[self::CREDENTIALS]->setSectionKeys([['x', $context->translate('keys.revoke')], $ticket]);
+        $this->tables[self::SESSIONS]->setSectionKeys([['x', $context->translate('keys.end_session')], $ticket]);
+        $this->tables[self::JOURNAL]->setSectionKeys([$ticket]);
+        $this->code->setSectionKeys([['⏎', $context->translate('keys.close')]]);
         if ($this->shown === null) {
             $this->notice->say($context->translate('users.notice'));
         }
@@ -184,6 +226,7 @@ final class UsersSection implements SectionInterface
     public function reload(SectionContext $context): void
     {
         $this->context = $context;
+        $this->closeTicket($context);
         if ($this->shown !== null) {
             $this->read($context, $this->view);
         }
@@ -191,12 +234,17 @@ final class UsersSection implements SectionInterface
 
     public function focusables(): array
     {
-        return $this->shown === null ? [$this->input] : [$this->input, $this->tables[$this->view]];
+        if ($this->shown === null) {
+            return [$this->input, $this->create];
+        }
+
+        return [$this->input, $this->create, $this->ticketShown ? $this->code : $this->tables[$this->view]];
     }
 
     /**
-     * The keys of a view of the access of the person: `c` its credentials, `s` its open sessions, `j` its journal, and
-     * `x` the change of the row chosen, which `y` confirms and any other key forgets.
+     * The keys of a view of the access of the person: `c` its credentials, `s` its open sessions, `j` its journal, `x`
+     * the change of the row chosen and `t` a link that lets the person pose a passkey, each change confirmed by `y` and
+     * forgotten by any other key.
      */
     private function asked(string $data): bool
     {
@@ -207,8 +255,16 @@ final class UsersSection implements SectionInterface
         if ($this->confirmation->answer($context, $data)) {
             return true;
         }
+        if ($data === 't') {
+            $this->closeTicket($context);
+            $this->askForATicket($context);
+
+            return true;
+        }
         if ($data === 'x') {
-            $this->askToChange($context);
+            if (! $this->ticketShown) {
+                $this->askToChange($context);
+            }
 
             return true;
         }
@@ -343,31 +399,149 @@ final class UsersSection implements SectionInterface
 
                 return;
             }
-            $this->shown = $person->string('id');
-            $this->username = TerminalText::line($person->nullableString('username') ?? $username)->value;
-            $this->notice->say('');
-            $this->person->title($context->translate('users.person', [
-                'username' => $this->username,
-            ]));
-            $this->definitions->setDefinitions(self::person($person, $context), $context->translate('value.more'));
-            $this->person->widget->removeStyleClass(Shell::HIDDEN);
-            $this->access->widget->removeStyleClass(Shell::HIDDEN);
-            $this->showView(self::CREDENTIALS, $context);
-            $this->tables[self::CREDENTIALS]->setColumnLabels([
-                $context->translate('credential.kind'),
-                $context->translate('credential.name'),
-                $context->translate('credential.authenticator'),
-                $context->translate('credential.created_at'),
-                $context->translate('credential.last_used_at'),
-                $context->translate('credential.revoked_at'),
-            ]);
-            $this->credentials = array_map(self::credential(...), $person->documents('credentials'));
-            $this->tables[self::CREDENTIALS]->setRows(array_column($this->credentials, 'cells'), $context->translate('user.no_credential'));
-            $this->sessions = [];
-            $this->tables[self::SESSIONS]->setRows([], $context->translate('user_sessions.none'));
-            $this->frame->title($context->translate('section.users'), $context->translate('section.read_at', ['time' => Moment::time($context->clock->now())]));
-            $context->handOver($this->input, $this->tables[self::CREDENTIALS]);
+            $this->showPerson($context, $person, $this->input);
         });
+    }
+
+    /**
+     * The person the API answered, a read of them or their creation, with their credentials, in place of whoever was
+     * shown before: the focus goes from the field the administrator typed in to the table of the credentials.
+     */
+    private function showPerson(SectionContext $context, Document $person, AbstractWidget $from): void
+    {
+        $this->forgetTicket();
+        $this->shown = $person->string('id');
+        $this->username = TerminalText::line($person->nullableString('username') ?? '-')->value;
+        $this->notice->say('');
+        $this->person->title($context->translate('users.person', [
+            'username' => $this->username,
+        ]));
+        $this->definitions->setDefinitions(self::person($person, $context), $context->translate('value.more'));
+        $this->person->widget->removeStyleClass(Shell::HIDDEN);
+        $this->access->widget->removeStyleClass(Shell::HIDDEN);
+        $this->showView(self::CREDENTIALS, $context);
+        $this->tables[self::CREDENTIALS]->setColumnLabels([
+            $context->translate('credential.kind'),
+            $context->translate('credential.name'),
+            $context->translate('credential.authenticator'),
+            $context->translate('credential.created_at'),
+            $context->translate('credential.last_used_at'),
+            $context->translate('credential.revoked_at'),
+        ]);
+        $this->credentials = array_map(self::credential(...), $person->documents('credentials'));
+        $this->tables[self::CREDENTIALS]->setRows(array_column($this->credentials, 'cells'), $context->translate('user.no_credential'));
+        $this->sessions = [];
+        $this->tables[self::SESSIONS]->setRows([], $context->translate('user_sessions.none'));
+        $this->frame->title($context->translate('section.users'), $context->translate('section.read_at', ['time' => Moment::time($context->clock->now())]));
+        $context->handOver($from, $this->tables[self::CREDENTIALS]);
+    }
+
+    /**
+     * A person created with the username typed, holding no credential yet: the API answers them as a read of them does,
+     * so that nothing reads them again.
+     */
+    private function createPerson(SectionContext $context, string $username): void
+    {
+        if ($username === '') {
+            return;
+        }
+        $this->frame->reading->again(
+            $context,
+            function (AdministrationApi $api) use ($context, $username): void {
+                try {
+                    $person = $api->post('/users', [
+                        'username' => $username,
+                    ]);
+                } catch (ProviderRefusalException $refusal) {
+                    if ($refusal->status !== 409) {
+                        throw $refusal;
+                    }
+                    $this->notice->say($context->translate('users.taken', ['username' => TerminalText::line($username)->value]));
+
+                    return;
+                }
+                $this->create->setValue('');
+                $this->showPerson($context, $person, $this->create);
+                $this->notice->say($context->translate('users.created', ['username' => $this->username]));
+            },
+            'api.writing',
+        );
+    }
+
+    /**
+     * The link of a ticket asked to be confirmed: a link issued before for the person opens nothing once it is.
+     */
+    private function askForATicket(SectionContext $context): void
+    {
+        $person = $this->shown;
+        if ($person === null) {
+            return;
+        }
+        $this->confirmation->ask(
+            $context,
+            $context->translate('ticket.issue_asked', ['username' => $this->username]),
+            function (SectionContext $context) use ($person): void {
+                $this->issueTicket($context, $person);
+            },
+        );
+    }
+
+    private function issueTicket(SectionContext $context, string $person): void
+    {
+        $this->accessReading->again(
+            $context,
+            function (AdministrationApi $api) use ($context, $person): void {
+                $ticket = $api->post(sprintf('/users/%s/enrolment-ticket', rawurlencode($person)));
+                $this->showTicket($context, TerminalText::line($ticket->string('link'))->value, $ticket->nullableString('expires_at'));
+            },
+            'api.writing',
+        );
+    }
+
+    /**
+     * The link in place of the person, as a code the device that will hold the passkey scans and as the text it is, the
+     * code holding what the text says.
+     */
+    private function showTicket(SectionContext $context, string $link, ?string $expiresAt): void
+    {
+        $this->code->setText($link);
+        [$columns, $rows] = $this->code->room();
+        $this->code->setTooSmall($context->translate('ticket.too_small', ['columns' => $columns, 'rows' => $rows]));
+        $this->ticket->title($context->translate('ticket.title', ['username' => $this->username]));
+        $this->ticketMessage->say($context->translate('ticket.shown', ['link' => $link, 'time' => ApiMoment::of($expiresAt)]));
+        $this->person->widget->addStyleClass(Shell::HIDDEN);
+        $this->access->widget->addStyleClass(Shell::HIDDEN);
+        $this->ticket->widget->removeStyleClass(Shell::HIDDEN);
+        $this->ticketShown = true;
+        $context->handOver($this->tables[$this->view], $this->code);
+    }
+
+    /**
+     * The link leaves the screen, and the focus goes back to the table of the person.
+     */
+    private function closeTicket(SectionContext $context): void
+    {
+        if (! $this->ticketShown) {
+            return;
+        }
+        $this->forgetTicket();
+        $context->handOver($this->code, $this->tables[$this->view]);
+    }
+
+    /**
+     * The link leaves the screen, the person coming back in its place.
+     */
+    private function forgetTicket(): void
+    {
+        if (! $this->ticketShown) {
+            return;
+        }
+        $this->ticketShown = false;
+        $this->code->forget();
+        $this->ticketMessage->say('');
+        $this->ticket->widget->addStyleClass(Shell::HIDDEN);
+        $this->person->widget->removeStyleClass(Shell::HIDDEN);
+        $this->access->widget->removeStyleClass(Shell::HIDDEN);
     }
 
     /**
@@ -419,6 +593,7 @@ final class UsersSection implements SectionInterface
 
     private function showView(string $view, SectionContext $context): void
     {
+        $this->closeTicket($context);
         $this->confirmation->forget();
         $focused = $this->tables[$this->view]->isFocused();
         foreach ($this->tables as $name => $table) {

@@ -10,6 +10,7 @@ use Beffroi\Tui\Screen\Widget\DefinitionsWidget;
 use Beffroi\Tui\Screen\Widget\KeysWidget;
 use Beffroi\Tui\Screen\Widget\MessageWidget;
 use Beffroi\Tui\Screen\Widget\NavigationWidget;
+use Beffroi\Tui\Screen\Widget\QrCodeWidget;
 use Beffroi\Tui\Screen\Widget\TableWidget;
 use Beffroi\Tui\Screen\Widget\TilesWidget;
 use Symfony\Component\Tui\Style\Border;
@@ -28,8 +29,9 @@ use Symfony\Component\Tui\Style\StyleSheet;
  * The colours are the brand's (Charte Graphique, p. 21 to 24): ultramarine is the active state, the line of the
  * header and the bars of a chart; accent text is cold light on a dark terminal and accent ink on a light one, and
  * plain bold while the background is not known; an error is drawn in the colour of errors and always says its word;
- * the signal only lights the square of a point that holds. No corner is rounded. A screen without colours
- * (https://no-color.org) marks the same things in reverse video and in bold.
+ * the signal only lights the square of a point that holds. A QR code is black on white, which every reader takes. No
+ * corner is rounded. A screen without colours (https://no-color.org) marks the same things in reverse video and in
+ * bold.
  */
 final readonly class Theme
 {
@@ -50,6 +52,10 @@ final readonly class Theme
     private const string SIGNAL = '#C6F432';
 
     private const string ERROR = '#B3261E';
+
+    private const string QR_DARK = '#000000';
+
+    private const string QR_LIGHT = '#FFFFFF';
 
     /**
      * The layout, and what the screen draws before it knows the background of the terminal.
@@ -100,6 +106,9 @@ final readonly class Theme
             ChecksWidget::class . '::empty' => new Style(dim: true),
             MessageWidget::class . '::text' => new Style(dim: true),
             MessageWidget::class . '::error' => new Style(bold: true),
+            // reversed, the modules drawn take the background of the terminal: dark on the dark one most terminals have
+            QrCodeWidget::class . '::code' => new Style(reverse: true),
+            QrCodeWidget::class . '::small' => new Style(dim: true),
             '.header' => new Style(bold: true, reverse: true),
         ]);
         $sheet->addBreakpoint(self::SYMBOL, '.symbol', new Style(hidden: false));
@@ -125,6 +134,7 @@ final readonly class Theme
             ChartWidget::class . '::failure' => new Style(color: 'red'),
             ChecksWidget::class . '::fails' => new Style(bold: true, color: 'red'),
             MessageWidget::class . '::error' => new Style(bold: true, color: 'red'),
+            QrCodeWidget::class . '::code' => new Style(background: self::QR_LIGHT, color: self::QR_DARK, reverse: false),
         ]));
     }
 
