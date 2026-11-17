@@ -83,7 +83,7 @@ last line says the keys that answer where the focus is, and what lies between ad
 | Tenant | its name, issuer, login floor, groups of administrators, administration API and how long the journal keeps an act, beside the classes of authentication | `GET /tenant` |
 | Clients | a table of the clients, by name, identifier, source and dates; Enter on one opens what it registered beside or under it | `GET /clients`, `GET /clients/{client_id}` |
 | Signing keys | a table of the keys, each state marked and worded: `■` active, `□` staged, `▨` retiring, `┄` retired | `GET /keys` |
-| Users | a person looked up by username, their claims and groups, beside their credentials; `s` reads their open sessions, `j` their last acts, `c` goes back to the credentials; `x` on a credential asks to revoke it, `x` on an open session asks to end it; a person created from a field of its own; `t` asks to issue the link that lets the person pose a passkey, `p` the one that lets them pose a new password, `o` the one that lets them set up an authenticator app, each shown as a QR code | `GET /users?username=`, `GET /users/{id}/sessions`, `GET /users/{id}/journal`, `DELETE /users/{id}/credentials/{credential}`, `DELETE /users/{id}/sessions/{session}`, `POST /users`, `POST /users/{id}/enrolment-ticket`, `POST /users/{id}/password-ticket`, `POST /users/{id}/totp-ticket` |
+| Users | a person looked up by username, their claims and groups, beside their credentials; `s` reads their open sessions, `j` their last acts, `c` goes back to the credentials; `x` on a credential asks to revoke it, `x` on an open session asks to end it; a person created from a field of its own; `t` asks to issue the link that lets the person pose a passkey, `p` the one that lets them pose a new password, `o` the one that lets them set up an authenticator app, each shown as a QR code; `e` opens the form of their account, whose changes `s` saves | `GET /users?username=`, `GET /users/{id}/sessions`, `GET /users/{id}/journal`, `DELETE /users/{id}/credentials/{credential}`, `DELETE /users/{id}/sessions/{session}`, `POST /users`, `POST /users/{id}/enrolment-ticket`, `POST /users/{id}/password-ticket`, `POST /users/{id}/totp-ticket`, `PATCH /users/{id}` |
 | Monitoring | figures (people, clients, open sessions, keys, messages waiting), the points `beffroi:doctor` looks at, each `■ ok` or `■ failed` with what it found, and the acts over what the journal keeps as bars, the failures in red | `GET /health`, `GET /statistics` |
 
 The administration API is the one the profile names, read and written with the access token under the DPoP scheme
@@ -114,6 +114,15 @@ needs. It leaves the screen with the focus,
 and Enter gives the person back. Creating the person and issuing the link are acts of theirs that name the
 administrator.
 
+`e` opens the form of the account of the person shown in place of their access: a row for each member the API changes,
+the username, the email address and the phone number with whether each was verified, the profile of OIDC Core §5.1 and
+the members of the postal address, each with the value the person holds. Enter on a row types its value in the field
+under the table, an empty one taking the member away, and turns a verification over; the row then says the change is
+to save. `s` writes every change at once, as one merge patch of the person (RFC 7396): the person is shown again as the
+API answered them, and a refusal is said while the changes stay in the form. The change is an act of the person that
+names the administrator, and each value a line of their history. The form leaves the screen with the focus, and what it
+had not saved with it.
+
 The colours are the brand's: ultramarine for the header, the focus and the bars, the signal for a point that holds,
 and the accent text in the colour the brand gives the background the terminal reports (OSC 11). A terminal that does
 not report it keeps plain bold accents and the red of its own palette; `NO_COLOR` draws everything in reverse video
@@ -122,7 +131,7 @@ and bold. A state is never said by a colour alone.
 | Key | Does |
 |---|---|
 | ↑ ↓ (← → on tabs) | choose a section, or move in a table |
-| Enter | go into the section shown; open the row chosen, look the username up, or create the person typed; close the code of a link |
+| Enter | go into the section shown; open the row chosen, look the username up, or create the person typed; close the code of a link; in the form of an account, change the member chosen, then keep the value typed |
 | Tab, Shift+Tab | move between the widgets of the section and the navigation |
 | Page Up, Page Down, Home, End | move in a table by a screen, or to its ends |
 | Esc | go back to the navigation; on the navigation, quit |
@@ -131,6 +140,8 @@ and bold. A state is never said by a colour alone.
 | t | on a person, ask to issue the link that lets them pose a passkey |
 | p | on a person, ask to issue the link that lets them pose a new password |
 | o | on a person, ask to issue the link that lets them set up an authenticator app |
+| e | on a person, open the form of their account |
+| s | in the form of an account, save what was changed |
 | y | make the change just asked for; any other key forgets it |
 | q | quit (typed as a letter in the username field); Ctrl+C quits from anywhere |
 

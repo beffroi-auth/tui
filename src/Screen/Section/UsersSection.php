@@ -49,6 +49,9 @@ use function trim;
  * an act of the person that names them too, and the row says what the API answered without reading the person again.
  * They create a person from a field of their own, and issue the link that lets the person shown pose a passkey or a new
  * password, which the section shows as a QR code in place of the person until the focus leaves it (decision 0026).
+ *
+ * The form of the account of the person shown takes the place of their access until the focus leaves it: Enter changes
+ * the member chosen, and `s` writes every change in one merge patch, an act of the person that names the administrator.
  */
 final class UsersSection implements SectionInterface
 {
@@ -95,6 +98,36 @@ final class UsersSection implements SectionInterface
     private readonly MessageWidget $ticketMessage;
 
     private readonly QrCodeWidget $code;
+
+    private readonly Panel $form;
+
+    private readonly MessageWidget $formMessage;
+
+    private readonly Reading $formReading;
+
+    private readonly TableWidget $formTable;
+
+    private readonly FieldWidget $formField;
+
+    /**
+     * The form of the account of the person shown, null while it is not on the screen.
+     */
+    private ?AccountForm $account = null;
+
+    /**
+     * The member whose value the field of the form is typing.
+     */
+    private ?string $editing = null;
+
+    /**
+     * Whether the keys are going from one widget of the form to the other, which is not leaving the form.
+     */
+    private bool $handing = false;
+
+    /**
+     * The person shown, as the API last answered them.
+     */
+    private ?Document $document = null;
 
     /**
      * Whether the link of a ticket is on the screen, in place of the person.
@@ -189,13 +222,41 @@ final class UsersSection implements SectionInterface
             $this->forgetTicket();
         });
         $this->ticket = new Panel([$this->ticketMessage, $this->code], weight: 3);
+        $this->formMessage = new MessageWidget();
+        $this->formReading = new Reading($this->formMessage);
+        $this->formTable = new TableWidget([
+            new TableColumn('member', 16, 9),
+            new TableColumn('value', 12, 8),
+            new TableColumn('change', 10, 7),
+        ]);
+        $this->formTable->onInput(fn (string $data): bool => $this->answeredInTheForm($data));
+        $this->formTable->onChoose(function (int $row): void {
+            if ($this->context !== null) {
+                $this->changeRow($this->context, $row);
+            }
+        }, 'keys.change');
+        $this->formTable->onLeave(function (): void {
+            $this->leftTheForm();
+        });
+        $this->formField = new FieldWidget('keys.keep');
+        $this->formField->onSubmit(function (SubmitEvent $event): void {
+            if ($this->context !== null) {
+                $this->written($this->context, $event->getValue());
+            }
+        });
+        $this->formField->onLeave(function (): void {
+            $this->leftTheForm();
+        });
+        $this->formField->addStyleClass(Shell::HIDDEN);
+        $this->form = new Panel([$this->formMessage, $this->formTable, $this->formField], weight: 3);
+        $this->form->widget->addStyleClass(Shell::HIDDEN);
         $this->person->widget->addStyleClass(Shell::HIDDEN);
         $this->access->widget->addStyleClass(Shell::HIDDEN);
         $this->ticket->widget->addStyleClass(Shell::HIDDEN);
         $this->frame->add($this->input);
         $this->frame->add($this->create);
         $this->frame->add($this->notice);
-        $this->frame->add(Panel::split([$this->person, $this->access]));
+        $this->frame->add(Panel::split([$this->person, $this->access, $this->form]));
         $this->frame->add($this->ticket->widget);
         $this->input->onSubmit(function (SubmitEvent $event): void {
             if ($this->context !== null) {
@@ -229,9 +290,16 @@ final class UsersSection implements SectionInterface
         foreach (self::TICKETS as $key => [, $speech]) {
             $tickets[] = [$key, $context->translate('keys.' . $speech)];
         }
-        $this->tables[self::CREDENTIALS]->setSectionKeys([['x', $context->translate('keys.revoke')], ...$tickets]);
-        $this->tables[self::SESSIONS]->setSectionKeys([['x', $context->translate('keys.end_session')], ...$tickets]);
-        $this->tables[self::JOURNAL]->setSectionKeys($tickets);
+        $edit = ['e', $context->translate('keys.edit')];
+        $this->tables[self::CREDENTIALS]->setSectionKeys([['x', $context->translate('keys.revoke')], $edit, ...$tickets]);
+        $this->tables[self::SESSIONS]->setSectionKeys([['x', $context->translate('keys.end_session')], $edit, ...$tickets]);
+        $this->tables[self::JOURNAL]->setSectionKeys([$edit, ...$tickets]);
+        $this->formTable->setSectionKeys([['s', $context->translate('keys.save')]]);
+        $this->formTable->setColumnLabels([
+            $context->translate('account_form.member'),
+            $context->translate('account_form.value'),
+            $context->translate('account_form.change'),
+        ]);
         $this->code->setSectionKeys([['⏎', $context->translate('keys.close')]]);
         if ($this->shown === null) {
             $this->notice->say($context->translate('users.notice'));
@@ -242,6 +310,7 @@ final class UsersSection implements SectionInterface
     {
         $this->context = $context;
         $this->closeTicket($context);
+        $this->closeForm($context);
         if ($this->shown !== null) {
             $this->read($context, $this->view);
         }
@@ -253,14 +322,22 @@ final class UsersSection implements SectionInterface
             return [$this->input, $this->create];
         }
 
-        return [$this->input, $this->create, $this->ticketShown ? $this->code : $this->tables[$this->view]];
+        return [
+            $this->input,
+            $this->create,
+            match (true) {
+                $this->account !== null => $this->formTable,
+                $this->ticketShown => $this->code,
+                default => $this->tables[$this->view],
+            },
+        ];
     }
 
     /**
      * The keys of a view of the access of the person: `c` its credentials, `s` its open sessions, `j` its journal, `x`
-     * the change of the row chosen, `t` a link that lets the person pose a passkey, `p` one that lets them pose a new
-     * password and `o` one that lets them set up an authenticator app, each change confirmed by `y` and forgotten by
-     * any other key.
+     * the change of the row chosen, `e` the form of their account, `t` a link that lets the person pose a passkey, `p`
+     * one that lets them pose a new password and `o` one that lets them set up an authenticator app, each change but the
+     * form confirmed by `y` and forgotten by any other key.
      */
     private function asked(string $data): bool
     {
@@ -275,6 +352,12 @@ final class UsersSection implements SectionInterface
         if ($ticket !== null) {
             $this->closeTicket($context);
             $this->askForATicket($context, $ticket[0], $ticket[1]);
+
+            return true;
+        }
+        if ($data === 'e') {
+            $this->closeTicket($context);
+            $this->openForm($context);
 
             return true;
         }
@@ -427,7 +510,9 @@ final class UsersSection implements SectionInterface
     private function showPerson(SectionContext $context, Document $person, AbstractWidget $from): void
     {
         $this->forgetTicket();
+        $this->forgetForm();
         $this->shown = $person->string('id');
+        $this->document = $person;
         $this->username = TerminalText::line($person->nullableString('username') ?? '-')->value;
         $this->notice->say('');
         $this->person->title($context->translate('users.person', [
@@ -563,6 +648,188 @@ final class UsersSection implements SectionInterface
         $this->ticket->widget->addStyleClass(Shell::HIDDEN);
         $this->person->widget->removeStyleClass(Shell::HIDDEN);
         $this->access->widget->removeStyleClass(Shell::HIDDEN);
+    }
+
+    /**
+     * The form of the account of the person shown takes the place of their access, prefilled from the person as the API
+     * last answered them.
+     */
+    private function openForm(SectionContext $context): void
+    {
+        $person = $this->document;
+        if ($this->shown === null || $person === null) {
+            return;
+        }
+        $this->confirmation->forget();
+        $this->account = new AccountForm($person);
+        $this->formTable->setRows($this->account->rows($context));
+        $this->form->title($context->translate('account_form.title', ['username' => $this->username]));
+        $this->formMessage->say('');
+        $this->access->widget->addStyleClass(Shell::HIDDEN);
+        $this->form->widget->removeStyleClass(Shell::HIDDEN);
+        $context->handOver($this->tables[$this->view], $this->formTable);
+    }
+
+    /**
+     * Enter on a member of the form: a yes or a no is turned over, and any other value is typed in the field under the
+     * table, which starts with the value the form holds.
+     */
+    private function changeRow(SectionContext $context, int $row): void
+    {
+        $form = $this->account;
+        $member = $form?->member($row);
+        if ($form === null || $member === null) {
+            return;
+        }
+        if ($form->isFlag($member)) {
+            $form->turnOver($member);
+            $this->formTable->setRows($form->rows($context));
+            $context->render();
+
+            return;
+        }
+        $this->editing = $member;
+        $this->formField->setPrompt($member . ': ')->setValue($form->text($member));
+        $this->formField->removeStyleClass(Shell::HIDDEN);
+        $this->hand($context, $this->formTable, $this->formField);
+    }
+
+    /**
+     * The value typed is kept for the member, and the keys go back to the table, which shows it as a change not saved
+     * yet.
+     */
+    private function written(SectionContext $context, string $typed): void
+    {
+        $form = $this->account;
+        $member = $this->editing;
+        if ($form === null || $member === null) {
+            return;
+        }
+        $form->write($member, $typed);
+        $this->editing = null;
+        $this->formTable->setRows($form->rows($context));
+        $this->formField->addStyleClass(Shell::HIDDEN);
+        $this->hand($context, $this->formField, $this->formTable);
+    }
+
+    /**
+     * The key of the form beside the arrows and Enter: `s` writes what was changed.
+     */
+    private function answeredInTheForm(string $data): bool
+    {
+        if ($data !== 's' || $this->context === null) {
+            return false;
+        }
+        $this->save($this->context);
+
+        return true;
+    }
+
+    /**
+     * What was changed is written in one merge patch (RFC 7396): the person is then shown as the API answered them, and
+     * a refusal leaves the changes in the form.
+     */
+    private function save(SectionContext $context): void
+    {
+        $form = $this->account;
+        $person = $this->shown;
+        if ($form === null || $person === null) {
+            return;
+        }
+        if (! $form->isChanged()) {
+            $this->formMessage->say($context->translate('account_form.unchanged'));
+            $context->render();
+
+            return;
+        }
+        $patch = $form->patch();
+        $this->formReading->again(
+            $context,
+            function (AdministrationApi $api) use ($context, $person, $patch): void {
+                try {
+                    $account = $api->patch(sprintf('/users/%s', rawurlencode($person)), $patch);
+                } catch (ProviderRefusalException $refusal) {
+                    if ($refusal->status !== 400 && $refusal->status !== 409) {
+                        throw $refusal;
+                    }
+                    $this->notice->say($context->translate('account_form.refused', [
+                        'reason' => TerminalText::line($refusal->description ?? $refusal->error ?? '-')->value,
+                    ]), true);
+
+                    return;
+                }
+                if ($this->shown === $person) {
+                    $this->saved($context, $account);
+                }
+            },
+            'api.writing',
+        );
+    }
+
+    /**
+     * The person as the API answered them once changed, their account and claims in place of those last read beside
+     * their groups and credentials, and the keys back on their access.
+     */
+    private function saved(SectionContext $context, Document $account): void
+    {
+        $person = new Document([...($this->document->members ?? []), ...$account->members]);
+        $this->document = $person;
+        $this->username = TerminalText::line($person->nullableString('username') ?? '-')->value;
+        $this->person->title($context->translate('users.person', [
+            'username' => $this->username,
+        ]));
+        $this->definitions->setDefinitions(self::person($person, $context), $context->translate('value.more'));
+        $this->closeForm($context);
+        $this->notice->say($context->translate('account_form.saved', ['username' => $this->username]));
+    }
+
+    /**
+     * The form leaves the screen, and the keys go back to the access of the person.
+     */
+    private function closeForm(SectionContext $context): void
+    {
+        $this->forgetForm();
+        $this->hand($context, $this->formTable, $this->tables[$this->view]);
+    }
+
+    /**
+     * The focus left the form for another widget than its own: what was changed and not saved goes with it.
+     */
+    private function leftTheForm(): void
+    {
+        if (! $this->handing) {
+            $this->forgetForm();
+        }
+    }
+
+    /**
+     * The form leaves the screen with what was changed and not saved, the access of the person coming back in its place.
+     */
+    private function forgetForm(): void
+    {
+        if ($this->account === null) {
+            return;
+        }
+        $this->account = null;
+        $this->editing = null;
+        $this->formMessage->say('');
+        $this->formField->setValue('');
+        $this->formField->addStyleClass(Shell::HIDDEN);
+        $this->form->widget->addStyleClass(Shell::HIDDEN);
+        $this->access->widget->removeStyleClass(Shell::HIDDEN);
+    }
+
+    /**
+     * The keys go from one widget of the form to another, which is not leaving the form.
+     */
+    private function hand(SectionContext $context, AbstractWidget $from, AbstractWidget $to): void
+    {
+        $this->handing = true;
+        try {
+            $context->handOver($from, $to);
+        } finally {
+            $this->handing = false;
+        }
     }
 
     /**

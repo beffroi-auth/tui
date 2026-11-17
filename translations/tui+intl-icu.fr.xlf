@@ -440,7 +440,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="5006d0443c" resname="users.views">
         <source>users.views</source>
-        <target>c credentials · s sessions · j journal · t lien d'enrôlement · p lien de mot de passe · o lien d'OTP</target>
+        <target>c credentials · s sessions · j journal · e modifier · t lien d'enrôlement · p lien de mot de passe · o lien d'OTP</target>
       </trans-unit>
       <trans-unit id="76f48b0e4e" resname="user.username">
         <source>user.username</source>
@@ -898,6 +898,22 @@ La réponse revient à {redirect_uri}.</target>
         <source>keys.totp_ticket</source>
         <target>lien d'OTP</target>
       </trans-unit>
+      <trans-unit id="3b3ae070bb" resname="keys.edit">
+        <source>keys.edit</source>
+        <target>modifier</target>
+      </trans-unit>
+      <trans-unit id="94d7be3f7b" resname="keys.change">
+        <source>keys.change</source>
+        <target>changer</target>
+      </trans-unit>
+      <trans-unit id="eae2f7f4eb" resname="keys.keep">
+        <source>keys.keep</source>
+        <target>garder</target>
+      </trans-unit>
+      <trans-unit id="a431a6a9aa" resname="keys.save">
+        <source>keys.save</source>
+        <target>enregistrer</target>
+      </trans-unit>
       <trans-unit id="30bca564e9" resname="password_ticket.issue_asked">
         <source>password_ticket.issue_asked</source>
         <target>Émettre un lien qui permet à {username} de poser un nouveau mot de passe ? Qui le détient en pose un sur son compte jusqu'à son expiration, ce qui termine chacune de ses sessions, et un lien de mot de passe émis avant pour cette personne n'ouvre plus rien. y confirme, toute autre touche annule.</target>
@@ -921,6 +937,38 @@ La réponse revient à {redirect_uri}.</target>
       <trans-unit id="4acbe4a398" resname="totp_ticket.shown">
         <source>totp_ticket.shown</source>
         <target>{link} ouvre jusqu'au {time}. Scannez le code avec l'appareil où la personne configurera son application : le lien quitte l'écran avec le focus. L'acte vous nomme dans son journal.</target>
+      </trans-unit>
+      <trans-unit id="e753982b5c" resname="account_form.title">
+        <source>account_form.title</source>
+        <target>Compte de {username}</target>
+      </trans-unit>
+      <trans-unit id="a7ea433390" resname="account_form.member">
+        <source>account_form.member</source>
+        <target>Membre</target>
+      </trans-unit>
+      <trans-unit id="bb2dbcf2f6" resname="account_form.value">
+        <source>account_form.value</source>
+        <target>Valeur</target>
+      </trans-unit>
+      <trans-unit id="a29936e2fa" resname="account_form.change">
+        <source>account_form.change</source>
+        <target>Changement</target>
+      </trans-unit>
+      <trans-unit id="1ed7ccddec" resname="account_form.changed">
+        <source>account_form.changed</source>
+        <target>à enregistrer</target>
+      </trans-unit>
+      <trans-unit id="e43460ecaf" resname="account_form.unchanged">
+        <source>account_form.unchanged</source>
+        <target>Rien n'est encore changé : Entrée change le membre choisi, s enregistre ce qui a changé.</target>
+      </trans-unit>
+      <trans-unit id="9d2de71d7f" resname="account_form.refused">
+        <source>account_form.refused</source>
+        <target>Rien n'a été enregistré : {reason}</target>
+      </trans-unit>
+      <trans-unit id="9ad5bd91d2" resname="account_form.saved">
+        <source>account_form.saved</source>
+        <target>Le compte de {username} est enregistré. Le changement est un acte qui vous nomme dans son journal.</target>
       </trans-unit>
     </body>
   </file>

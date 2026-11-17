@@ -334,7 +334,7 @@ final class Shell
 
         $keys = $focus instanceof TableWidget ? [['↑↓', $this->translate('keys.browse')]] : [];
         if ($focus instanceof TableWidget && $focus->isChoosable()) {
-            $keys[] = ['⏎', $this->translate('keys.open')];
+            $keys[] = ['⏎', $this->translate($focus->chooses())];
         }
         if ($focus instanceof SectionKeysInterface) {
             $keys = [...$keys, ...$focus->sectionKeys()];

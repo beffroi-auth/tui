@@ -69,6 +69,11 @@ final class TableWidget extends AbstractWidget implements FocusableInterface, Ve
     private ?Closure $chosen = null;
 
     /**
+     * The key of the catalogue that names what Enter does on a row.
+     */
+    private string $chooses = 'keys.open';
+
+    /**
      * @var (Closure(int): void)|null
      */
     private ?Closure $moved = null;
@@ -134,12 +139,19 @@ final class TableWidget extends AbstractWidget implements FocusableInterface, Ve
 
     /**
      * @param Closure(int): void $callback told the row Enter chose
+     * @param string             $chooses  the key of the catalogue that names what Enter does, which the last line of the screen says
      */
-    public function onChoose(Closure $callback): static
+    public function onChoose(Closure $callback, string $chooses = 'keys.open'): static
     {
         $this->chosen = $callback;
+        $this->chooses = $chooses;
 
         return $this;
+    }
+
+    public function chooses(): string
+    {
+        return $this->chooses;
     }
 
     /**

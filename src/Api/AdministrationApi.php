@@ -39,6 +39,10 @@ final readonly class AdministrationApi
 {
     private const string NAME = 'administration API';
 
+    private const string JSON = 'application/json';
+
+    private const string MERGE_PATCH = 'application/merge-patch+json';
+
     public function __construct(
         private HttpClientInterface $http,
         private string $identifier,
@@ -87,6 +91,24 @@ final readonly class AdministrationApi
         )->expect(201);
     }
 
+    /**
+     * What the API answers once it changed the resource as the merge patch says (RFC 7396): the account of a person.
+     *
+     * @param string                  $path  the path of the resource under the API, its segments already encoded
+     * @param array<array-key, mixed> $patch the members it changes, a member set to null taking one away
+     *
+     * @throws ProtocolException when the API refuses the request, answers what this program does not read, or answers nothing
+     */
+    public function patch(string $path, array $patch): Document
+    {
+        return $this->request(
+            'PATCH',
+            $this->url($path),
+            json_encode($patch, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+            self::MERGE_PATCH,
+        )->expect(200);
+    }
+
     private function url(string $path): string
     {
         return rtrim($this->identifier, '/') . $path;
@@ -98,12 +120,12 @@ final readonly class AdministrationApi
      *
      * @throws ProtocolException when the provider refuses to refresh the token, or the API cannot be reached
      */
-    private function request(string $method, string $url, ?string $body = null): ProviderAnswer
+    private function request(string $method, string $url, ?string $body = null, string $type = self::JSON): ProviderAnswer
     {
         $token = $this->tokens->accessToken();
-        $answer = $this->send($method, $url, $token, $body);
+        $answer = $this->send($method, $url, $token, $body, $type);
         if ($answer->status === 401 && $answer->error() === 'invalid_token' && $this->tokens->replace($token)) {
-            $answer = $this->send($method, $url, $this->tokens->accessToken(), $body);
+            $answer = $this->send($method, $url, $this->tokens->accessToken(), $body, $type);
         }
 
         return $answer;
@@ -114,11 +136,11 @@ final readonly class AdministrationApi
      *
      * @throws UnreachableEndpointException
      */
-    private function send(string $method, string $url, #[SensitiveParameter] string $token, ?string $body): ProviderAnswer
+    private function send(string $method, string $url, #[SensitiveParameter] string $token, ?string $body, string $type): ProviderAnswer
     {
-        $answer = $this->once($method, $url, $token, $body);
+        $answer = $this->once($method, $url, $token, $body, $type);
         if ($answer->status === 401 && $answer->error() === 'use_dpop_nonce') {
-            return $this->once($method, $url, $token, $body);
+            return $this->once($method, $url, $token, $body, $type);
         }
 
         return $answer;
@@ -127,7 +149,7 @@ final readonly class AdministrationApi
     /**
      * @throws UnreachableEndpointException
      */
-    private function once(string $method, string $url, #[SensitiveParameter] string $token, ?string $body): ProviderAnswer
+    private function once(string $method, string $url, #[SensitiveParameter] string $token, ?string $body, string $type): ProviderAnswer
     {
         $headers = [
             'Accept' => 'application/json',
@@ -141,7 +163,7 @@ final readonly class AdministrationApi
                 $body === null
                     ? ['headers' => $headers]
                     : [
-                        'headers' => [...$headers, 'Content-Type' => 'application/json'],
+                        'headers' => [...$headers, 'Content-Type' => $type],
                         'body' => $body,
                     ],
             );
