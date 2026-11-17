@@ -1010,6 +1010,14 @@ La réponse revient à {redirect_uri}.</target>
         <source>act.registered_client.deleted</source>
         <target>clients inscrits supprimés</target>
       </trans-unit>
+      <trans-unit id="b5680cc74a" resname="act.initial_access_token.issued">
+        <source>act.initial_access_token.issued</source>
+        <target>jetons initiaux émis</target>
+      </trans-unit>
+      <trans-unit id="d490ca5b4f" resname="act.initial_access_token.revoked">
+        <source>act.initial_access_token.revoked</source>
+        <target>jetons initiaux révoqués</target>
+      </trans-unit>
       <trans-unit id="a02f3415a0" resname="act.saml.service_provider.signed_in">
         <source>act.saml.service_provider.signed_in</source>
         <target>connexions à un fournisseur de services SAML</target>
