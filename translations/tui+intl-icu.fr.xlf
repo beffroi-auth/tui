@@ -746,6 +746,10 @@ La réponse revient à {redirect_uri}.</target>
         <source>act.person.described_themselves</source>
         <target>informations changées par la personne</target>
       </trans-unit>
+      <trans-unit id="78942d9b8c" resname="act.person.described">
+        <source>act.person.described</source>
+        <target>informations changées par un administrateur</target>
+      </trans-unit>
       <trans-unit id="ee56b59992" resname="act.enrolment_ticket.issued">
         <source>act.enrolment_ticket.issued</source>
         <target>liens d'enrôlement émis</target>
