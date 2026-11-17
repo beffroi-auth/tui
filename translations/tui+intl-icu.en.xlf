@@ -118,6 +118,10 @@ The answer comes back to {redirect_uri}.</target>
         <source>section.users</source>
         <target>Users</target>
       </trans-unit>
+      <trans-unit id="f41c331b14" resname="section.groups">
+        <source>section.groups</source>
+        <target>Groups</target>
+      </trans-unit>
       <trans-unit id="a8ac3cbb42" resname="section.monitoring">
         <source>section.monitoring</source>
         <target>Monitoring</target>
@@ -441,6 +445,118 @@ The answer comes back to {redirect_uri}.</target>
       <trans-unit id="5006d0443c" resname="users.views">
         <source>users.views</source>
         <target>c credentials · s sessions · j journal · e edit · d disable or enable · t enrolment link · p password link · o OTP link</target>
+      </trans-unit>
+      <trans-unit id="d1c1ad850b" resname="groups.list">
+        <source>groups.list</source>
+        <target>Groups of the tenant</target>
+      </trans-unit>
+      <trans-unit id="583029616d" resname="groups.members">
+        <source>groups.members</source>
+        <target>Members</target>
+      </trans-unit>
+      <trans-unit id="96076d39b5" resname="groups.members_of">
+        <source>groups.members_of</source>
+        <target>Members of {group}</target>
+      </trans-unit>
+      <trans-unit id="7588f71eef" resname="groups.notice">
+        <source>groups.notice</source>
+        <target>Enter on a group reads its members. Reading a member is an act written in their journal that names you (decisions 0022 and 0038): nothing is read before you ask.</target>
+      </trans-unit>
+      <trans-unit id="f691ac20d4" resname="groups.none">
+        <source>groups.none</source>
+        <target>The tenant holds no group.</target>
+      </trans-unit>
+      <trans-unit id="6a13210d18" resname="groups.no_member">
+        <source>groups.no_member</source>
+        <target>Nobody is a member of this group.</target>
+      </trans-unit>
+      <trans-unit id="cdca9ec5e4" resname="groups.count">
+        <source>groups.count</source>
+        <target>{count, plural, one {# group} other {# groups}} · read at {time}</target>
+      </trans-unit>
+      <trans-unit id="c9628abd2c" resname="groups.name_prompt">
+        <source>groups.name_prompt</source>
+        <target>New group: </target>
+      </trans-unit>
+      <trans-unit id="fd522a4caf" resname="groups.member_prompt">
+        <source>groups.member_prompt</source>
+        <target>Member of {group}: </target>
+      </trans-unit>
+      <trans-unit id="5f3ff834ea" resname="groups.created">
+        <source>groups.created</source>
+        <target>The group {group} is created. The act names you in the journal of the tenant.</target>
+      </trans-unit>
+      <trans-unit id="26fecbddc7" resname="groups.member_added">
+        <source>groups.member_added</source>
+        <target>{username} is a member of {group}. The act names you in their journal.</target>
+      </trans-unit>
+      <trans-unit id="40b0875ec2" resname="groups.take_out_asked">
+        <source>groups.take_out_asked</source>
+        <target>Take {username} out of {group}? y confirms, any other key cancels.</target>
+      </trans-unit>
+      <trans-unit id="f1544a2a6a" resname="groups.take_out_administrator_asked">
+        <source>groups.take_out_administrator_asked</source>
+        <target>Take {username} out of {group}? Out of the last group that administers the tenant, they no longer administer it. y confirms, any other key cancels.</target>
+      </trans-unit>
+      <trans-unit id="45ef216650" resname="groups.taken_out">
+        <source>groups.taken_out</source>
+        <target>{username} is no longer a member of {group}. The act names you in their journal.</target>
+      </trans-unit>
+      <trans-unit id="9ee64b0bb4" resname="groups.refused">
+        <source>groups.refused</source>
+        <target>Nothing was changed: {reason}</target>
+      </trans-unit>
+      <trans-unit id="37e17bee8c" resname="group.name">
+        <source>group.name</source>
+        <target>name</target>
+      </trans-unit>
+      <trans-unit id="cf84aef056" resname="group.source">
+        <source>group.source</source>
+        <target>source</target>
+      </trans-unit>
+      <trans-unit id="48090be2ad" resname="group.members">
+        <source>group.members</source>
+        <target>members</target>
+      </trans-unit>
+      <trans-unit id="e3c710da29" resname="group.administers">
+        <source>group.administers</source>
+        <target>administers</target>
+      </trans-unit>
+      <trans-unit id="533d4c7de2" resname="group.created_at">
+        <source>group.created_at</source>
+        <target>created</target>
+      </trans-unit>
+      <trans-unit id="935f411817" resname="member.username">
+        <source>member.username</source>
+        <target>username</target>
+      </trans-unit>
+      <trans-unit id="f6ae47d049" resname="member.source">
+        <source>member.source</source>
+        <target>source</target>
+      </trans-unit>
+      <trans-unit id="6a8154aa2b" resname="member.added_at">
+        <source>member.added_at</source>
+        <target>added</target>
+      </trans-unit>
+      <trans-unit id="19149f28ff" resname="keys.members">
+        <source>keys.members</source>
+        <target>members</target>
+      </trans-unit>
+      <trans-unit id="fc0a25294d" resname="keys.new_group">
+        <source>keys.new_group</source>
+        <target>new group</target>
+      </trans-unit>
+      <trans-unit id="09cb6d940e" resname="keys.add_member">
+        <source>keys.add_member</source>
+        <target>add a member</target>
+      </trans-unit>
+      <trans-unit id="c434872d8b" resname="keys.take_out">
+        <source>keys.take_out</source>
+        <target>take out</target>
+      </trans-unit>
+      <trans-unit id="5b18f73fa3" resname="keys.add">
+        <source>keys.add</source>
+        <target>add</target>
       </trans-unit>
       <trans-unit id="76f48b0e4e" resname="user.username">
         <source>user.username</source>

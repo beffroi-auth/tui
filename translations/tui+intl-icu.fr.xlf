@@ -118,6 +118,10 @@ La réponse revient à {redirect_uri}.</target>
         <source>section.users</source>
         <target>Utilisateurs</target>
       </trans-unit>
+      <trans-unit id="f41c331b14" resname="section.groups">
+        <source>section.groups</source>
+        <target>Groupes</target>
+      </trans-unit>
       <trans-unit id="a8ac3cbb42" resname="section.monitoring">
         <source>section.monitoring</source>
         <target>Supervision</target>
@@ -441,6 +445,118 @@ La réponse revient à {redirect_uri}.</target>
       <trans-unit id="5006d0443c" resname="users.views">
         <source>users.views</source>
         <target>c credentials · s sessions · j journal · e modifier · d désactiver ou réactiver · t lien d'enrôlement · p lien de mot de passe · o lien d'OTP</target>
+      </trans-unit>
+      <trans-unit id="d1c1ad850b" resname="groups.list">
+        <source>groups.list</source>
+        <target>Groupes du tenant</target>
+      </trans-unit>
+      <trans-unit id="583029616d" resname="groups.members">
+        <source>groups.members</source>
+        <target>Membres</target>
+      </trans-unit>
+      <trans-unit id="96076d39b5" resname="groups.members_of">
+        <source>groups.members_of</source>
+        <target>Membres de {group}</target>
+      </trans-unit>
+      <trans-unit id="7588f71eef" resname="groups.notice">
+        <source>groups.notice</source>
+        <target>Entrée sur un groupe lit ses membres. Lire un membre est un acte écrit dans son journal qui vous nomme (décisions 0022 et 0038) : rien n'est lu avant que vous le demandiez.</target>
+      </trans-unit>
+      <trans-unit id="f691ac20d4" resname="groups.none">
+        <source>groups.none</source>
+        <target>Le tenant ne tient aucun groupe.</target>
+      </trans-unit>
+      <trans-unit id="6a13210d18" resname="groups.no_member">
+        <source>groups.no_member</source>
+        <target>Personne n'est membre de ce groupe.</target>
+      </trans-unit>
+      <trans-unit id="cdca9ec5e4" resname="groups.count">
+        <source>groups.count</source>
+        <target>{count, plural, one {# groupe} other {# groupes}} · lus à {time}</target>
+      </trans-unit>
+      <trans-unit id="c9628abd2c" resname="groups.name_prompt">
+        <source>groups.name_prompt</source>
+        <target>Nouveau groupe : </target>
+      </trans-unit>
+      <trans-unit id="fd522a4caf" resname="groups.member_prompt">
+        <source>groups.member_prompt</source>
+        <target>Membre de {group} : </target>
+      </trans-unit>
+      <trans-unit id="5f3ff834ea" resname="groups.created">
+        <source>groups.created</source>
+        <target>Le groupe {group} est créé. L'acte vous nomme dans le journal du tenant.</target>
+      </trans-unit>
+      <trans-unit id="26fecbddc7" resname="groups.member_added">
+        <source>groups.member_added</source>
+        <target>{username} est membre de {group}. L'acte vous nomme dans son journal.</target>
+      </trans-unit>
+      <trans-unit id="40b0875ec2" resname="groups.take_out_asked">
+        <source>groups.take_out_asked</source>
+        <target>Retirer {username} de {group} ? y confirme, toute autre touche annule.</target>
+      </trans-unit>
+      <trans-unit id="f1544a2a6a" resname="groups.take_out_administrator_asked">
+        <source>groups.take_out_administrator_asked</source>
+        <target>Retirer {username} de {group} ? Hors du dernier groupe qui administre le tenant, cette personne ne l'administre plus. y confirme, toute autre touche annule.</target>
+      </trans-unit>
+      <trans-unit id="45ef216650" resname="groups.taken_out">
+        <source>groups.taken_out</source>
+        <target>{username} n'est plus membre de {group}. L'acte vous nomme dans son journal.</target>
+      </trans-unit>
+      <trans-unit id="9ee64b0bb4" resname="groups.refused">
+        <source>groups.refused</source>
+        <target>Rien n'a changé : {reason}</target>
+      </trans-unit>
+      <trans-unit id="37e17bee8c" resname="group.name">
+        <source>group.name</source>
+        <target>nom</target>
+      </trans-unit>
+      <trans-unit id="cf84aef056" resname="group.source">
+        <source>group.source</source>
+        <target>source</target>
+      </trans-unit>
+      <trans-unit id="48090be2ad" resname="group.members">
+        <source>group.members</source>
+        <target>membres</target>
+      </trans-unit>
+      <trans-unit id="e3c710da29" resname="group.administers">
+        <source>group.administers</source>
+        <target>administre</target>
+      </trans-unit>
+      <trans-unit id="533d4c7de2" resname="group.created_at">
+        <source>group.created_at</source>
+        <target>créé</target>
+      </trans-unit>
+      <trans-unit id="935f411817" resname="member.username">
+        <source>member.username</source>
+        <target>nom d'utilisateur</target>
+      </trans-unit>
+      <trans-unit id="f6ae47d049" resname="member.source">
+        <source>member.source</source>
+        <target>source</target>
+      </trans-unit>
+      <trans-unit id="6a8154aa2b" resname="member.added_at">
+        <source>member.added_at</source>
+        <target>ajouté</target>
+      </trans-unit>
+      <trans-unit id="19149f28ff" resname="keys.members">
+        <source>keys.members</source>
+        <target>membres</target>
+      </trans-unit>
+      <trans-unit id="fc0a25294d" resname="keys.new_group">
+        <source>keys.new_group</source>
+        <target>nouveau groupe</target>
+      </trans-unit>
+      <trans-unit id="09cb6d940e" resname="keys.add_member">
+        <source>keys.add_member</source>
+        <target>ajouter un membre</target>
+      </trans-unit>
+      <trans-unit id="c434872d8b" resname="keys.take_out">
+        <source>keys.take_out</source>
+        <target>retirer</target>
+      </trans-unit>
+      <trans-unit id="5b18f73fa3" resname="keys.add">
+        <source>keys.add</source>
+        <target>ajouter</target>
       </trans-unit>
       <trans-unit id="76f48b0e4e" resname="user.username">
         <source>user.username</source>

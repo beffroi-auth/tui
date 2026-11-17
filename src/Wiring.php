@@ -8,6 +8,7 @@ use Beffroi\Tui\Console\AdministerCommand;
 use Beffroi\Tui\Console\RegisterCommand;
 use Beffroi\Tui\Profile\ProfileStore;
 use Beffroi\Tui\Screen\Section\ClientsSection;
+use Beffroi\Tui\Screen\Section\GroupsSection;
 use Beffroi\Tui\Screen\Section\InstanceSection;
 use Beffroi\Tui\Screen\Section\KeysSection;
 use Beffroi\Tui\Screen\Section\MonitoringSection;
@@ -55,7 +56,7 @@ final readonly class Wiring
     /**
      * What the navigation lists: the instance and the session this program holds, then what the administration API of
      * the instance serves (decision 0038), the tenant, its clients, its signing keys, its users with their sessions and
-     * their journal, and what the instance knows of itself. Each call builds them anew, for one screen.
+     * their journal, its groups with their members, and what the instance knows of itself. Each call builds them anew, for one screen.
      *
      * @return list<SectionInterface>
      */
@@ -68,6 +69,7 @@ final readonly class Wiring
             new ClientsSection(),
             new KeysSection(),
             new UsersSection(),
+            new GroupsSection(),
             new MonitoringSection(),
         ];
     }
