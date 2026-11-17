@@ -746,6 +746,10 @@ The answer comes back to {redirect_uri}.</target>
         <source>act.administration.sessions_read</source>
         <target>sessions read by an administrator</target>
       </trans-unit>
+      <trans-unit id="799cc1da68" resname="act.administration.membership_read">
+        <source>act.administration.membership_read</source>
+        <target>members read by an administrator</target>
+      </trans-unit>
       <trans-unit id="b4a4247bb4" resname="act.administration.journal_read">
         <source>act.administration.journal_read</source>
         <target>journals read by an administrator</target>
@@ -773,6 +777,18 @@ The answer comes back to {redirect_uri}.</target>
       <trans-unit id="e0532219d9" resname="act.person.enabled">
         <source>act.person.enabled</source>
         <target>people enabled again</target>
+      </trans-unit>
+      <trans-unit id="f1199f6b4b" resname="act.group.created">
+        <source>act.group.created</source>
+        <target>groups created</target>
+      </trans-unit>
+      <trans-unit id="c5dfdf3bce" resname="act.group_membership.added">
+        <source>act.group_membership.added</source>
+        <target>memberships given</target>
+      </trans-unit>
+      <trans-unit id="aa74f756fa" resname="act.group_membership.removed">
+        <source>act.group_membership.removed</source>
+        <target>memberships taken back</target>
       </trans-unit>
       <trans-unit id="ee56b59992" resname="act.enrolment_ticket.issued">
         <source>act.enrolment_ticket.issued</source>
