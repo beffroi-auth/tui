@@ -358,6 +358,130 @@ The answer comes back to {redirect_uri}.</target>
         <source>client.assigned</source>
         <target>What the registration policy assigned</target>
       </trans-unit>
+      <trans-unit id="17d13cd4d6" resname="clients.views">
+        <source>clients.views</source>
+        <target>c clients · i initial access tokens</target>
+      </trans-unit>
+      <trans-unit id="8f09de3f8f" resname="client.granted">
+        <source>client.granted</source>
+        <target>What its initial access token gave</target>
+      </trans-unit>
+      <trans-unit id="0cd9d479ac" resname="clients.delete_asked">
+        <source>clients.delete_asked</source>
+        <target>Delete the client {client}? Nothing it was issued can be spent any more. y confirms, any other key cancels.</target>
+      </trans-unit>
+      <trans-unit id="5034c9b5d0" resname="clients.deleted_now">
+        <source>clients.deleted_now</source>
+        <target>The client {client} is deleted: nothing it was issued can be spent any more. The act names you in the journal of the tenant.</target>
+      </trans-unit>
+      <trans-unit id="6571ca7bcd" resname="initial_access_tokens.list">
+        <source>initial_access_tokens.list</source>
+        <target>Initial access tokens of the tenant</target>
+      </trans-unit>
+      <trans-unit id="df868d1b5e" resname="initial_access_tokens.none">
+        <source>initial_access_tokens.none</source>
+        <target>The tenant has issued no initial access token.</target>
+      </trans-unit>
+      <trans-unit id="3b9ee1ace4" resname="initial_access_token.name">
+        <source>initial_access_token.name</source>
+        <target>Name</target>
+      </trans-unit>
+      <trans-unit id="12a8bdafb0" resname="initial_access_token.state">
+        <source>initial_access_token.state</source>
+        <target>State</target>
+      </trans-unit>
+      <trans-unit id="e82f300123" resname="initial_access_token.registrations">
+        <source>initial_access_token.registrations</source>
+        <target>Registrations</target>
+      </trans-unit>
+      <trans-unit id="c557284f1a" resname="initial_access_token.expires_at">
+        <source>initial_access_token.expires_at</source>
+        <target>Expires (UTC)</target>
+      </trans-unit>
+      <trans-unit id="283f38314f" resname="initial_access_token.administration">
+        <source>initial_access_token.administration</source>
+        <target>Administration</target>
+      </trans-unit>
+      <trans-unit id="03798da172" resname="initial_access_token.served_of">
+        <source>initial_access_token.served_of</source>
+        <target>{served} of {allowed}</target>
+      </trans-unit>
+      <trans-unit id="0fdd715c2b" resname="initial_access_token.revoked_on">
+        <source>initial_access_token.revoked_on</source>
+        <target>revoked on {time}</target>
+      </trans-unit>
+      <trans-unit id="0bbb72f031" resname="initial_access_token.spent">
+        <source>initial_access_token.spent</source>
+        <target>spent</target>
+      </trans-unit>
+      <trans-unit id="f1b6743b8b" resname="initial_access_token.expired">
+        <source>initial_access_token.expired</source>
+        <target>expired</target>
+      </trans-unit>
+      <trans-unit id="488e2600da" resname="initial_access_token.authorises">
+        <source>initial_access_token.authorises</source>
+        <target>authorises a registration</target>
+      </trans-unit>
+      <trans-unit id="fd2666f088" resname="initial_access_token.value">
+        <source>initial_access_token.value</source>
+        <target>Value</target>
+      </trans-unit>
+      <trans-unit id="6a4cccf786" resname="initial_access_tokens.revoke_asked">
+        <source>initial_access_tokens.revoke_asked</source>
+        <target>Revoke the initial access token {name}? It authorises no registration any more, and the clients it registered stay. y confirms, any other key cancels.</target>
+      </trans-unit>
+      <trans-unit id="a7c0331050" resname="initial_access_tokens.revoked_now">
+        <source>initial_access_tokens.revoked_now</source>
+        <target>The initial access token {name} is revoked: it authorises no registration any more, and the clients it registered stay. The act names you in the journal of the tenant.</target>
+      </trans-unit>
+      <trans-unit id="bec2317c6e" resname="initial_access_tokens.issued_title">
+        <source>initial_access_tokens.issued_title</source>
+        <target>Initial access token {name}</target>
+      </trans-unit>
+      <trans-unit id="71363590e7" resname="initial_access_tokens.issued_shown">
+        <source>initial_access_tokens.issued_shown</source>
+        <target>Its value is shown here once, and never again: copy it for whoever registers the client. Enter closes it, as the focus leaving does. The act names you in the journal of the tenant.</target>
+      </trans-unit>
+      <trans-unit id="7f8f03b5a3" resname="token_form.title">
+        <source>token_form.title</source>
+        <target>New initial access token</target>
+      </trans-unit>
+      <trans-unit id="84fac4128c" resname="token_form.notice">
+        <source>token_form.notice</source>
+        <target>Enter changes the member chosen, and s issues the token: its value is then shown once, and never again.</target>
+      </trans-unit>
+      <trans-unit id="e5dda30b89" resname="token_form.member">
+        <source>token_form.member</source>
+        <target>Member</target>
+      </trans-unit>
+      <trans-unit id="ba8e6111af" resname="token_form.value">
+        <source>token_form.value</source>
+        <target>Value</target>
+      </trans-unit>
+      <trans-unit id="6b1ba0a08e" resname="keys.delete">
+        <source>keys.delete</source>
+        <target>delete</target>
+      </trans-unit>
+      <trans-unit id="404cacfca3" resname="keys.initial_access_tokens">
+        <source>keys.initial_access_tokens</source>
+        <target>initial access tokens</target>
+      </trans-unit>
+      <trans-unit id="247da2c2aa" resname="keys.clients">
+        <source>keys.clients</source>
+        <target>clients</target>
+      </trans-unit>
+      <trans-unit id="53e39a517a" resname="keys.new_token">
+        <source>keys.new_token</source>
+        <target>new token</target>
+      </trans-unit>
+      <trans-unit id="9796721a60" resname="keys.issue">
+        <source>keys.issue</source>
+        <target>issue</target>
+      </trans-unit>
+      <trans-unit id="966747a5a7" resname="change.refused">
+        <source>change.refused</source>
+        <target>Nothing was changed: {reason}</target>
+      </trans-unit>
       <trans-unit id="1342831ceb" resname="keys.none">
         <source>keys.none</source>
         <target>The tenant has no signing key: nothing can be signed.</target>
@@ -509,10 +633,6 @@ The answer comes back to {redirect_uri}.</target>
       <trans-unit id="45ef216650" resname="groups.taken_out">
         <source>groups.taken_out</source>
         <target>{username} is no longer a member of {group}. The act names you in their journal.</target>
-      </trans-unit>
-      <trans-unit id="9ee64b0bb4" resname="groups.refused">
-        <source>groups.refused</source>
-        <target>Nothing was changed: {reason}</target>
       </trans-unit>
       <trans-unit id="37e17bee8c" resname="group.name">
         <source>group.name</source>

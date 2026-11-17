@@ -10,8 +10,8 @@ use function array_map;
 use function array_values;
 use Beffroi\Tui\Api\AdministrationApi;
 use Beffroi\Tui\Json\Document;
-use Beffroi\Tui\Protocol\ProviderRefusalException;
 use Beffroi\Tui\Screen\ApiMoment;
+use Beffroi\Tui\Screen\ChangeAnswer;
 use Beffroi\Tui\Screen\Confirmation;
 use Beffroi\Tui\Screen\Moment;
 use Beffroi\Tui\Screen\Panel;
@@ -25,7 +25,6 @@ use Beffroi\Tui\Screen\Widget\MessageWidget;
 use Beffroi\Tui\Screen\Widget\TableColumn;
 use Beffroi\Tui\Screen\Widget\TableWidget;
 use Beffroi\Tui\Text\TerminalText;
-use Closure;
 use function count;
 use function in_array;
 use function rawurlencode;
@@ -326,7 +325,7 @@ final class GroupsSection implements SectionInterface
         $this->frame->reading->again(
             $context,
             function (AdministrationApi $api) use ($context, $name): void {
-                $created = $this->written($context, static fn (): Document => $api->post('/groups', ['name' => $name]));
+                $created = ChangeAnswer::of($context, $this->notice, static fn (): Document => $api->post('/groups', ['name' => $name]));
                 if ($created === null) {
                     return;
                 }
@@ -353,7 +352,7 @@ final class GroupsSection implements SectionInterface
         $this->membersReading->again(
             $context,
             function (AdministrationApi $api) use ($context, $group, $username): void {
-                $added = $this->written($context, static fn (): Document => $api->post(sprintf('/groups/%s/members', rawurlencode($group)), [
+                $added = ChangeAnswer::of($context, $this->notice, static fn (): Document => $api->post(sprintf('/groups/%s/members', rawurlencode($group)), [
                     'username' => $username,
                 ]));
                 if ($added === null) {
@@ -406,7 +405,7 @@ final class GroupsSection implements SectionInterface
             $context,
             function (AdministrationApi $api) use ($context, $group, $member): void {
                 $path = sprintf('/groups/%s/members/%s', rawurlencode($group), rawurlencode($member['id']));
-                if ($this->written($context, static fn (): Document => $api->delete($path)) === null) {
+                if (ChangeAnswer::of($context, $this->notice, static fn (): Document => $api->delete($path)) === null) {
                     return;
                 }
                 $this->counted($context, $group, -1);
@@ -416,28 +415,6 @@ final class GroupsSection implements SectionInterface
             },
             'api.writing',
         );
-    }
-
-    /**
-     * What a change answered, or null once a refusal of the request is said in the words of the instance: a request
-     * malformed, naming nothing the tenant holds, or one the tenant refuses as it stands.
-     *
-     * @param Closure(): Document $write
-     */
-    private function written(SectionContext $context, Closure $write): ?Document
-    {
-        try {
-            return $write();
-        } catch (ProviderRefusalException $refusal) {
-            if (! in_array($refusal->status, [400, 404, 409], true)) {
-                throw $refusal;
-            }
-            $this->notice->say($context->translate('groups.refused', [
-                'reason' => TerminalText::line($refusal->description ?? $refusal->error ?? '-')->value,
-            ]), true);
-
-            return null;
-        }
     }
 
     private function counted(SectionContext $context, string $group, int $change): void

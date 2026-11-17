@@ -75,10 +75,10 @@ final readonly class AdministrationApi
     }
 
     /**
-     * What the API answers once it created what the request asked for: a person, a ticket.
+     * What the API answers once it created what the request asked for: a person, a ticket, an initial access token.
      *
-     * @param string                    $path     the path of the resource under the API, its segments already encoded
-     * @param array<string, scalar>|null $document what is asked for, sent as a JSON object; no body when null
+     * @param string                   $path     the path of the resource under the API, its segments already encoded
+     * @param array<string, mixed>|null $document what is asked for, sent as a JSON object; no body when null
      *
      * @throws ProtocolException when the API refuses the request, answers what this program does not read, or answers nothing
      */

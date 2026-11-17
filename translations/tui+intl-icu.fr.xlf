@@ -358,6 +358,130 @@ La réponse revient à {redirect_uri}.</target>
         <source>client.assigned</source>
         <target>Ce que la politique d'enregistrement lui a donné</target>
       </trans-unit>
+      <trans-unit id="17d13cd4d6" resname="clients.views">
+        <source>clients.views</source>
+        <target>c clients · i jetons initiaux</target>
+      </trans-unit>
+      <trans-unit id="8f09de3f8f" resname="client.granted">
+        <source>client.granted</source>
+        <target>Ce que son jeton initial lui a donné</target>
+      </trans-unit>
+      <trans-unit id="0cd9d479ac" resname="clients.delete_asked">
+        <source>clients.delete_asked</source>
+        <target>Supprimer le client {client} ? Plus rien de ce qui lui a été émis ne pourra servir. y confirme, toute autre touche annule.</target>
+      </trans-unit>
+      <trans-unit id="5034c9b5d0" resname="clients.deleted_now">
+        <source>clients.deleted_now</source>
+        <target>Le client {client} est supprimé : plus rien de ce qui lui a été émis ne peut servir. L'acte vous nomme dans le journal du tenant.</target>
+      </trans-unit>
+      <trans-unit id="6571ca7bcd" resname="initial_access_tokens.list">
+        <source>initial_access_tokens.list</source>
+        <target>Jetons initiaux du tenant</target>
+      </trans-unit>
+      <trans-unit id="df868d1b5e" resname="initial_access_tokens.none">
+        <source>initial_access_tokens.none</source>
+        <target>Le tenant n'a émis aucun jeton initial.</target>
+      </trans-unit>
+      <trans-unit id="3b9ee1ace4" resname="initial_access_token.name">
+        <source>initial_access_token.name</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="12a8bdafb0" resname="initial_access_token.state">
+        <source>initial_access_token.state</source>
+        <target>État</target>
+      </trans-unit>
+      <trans-unit id="e82f300123" resname="initial_access_token.registrations">
+        <source>initial_access_token.registrations</source>
+        <target>Inscriptions</target>
+      </trans-unit>
+      <trans-unit id="c557284f1a" resname="initial_access_token.expires_at">
+        <source>initial_access_token.expires_at</source>
+        <target>Expire (UTC)</target>
+      </trans-unit>
+      <trans-unit id="283f38314f" resname="initial_access_token.administration">
+        <source>initial_access_token.administration</source>
+        <target>Administration</target>
+      </trans-unit>
+      <trans-unit id="03798da172" resname="initial_access_token.served_of">
+        <source>initial_access_token.served_of</source>
+        <target>{served} sur {allowed}</target>
+      </trans-unit>
+      <trans-unit id="0fdd715c2b" resname="initial_access_token.revoked_on">
+        <source>initial_access_token.revoked_on</source>
+        <target>révoqué le {time}</target>
+      </trans-unit>
+      <trans-unit id="0bbb72f031" resname="initial_access_token.spent">
+        <source>initial_access_token.spent</source>
+        <target>épuisé</target>
+      </trans-unit>
+      <trans-unit id="f1b6743b8b" resname="initial_access_token.expired">
+        <source>initial_access_token.expired</source>
+        <target>expiré</target>
+      </trans-unit>
+      <trans-unit id="488e2600da" resname="initial_access_token.authorises">
+        <source>initial_access_token.authorises</source>
+        <target>autorise une inscription</target>
+      </trans-unit>
+      <trans-unit id="fd2666f088" resname="initial_access_token.value">
+        <source>initial_access_token.value</source>
+        <target>Valeur</target>
+      </trans-unit>
+      <trans-unit id="6a4cccf786" resname="initial_access_tokens.revoke_asked">
+        <source>initial_access_tokens.revoke_asked</source>
+        <target>Révoquer le jeton initial {name} ? Il n'autorise plus aucune inscription, et les clients qu'il a inscrits restent. y confirme, toute autre touche annule.</target>
+      </trans-unit>
+      <trans-unit id="a7c0331050" resname="initial_access_tokens.revoked_now">
+        <source>initial_access_tokens.revoked_now</source>
+        <target>Le jeton initial {name} est révoqué : il n'autorise plus aucune inscription, et les clients qu'il a inscrits restent. L'acte vous nomme dans le journal du tenant.</target>
+      </trans-unit>
+      <trans-unit id="bec2317c6e" resname="initial_access_tokens.issued_title">
+        <source>initial_access_tokens.issued_title</source>
+        <target>Jeton initial {name}</target>
+      </trans-unit>
+      <trans-unit id="71363590e7" resname="initial_access_tokens.issued_shown">
+        <source>initial_access_tokens.issued_shown</source>
+        <target>Sa valeur n'est montrée qu'ici, une fois, et plus jamais : copiez-la pour qui inscrit le client. Entrée la ferme, comme le focus qui s'en va. L'acte vous nomme dans le journal du tenant.</target>
+      </trans-unit>
+      <trans-unit id="7f8f03b5a3" resname="token_form.title">
+        <source>token_form.title</source>
+        <target>Nouveau jeton initial</target>
+      </trans-unit>
+      <trans-unit id="84fac4128c" resname="token_form.notice">
+        <source>token_form.notice</source>
+        <target>Entrée change le membre choisi, et s émet le jeton : sa valeur n'est alors montrée qu'une fois, et plus jamais.</target>
+      </trans-unit>
+      <trans-unit id="e5dda30b89" resname="token_form.member">
+        <source>token_form.member</source>
+        <target>Membre</target>
+      </trans-unit>
+      <trans-unit id="ba8e6111af" resname="token_form.value">
+        <source>token_form.value</source>
+        <target>Valeur</target>
+      </trans-unit>
+      <trans-unit id="6b1ba0a08e" resname="keys.delete">
+        <source>keys.delete</source>
+        <target>supprimer</target>
+      </trans-unit>
+      <trans-unit id="404cacfca3" resname="keys.initial_access_tokens">
+        <source>keys.initial_access_tokens</source>
+        <target>jetons initiaux</target>
+      </trans-unit>
+      <trans-unit id="247da2c2aa" resname="keys.clients">
+        <source>keys.clients</source>
+        <target>clients</target>
+      </trans-unit>
+      <trans-unit id="53e39a517a" resname="keys.new_token">
+        <source>keys.new_token</source>
+        <target>nouveau jeton</target>
+      </trans-unit>
+      <trans-unit id="9796721a60" resname="keys.issue">
+        <source>keys.issue</source>
+        <target>émettre</target>
+      </trans-unit>
+      <trans-unit id="966747a5a7" resname="change.refused">
+        <source>change.refused</source>
+        <target>Rien n'a changé : {reason}</target>
+      </trans-unit>
       <trans-unit id="1342831ceb" resname="keys.none">
         <source>keys.none</source>
         <target>Le tenant n'a aucune clé de signature : rien ne peut être signé.</target>
@@ -509,10 +633,6 @@ La réponse revient à {redirect_uri}.</target>
       <trans-unit id="45ef216650" resname="groups.taken_out">
         <source>groups.taken_out</source>
         <target>{username} n'est plus membre de {group}. L'acte vous nomme dans son journal.</target>
-      </trans-unit>
-      <trans-unit id="9ee64b0bb4" resname="groups.refused">
-        <source>groups.refused</source>
-        <target>Rien n'a changé : {reason}</target>
       </trans-unit>
       <trans-unit id="37e17bee8c" resname="group.name">
         <source>group.name</source>

@@ -81,7 +81,7 @@ last line says the keys that answer where the focus is, and what lies between ad
 | Instance | the issuer, the administration API, the client, its redirect URI and its key, the key the tokens are bound to | the profile and the session |
 | Session | who signed in, by which proof (`acr`, `amr`), the scope and the expiry of the access token held | the session |
 | Tenant | its name, issuer, login floor, groups of administrators, administration API and how long the journal keeps an act, beside the classes of authentication | `GET /tenant` |
-| Clients | a table of the clients, by name, identifier, source and dates; Enter on one opens what it registered beside or under it | `GET /clients`, `GET /clients/{client_id}` |
+| Clients | a table of the clients, by name, identifier, source and dates; Enter on one opens what it registered beside or under it, with what the registration policy assigned it and what its initial access token gave it; `x` on a client asks to delete it; `i` shows the initial access tokens of the tenant in its place, each with its state, the registrations it served of those it allows, when it expires and whether its clients are clients of the administration, and `c` the clients again; `n` opens the form of a new token, which `s` issues, and `x` on a token asks to revoke it | `GET /clients`, `GET /clients/{client_id}`, `DELETE /clients/{client_id}`, `GET /initial-access-tokens`, `POST /initial-access-tokens`, `DELETE /initial-access-tokens/{id}` |
 | Signing keys | a table of the keys, each state marked and worded: `■` active, `□` staged, `▨` retiring, `┄` retired | `GET /keys` |
 | Users | a person looked up by username, their claims and groups, beside their credentials; `s` reads their open sessions, `j` their last acts, `a` the applications they agreed to, `c` goes back to the credentials; `x` on a credential asks to revoke it, `x` on an open session asks to end it, `x` on an application asks to take its consent back; a person created from a field of its own; `t` asks to issue the link that lets the person pose a passkey, `p` the one that lets them pose a new password, `o` the one that lets them set up an authenticator app, each shown as a QR code; `e` opens the form of their account, whose changes `s` saves; `d` asks to disable them, which ends every session of theirs, or to enable them again | `GET /users?username=`, `GET /users/{id}/sessions`, `GET /users/{id}/journal`, `GET /users/{id}/consents`, `DELETE /users/{id}/credentials/{credential}`, `DELETE /users/{id}/consents/{consent}`, `DELETE /users/{id}/sessions/{session}`, `POST /users`, `POST /users/{id}/enrolment-ticket`, `POST /users/{id}/password-ticket`, `POST /users/{id}/totp-ticket`, `PATCH /users/{id}`, `PUT /users/{id}/disabled`, `DELETE /users/{id}/disabled` |
 | Groups | a table of the groups, by name, source, how many members each holds and whether they administer the tenant; Enter on one reads its members beside or under it; `n` creates a group from a field, `a` adds a member to the group chosen by their username, `x` on a member asks to take them out | `GET /groups`, `GET /groups/{id}/members`, `POST /groups`, `POST /groups/{id}/members`, `DELETE /groups/{id}/members/{person}` |
@@ -117,6 +117,16 @@ needs. It leaves the screen with the focus,
 and Enter gives the person back. Creating the person and issuing the link are acts of theirs that name the
 administrator.
 
+Deleting a client, issuing an initial access token and revoking one are acts of the tenant that name the
+administrator. A deletion and a revocation are asked first, like the changes of a person; the row then says what the
+API answered. A client the deployment declares, and the one the program acts through, are not deleted, and the section
+says why in the words of the instance. `n` on the initial access tokens opens a form beside them: its name, how many
+clients it may register, for how many days, whether they are clients of the administration, and the APIs it gives
+them, separated by commas. Enter on a row types its value or turns the yes over, and `s` issues the token: its value
+then takes the place of the tokens and of the form, once, as wide as the section, to be copied for whoever registers
+the client. It leaves the screen when Enter closes it or the focus leaves it, and neither the program nor the instance
+can show it again.
+
 `e` opens the form of the account of the person shown in place of their access: a row for each member the API changes,
 the username, the email address and the phone number with whether each was verified, the profile of OIDC Core §5.1 and
 the members of the postal address, each with the value the person holds. Enter on a row types its value in the field
@@ -134,19 +144,21 @@ and bold. A state is never said by a colour alone.
 | Key | Does |
 |---|---|
 | ↑ ↓ (← → on tabs) | choose a section, or move in a table |
-| Enter | go into the section shown; open the row chosen, look the username up, or create the person typed; close the code of a link; on a group, read its members; in a field of the groups, create the group or add the member typed; in the form of an account, change the member chosen, then keep the value typed |
+| Enter | go into the section shown; open the row chosen, look the username up, or create the person typed; close the code of a link or the value of a token; on a group, read its members; in a field of the groups, create the group or add the member typed; in the form of an account or of a token, change the member chosen, then keep the value typed |
 | Tab, Shift+Tab | move between the widgets of the section and the navigation |
 | Page Up, Page Down, Home, End | move in a table by a screen, or to its ends |
 | Esc | go back to the navigation; on the navigation, quit |
 | r | read the section shown again (typed as a letter in the username field) |
-| x | on a credential, ask to revoke it; on an open session, ask to end it; on an application, ask to take its consent back; on a member of a group, ask to take them out |
+| x | on a credential, ask to revoke it; on an open session, ask to end it; on an application, ask to take its consent back; on a member of a group, ask to take them out; on a client, ask to delete it; on an initial access token, ask to revoke it |
 | t | on a person, ask to issue the link that lets them pose a passkey |
 | p | on a person, ask to issue the link that lets them pose a new password |
 | o | on a person, ask to issue the link that lets them set up an authenticator app |
 | e | on a person, open the form of their account |
 | d | on a person, ask to disable them, or to enable them again when they are disabled |
-| s | in the form of an account, save what was changed |
-| n | on the groups, ask for the name of a group to create |
+| s | in the form of an account, save what was changed; in the form of a token, issue it |
+| n | on the groups, ask for the name of a group to create; on the initial access tokens, open the form of a new one |
+| i | on the clients, show the initial access tokens of the tenant in their place |
+| c | on a person, show their credentials again; on the initial access tokens, show the clients again |
 | a | on a person, read the applications they agreed to; on a group or its members, ask for the username of a member to add |
 | y | make the change just asked for; any other key forgets it |
 | q | quit (typed as a letter in the username field); Ctrl+C quits from anywhere |
