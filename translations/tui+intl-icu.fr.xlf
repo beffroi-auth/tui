@@ -750,6 +750,14 @@ La réponse revient à {redirect_uri}.</target>
         <source>act.person.described</source>
         <target>informations changées par un administrateur</target>
       </trans-unit>
+      <trans-unit id="ce3c8d864e" resname="act.person.disabled">
+        <source>act.person.disabled</source>
+        <target>personnes désactivées</target>
+      </trans-unit>
+      <trans-unit id="e0532219d9" resname="act.person.enabled">
+        <source>act.person.enabled</source>
+        <target>personnes réactivées</target>
+      </trans-unit>
       <trans-unit id="ee56b59992" resname="act.enrolment_ticket.issued">
         <source>act.enrolment_ticket.issued</source>
         <target>liens d'enrôlement émis</target>
