@@ -67,6 +67,7 @@ final class UsersSection implements SectionInterface
     private const array TICKETS = [
         't' => ['enrolment-ticket', 'ticket'],
         'p' => ['password-ticket', 'password_ticket'],
+        'o' => ['totp-ticket', 'totp_ticket'],
     ];
 
     private readonly SectionFrame $frame;
@@ -224,7 +225,10 @@ final class UsersSection implements SectionInterface
         $this->frame->title($context->translate('section.users'));
         $this->input->setPrompt($context->translate('users.prompt'));
         $this->create->setPrompt($context->translate('users.create_prompt'));
-        $tickets = [['t', $context->translate('keys.ticket')], ['p', $context->translate('keys.password_ticket')]];
+        $tickets = [];
+        foreach (self::TICKETS as $key => [, $speech]) {
+            $tickets[] = [$key, $context->translate('keys.' . $speech)];
+        }
         $this->tables[self::CREDENTIALS]->setSectionKeys([['x', $context->translate('keys.revoke')], ...$tickets]);
         $this->tables[self::SESSIONS]->setSectionKeys([['x', $context->translate('keys.end_session')], ...$tickets]);
         $this->tables[self::JOURNAL]->setSectionKeys($tickets);
@@ -254,8 +258,9 @@ final class UsersSection implements SectionInterface
 
     /**
      * The keys of a view of the access of the person: `c` its credentials, `s` its open sessions, `j` its journal, `x`
-     * the change of the row chosen, `t` a link that lets the person pose a passkey and `p` one that lets them pose a
-     * new password, each change confirmed by `y` and forgotten by any other key.
+     * the change of the row chosen, `t` a link that lets the person pose a passkey, `p` one that lets them pose a new
+     * password and `o` one that lets them set up an authenticator app, each change confirmed by `y` and forgotten by
+     * any other key.
      */
     private function asked(string $data): bool
     {

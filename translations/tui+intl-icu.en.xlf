@@ -440,7 +440,7 @@ The answer comes back to {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="5006d0443c" resname="users.views">
         <source>users.views</source>
-        <target>c credentials · s sessions · j journal · t enrolment link · p password link</target>
+        <target>c credentials · s sessions · j journal · t enrolment link · p password link · o OTP link</target>
       </trans-unit>
       <trans-unit id="76f48b0e4e" resname="user.username">
         <source>user.username</source>
@@ -754,6 +754,10 @@ The answer comes back to {redirect_uri}.</target>
         <source>act.password_ticket.issued</source>
         <target>password links issued</target>
       </trans-unit>
+      <trans-unit id="30df9766db" resname="act.totp_ticket.issued">
+        <source>act.totp_ticket.issued</source>
+        <target>OTP links issued</target>
+      </trans-unit>
       <trans-unit id="fd7a017a36" resname="act.password.changed">
         <source>act.password.changed</source>
         <target>passwords changed</target>
@@ -886,6 +890,10 @@ The answer comes back to {redirect_uri}.</target>
         <source>keys.password_ticket</source>
         <target>password link</target>
       </trans-unit>
+      <trans-unit id="6adf121ad1" resname="keys.totp_ticket">
+        <source>keys.totp_ticket</source>
+        <target>OTP link</target>
+      </trans-unit>
       <trans-unit id="30bca564e9" resname="password_ticket.issue_asked">
         <source>password_ticket.issue_asked</source>
         <target>Issue a link that lets {username} pose a new password? Whoever holds it sets one on their account until it expires, which ends every session of theirs, and a password link issued for them before opens nothing any more. y confirms, any other key cancels.</target>
@@ -897,6 +905,18 @@ The answer comes back to {redirect_uri}.</target>
       <trans-unit id="7b95b18006" resname="password_ticket.shown">
         <source>password_ticket.shown</source>
         <target>{link} opens until {time}. Scan the code with the device where the person will type their new password: the link leaves the screen with the focus. The act names you in their journal.</target>
+      </trans-unit>
+      <trans-unit id="d281743a63" resname="totp_ticket.issue_asked">
+        <source>totp_ticket.issue_asked</source>
+        <target>Issue a link that lets {username} set up an authenticator app in place of the one they hold? Whoever holds it sets one up on their account until it expires, which revokes the app they held and ends every session of theirs, and an OTP link issued for them before opens nothing any more. y confirms, any other key cancels.</target>
+      </trans-unit>
+      <trans-unit id="9b777ad67c" resname="totp_ticket.title">
+        <source>totp_ticket.title</source>
+        <target>OTP link of {username}</target>
+      </trans-unit>
+      <trans-unit id="4acbe4a398" resname="totp_ticket.shown">
+        <source>totp_ticket.shown</source>
+        <target>{link} opens until {time}. Scan the code with the device where the person will set up their app: the link leaves the screen with the focus. The act names you in their journal.</target>
       </trans-unit>
     </body>
   </file>

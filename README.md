@@ -83,7 +83,7 @@ last line says the keys that answer where the focus is, and what lies between ad
 | Tenant | its name, issuer, login floor, groups of administrators, administration API and how long the journal keeps an act, beside the classes of authentication | `GET /tenant` |
 | Clients | a table of the clients, by name, identifier, source and dates; Enter on one opens what it registered beside or under it | `GET /clients`, `GET /clients/{client_id}` |
 | Signing keys | a table of the keys, each state marked and worded: `■` active, `□` staged, `▨` retiring, `┄` retired | `GET /keys` |
-| Users | a person looked up by username, their claims and groups, beside their credentials; `s` reads their open sessions, `j` their last acts, `c` goes back to the credentials; `x` on a credential asks to revoke it, `x` on an open session asks to end it; a person created from a field of its own; `t` asks to issue the link that lets the person pose a passkey, `p` the one that lets them pose a new password, each shown as a QR code | `GET /users?username=`, `GET /users/{id}/sessions`, `GET /users/{id}/journal`, `DELETE /users/{id}/credentials/{credential}`, `DELETE /users/{id}/sessions/{session}`, `POST /users`, `POST /users/{id}/enrolment-ticket`, `POST /users/{id}/password-ticket` |
+| Users | a person looked up by username, their claims and groups, beside their credentials; `s` reads their open sessions, `j` their last acts, `c` goes back to the credentials; `x` on a credential asks to revoke it, `x` on an open session asks to end it; a person created from a field of its own; `t` asks to issue the link that lets the person pose a passkey, `p` the one that lets them pose a new password, `o` the one that lets them set up an authenticator app, each shown as a QR code | `GET /users?username=`, `GET /users/{id}/sessions`, `GET /users/{id}/journal`, `DELETE /users/{id}/credentials/{credential}`, `DELETE /users/{id}/sessions/{session}`, `POST /users`, `POST /users/{id}/enrolment-ticket`, `POST /users/{id}/password-ticket`, `POST /users/{id}/totp-ticket` |
 | Monitoring | figures (people, clients, open sessions, keys, messages waiting), the points `beffroi:doctor` looks at, each `■ ok` or `■ failed` with what it found, and the acts over what the journal keeps as bars, the failures in red | `GET /health`, `GET /statistics` |
 
 The administration API is the one the profile names, read and written with the access token under the DPoP scheme
@@ -104,9 +104,10 @@ section says so rather than asking.
 
 A person is created from the field under the one that looks a person up: Enter creates the username typed, with no
 credential, and the section shows the person the API answered, which no read of them follows. `t` asks to issue the
-link that lets the person shown pose a passkey, and `p` the one that lets them pose a new password without the one in
-use (decision 0026): whoever holds it acts on their account once, until it expires, and a link of the same kind issued
-for them before opens nothing any more; spending a password link ends every session of theirs. Once `y` confirmed it, the link takes the
+link that lets the person shown pose a passkey, `p` the one that lets them pose a new password without the one in
+use, and `o` the one that lets them set up an authenticator app in place of the one they hold (decision 0026): whoever
+holds it acts on their account once, until it expires, and a link of the same kind issued for them before opens
+nothing any more; spending a password or OTP link ends every session of theirs. Once `y` confirmed it, the link takes the
 place of the person, as its text and as a QR code the device that will hold the passkey scans, black on white, or in
 reverse video without colours, inside its quiet zone, or, in a terminal too small for it, as the room the code
 needs. It leaves the screen with the focus,
@@ -129,6 +130,7 @@ and bold. A state is never said by a colour alone.
 | x | on a credential, ask to revoke it; on an open session, ask to end it |
 | t | on a person, ask to issue the link that lets them pose a passkey |
 | p | on a person, ask to issue the link that lets them pose a new password |
+| o | on a person, ask to issue the link that lets them set up an authenticator app |
 | y | make the change just asked for; any other key forgets it |
 | q | quit (typed as a letter in the username field); Ctrl+C quits from anywhere |
 
