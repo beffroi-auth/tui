@@ -734,6 +734,94 @@ The answer comes back to {redirect_uri}.</target>
         <source>act.administration.journal_read</source>
         <target>journals read by an administrator</target>
       </trans-unit>
+      <trans-unit id="8e808543fd" resname="act.person.created">
+        <source>act.person.created</source>
+        <target>people created</target>
+      </trans-unit>
+      <trans-unit id="cef843d8c4" resname="act.person.provisioned">
+        <source>act.person.provisioned</source>
+        <target>people provisioned</target>
+      </trans-unit>
+      <trans-unit id="46f4760a34" resname="act.person.described_themselves">
+        <source>act.person.described_themselves</source>
+        <target>information changed by the person</target>
+      </trans-unit>
+      <trans-unit id="ee56b59992" resname="act.enrolment_ticket.issued">
+        <source>act.enrolment_ticket.issued</source>
+        <target>enrolment links issued</target>
+      </trans-unit>
+      <trans-unit id="96ae4a0753" resname="act.password_ticket.issued">
+        <source>act.password_ticket.issued</source>
+        <target>password links issued</target>
+      </trans-unit>
+      <trans-unit id="fd7a017a36" resname="act.password.changed">
+        <source>act.password.changed</source>
+        <target>passwords changed</target>
+      </trans-unit>
+      <trans-unit id="25af7fdd91" resname="act.password.rehashed">
+        <source>act.password.rehashed</source>
+        <target>passwords hashed again</target>
+      </trans-unit>
+      <trans-unit id="d7310f0c95" resname="act.credential.renamed">
+        <source>act.credential.renamed</source>
+        <target>credentials renamed</target>
+      </trans-unit>
+      <trans-unit id="f41d9a364d" resname="act.credential.forgotten">
+        <source>act.credential.forgotten</source>
+        <target>credentials forgotten</target>
+      </trans-unit>
+      <trans-unit id="07e482ce81" resname="act.backup_codes.renewed">
+        <source>act.backup_codes.renewed</source>
+        <target>backup codes renewed</target>
+      </trans-unit>
+      <trans-unit id="44eb3dd840" resname="act.archive.asked">
+        <source>act.archive.asked</source>
+        <target>data files asked for</target>
+      </trans-unit>
+      <trans-unit id="79712a8c78" resname="act.archive.taken">
+        <source>act.archive.taken</source>
+        <target>data files downloaded</target>
+      </trans-unit>
+      <trans-unit id="399667f18a" resname="act.archive.dropped">
+        <source>act.archive.dropped</source>
+        <target>data files dropped</target>
+      </trans-unit>
+      <trans-unit id="171ab1fc56" resname="act.backchannel_request.answered">
+        <source>act.backchannel_request.answered</source>
+        <target>backchannel requests answered</target>
+      </trans-unit>
+      <trans-unit id="4b387fc63e" resname="act.refresh_token.outlived_its_session">
+        <source>act.refresh_token.outlived_its_session</source>
+        <target>refresh tokens after their session</target>
+      </trans-unit>
+      <trans-unit id="774c2cb006" resname="act.registered_client.deleted">
+        <source>act.registered_client.deleted</source>
+        <target>registered clients deleted</target>
+      </trans-unit>
+      <trans-unit id="a02f3415a0" resname="act.saml.service_provider.signed_in">
+        <source>act.saml.service_provider.signed_in</source>
+        <target>sign-ins to a SAML service provider</target>
+      </trans-unit>
+      <trans-unit id="3db6fd3fe3" resname="act.tenant.key_staged">
+        <source>act.tenant.key_staged</source>
+        <target>keys staged</target>
+      </trans-unit>
+      <trans-unit id="c1e76c1957" resname="act.tenant.key_rotated">
+        <source>act.tenant.key_rotated</source>
+        <target>key rotations</target>
+      </trans-unit>
+      <trans-unit id="45a154bf67" resname="act.tenant.key_retired">
+        <source>act.tenant.key_retired</source>
+        <target>keys retired</target>
+      </trans-unit>
+      <trans-unit id="6e12a7a981" resname="act.tenant.data_keys_rewrapped">
+        <source>act.tenant.data_keys_rewrapped</source>
+        <target>data keys rewrapped</target>
+      </trans-unit>
+      <trans-unit id="c8f485de36" resname="act.tenant.data_keys_destroyed">
+        <source>act.tenant.data_keys_destroyed</source>
+        <target>data keys destroyed</target>
+      </trans-unit>
       <trans-unit id="055e3e45e9" resname="page.title">
         <source>page.title</source>
         <target>Go back to the terminal</target>
