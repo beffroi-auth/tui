@@ -38,13 +38,19 @@ final readonly class Document
      */
     public static function decode(string $json, string $named): self
     {
-        try {
-            $value = json_decode($json, true, 64, JSON_THROW_ON_ERROR);
-        } catch (JsonException $exception) {
-            throw new UnreadableDocumentException(sprintf('The %s is not JSON.', $named), previous: $exception);
-        }
+        return self::of(self::json($json, $named), $named);
+    }
 
-        return self::of($value, $named);
+    /**
+     * The objects of a text that is a JSON list of objects, in their order.
+     *
+     * @throws UnreadableDocumentException when the text is not JSON, or not a JSON list of objects
+     *
+     * @return list<self>
+     */
+    public static function decodeList(string $json, string $named): array
+    {
+        return self::objects(self::json($json, $named), $named);
     }
 
     /**
@@ -138,15 +144,8 @@ final readonly class Document
         if ($value === null) {
             return [];
         }
-        if (! is_array($value) || ! array_is_list($value)) {
-            throw new UnreadableDocumentException(sprintf('The member "%s" must be a JSON list.', $name));
-        }
-        $documents = [];
-        foreach ($value as $index => $entry) {
-            $documents[] = self::of($entry, sprintf('entry %d of the member "%s"', $index, $name));
-        }
 
-        return $documents;
+        return self::objects($value, sprintf('member "%s"', $name));
     }
 
     /**
@@ -184,5 +183,35 @@ final readonly class Document
         $value = $this->members[$name] ?? null;
 
         return $value === null ? null : self::of($value, sprintf('member "%s"', $name));
+    }
+
+    /**
+     * @throws UnreadableDocumentException when the text is not JSON
+     */
+    private static function json(string $json, string $named): mixed
+    {
+        try {
+            return json_decode($json, true, 64, JSON_THROW_ON_ERROR);
+        } catch (JsonException $exception) {
+            throw new UnreadableDocumentException(sprintf('The %s is not JSON.', $named), previous: $exception);
+        }
+    }
+
+    /**
+     * @throws UnreadableDocumentException when the value is not a JSON list of objects
+     *
+     * @return list<self>
+     */
+    private static function objects(mixed $value, string $named): array
+    {
+        if (! is_array($value) || ! array_is_list($value)) {
+            throw new UnreadableDocumentException(sprintf('The %s must be a JSON list.', $named));
+        }
+        $documents = [];
+        foreach ($value as $index => $entry) {
+            $documents[] = self::of($entry, sprintf('entry %d of the %s', $index, $named));
+        }
+
+        return $documents;
     }
 }

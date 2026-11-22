@@ -6,6 +6,7 @@ namespace Beffroi\Tui;
 
 use Beffroi\Tui\Console\AdministerCommand;
 use Beffroi\Tui\Console\RegisterCommand;
+use Beffroi\Tui\Console\SelfUpdateCommand;
 use Beffroi\Tui\Profile\ProfileStore;
 use Beffroi\Tui\Screen\Section\ClientsSection;
 use Beffroi\Tui\Screen\Section\GroupsSection;
@@ -20,6 +21,12 @@ use Beffroi\Tui\SignIn\SystemBrowser;
 use Beffroi\Tui\Text\Catalogue;
 use Beffroi\Tui\Text\TerminalColours;
 use Beffroi\Tui\Text\TerminalLocale;
+use Beffroi\Tui\Update\AssetDownload;
+use Beffroi\Tui\Update\GitHubReleases;
+use Beffroi\Tui\Update\GpgvSignature;
+use Beffroi\Tui\Update\ProgramReplacement;
+use Beffroi\Tui\Update\RunningProgram;
+use Beffroi\Tui\Update\SelfUpdate;
 use Symfony\Component\Clock\NativeClock;
 use Symfony\Component\Console\Application;
 
@@ -37,7 +44,8 @@ final readonly class Wiring
     {
         $profiles = ProfileStore::inConfigurationHome($environment);
         $locale = TerminalLocale::of($environment);
-        $application = new Application('beffroi-tui');
+        $program = RunningProgram::current();
+        $application = new Application('beffroi-tui', $program->version->tag ?? 'UNKNOWN');
         $application->addCommand(new RegisterCommand($profiles, $environment));
         $application->addCommand(new AdministerCommand(
             $profiles,
@@ -48,9 +56,26 @@ final readonly class Wiring
             self::sections(),
             TerminalColours::allowed($environment),
         ));
+        $application->addCommand(new SelfUpdateCommand(self::selfUpdate($environment), $program));
         $application->setDefaultCommand(AdministerCommand::NAME);
 
         return $application;
+    }
+
+    /**
+     * The update of the program from the releases of its repository: their list read with the client of every
+     * other request, their files downloaded with the one of large files, under the key the releases are signed with.
+     *
+     * @param array<array-key, mixed> $environment
+     */
+    public static function selfUpdate(array $environment): SelfUpdate
+    {
+        return new SelfUpdate(
+            new GitHubReleases(HttpClients::create(null)),
+            new AssetDownload(HttpClients::releaseAssets()),
+            GpgvSignature::ofTheReleases($environment),
+            new ProgramReplacement(),
+        );
     }
 
     /**
