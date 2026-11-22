@@ -1054,6 +1054,10 @@ La réponse revient à {redirect_uri}.</target>
         <source>act.person.described</source>
         <target>informations changées par un administrateur</target>
       </trans-unit>
+      <trans-unit id="e384ca29d7" resname="act.notification_channels.chosen">
+        <source>act.notification_channels.chosen</source>
+        <target>canaux de notification choisis</target>
+      </trans-unit>
       <trans-unit id="ce3c8d864e" resname="act.person.disabled">
         <source>act.person.disabled</source>
         <target>personnes désactivées</target>
