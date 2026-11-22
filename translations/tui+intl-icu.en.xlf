@@ -1162,6 +1162,10 @@ The answer comes back to {redirect_uri}.</target>
         <source>act.tenant.data_keys_destroyed</source>
         <target>data keys destroyed</target>
       </trans-unit>
+      <trans-unit id="399784fb2a" resname="act.tenant.contact_changed">
+        <source>act.tenant.contact_changed</source>
+        <target>contacts of the tenant changed</target>
+      </trans-unit>
       <trans-unit id="055e3e45e9" resname="page.title">
         <source>page.title</source>
         <target>Go back to the terminal</target>
