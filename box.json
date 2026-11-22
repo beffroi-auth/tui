@@ -1,0 +1,13 @@
+{
+    "$schema": "https://raw.githubusercontent.com/box-project/box/4.7.1/res/schema.json",
+    "output": "beffroi-tui.phar",
+    "force-autodiscovery": true,
+    "directories": [
+        "resources",
+        "translations"
+    ],
+    "files": [
+        "LICENSE"
+    ],
+    "compression": "GZ"
+}

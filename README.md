@@ -169,6 +169,37 @@ Everything it shows that it did not write, a claim, a member of the metadata, a 
 the administration API answers, reaches the terminal through `TerminalText`, which leaves no escape sequence and no
 bidirectional control in it, and a line of the console through `ConsoleText`, which escapes its markup too.
 
+## Getting it
+
+Each release of [beffroi-auth/beffroi](https://github.com/beffroi-auth/beffroi/releases) carries the client among its
+assets, built by `.github/workflows/tui.yml` from this directory and its `composer.lock`:
+
+| Asset | Runs on |
+|---|---|
+| `beffroi-tui.phar` | PHP 8.4 or later, with `dom`, `filter`, `iconv`, `intl`, `libxml`, `mbstring`, `openssl`, `simplexml`, `sodium` and `zlib`; a PHP that lacks one is refused before the client starts, with its name |
+| `beffroi-tui-linux-x86_64` | Linux on x86_64, without PHP |
+| `beffroi-tui-linux-aarch64` | Linux on arm64, without PHP |
+| `beffroi-tui-macos-aarch64` | macOS on Apple silicon, without PHP |
+
+An executable is a static PHP 8.5 followed by that same PHAR. It carries `pcntl` and `posix` as well, through which the
+client follows the size of the terminal and opens the browser; the PHAR runs without them, the address of the sign-in
+being on the screen. Its OpenSSL trusts the certificate authorities the system keeps under `/etc/ssl` (`cert.pem` or
+`certs/`), or the file `SSL_CERT_FILE` names, and `register --cafile` names another for one instance. There is no
+Windows build: symfony/tui drives the terminal through `stty`.
+
+`SHA256SUMS` holds the digests of the four, and `SHA256SUMS.asc` is its signature by the key that signs the release
+tags:
+
+```bash
+gpg --verify SHA256SUMS.asc SHA256SUMS
+sha256sum --check --ignore-missing SHA256SUMS            # shasum -a 256 --check --ignore-missing SHA256SUMS on macOS
+chmod +x beffroi-tui-linux-x86_64
+./beffroi-tui-linux-x86_64 register https://op.example https://admin.example
+```
+
+The PHAR is built from a checkout with [Box](https://github.com/box-project/box), whose `box.json` is here:
+`composer install --no-dev --classmap-authoritative`, then `box compile`.
+
 ## Running it
 
 ```bash
