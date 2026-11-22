@@ -10,8 +10,9 @@ use Symfony\Component\HttpClient\Exception\TransportException;
 /**
  * How much of one answer this program reads: every document a provider answers it is a few kilobytes, and an
  * answer that goes on is cut rather than held in memory until PHP stops, which would leave the terminal as the
- * screen had set it. It is the `on_progress` of every request (`HttpClients`), and stops one as soon as it says
- * or receives more.
+ * screen had set it. It is the `on_progress` of every request of `HttpClients::create()`, and of the download of
+ * each file of a release at the size the release announces for it; it stops one as soon as it says or receives
+ * more.
  */
 final readonly class ResponseSizeLimit
 {
