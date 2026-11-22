@@ -1166,6 +1166,14 @@ The answer comes back to {redirect_uri}.</target>
         <source>act.tenant.contact_changed</source>
         <target>changes of the contact of the tenant</target>
       </trans-unit>
+      <trans-unit id="act.tenant.mail_signing_key_set" resname="act.tenant.mail_signing_key_set">
+        <source>act.tenant.mail_signing_key_set</source>
+        <target>mail signing keys set</target>
+      </trans-unit>
+      <trans-unit id="act.tenant.mail_signing_key_removed" resname="act.tenant.mail_signing_key_removed">
+        <source>act.tenant.mail_signing_key_removed</source>
+        <target>mail signing keys removed</target>
+      </trans-unit>
       <trans-unit id="055e3e45e9" resname="page.title">
         <source>page.title</source>
         <target>Go back to the terminal</target>
