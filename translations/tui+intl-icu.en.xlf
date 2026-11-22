@@ -1058,6 +1058,14 @@ The answer comes back to {redirect_uri}.</target>
         <source>act.notification_channels.chosen</source>
         <target>notification channels chosen</target>
       </trans-unit>
+      <trans-unit id="3733fdc585" resname="act.address.confirmation_sent">
+        <source>act.address.confirmation_sent</source>
+        <target>confirmation code sent to an address of the person</target>
+      </trans-unit>
+      <trans-unit id="71cc5de027" resname="act.address.established">
+        <source>act.address.established</source>
+        <target>address of the person confirmed</target>
+      </trans-unit>
       <trans-unit id="ce3c8d864e" resname="act.person.disabled">
         <source>act.person.disabled</source>
         <target>people disabled</target>
