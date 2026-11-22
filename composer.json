@@ -38,6 +38,9 @@
         "bin/beffroi-tui"
     ],
     "config": {
+        "platform": {
+            "php": "8.4.1"
+        },
         "sort-packages": true
     }
 }
