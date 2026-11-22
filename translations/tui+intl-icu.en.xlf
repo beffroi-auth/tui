@@ -1164,7 +1164,7 @@ The answer comes back to {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="399784fb2a" resname="act.tenant.contact_changed">
         <source>act.tenant.contact_changed</source>
-        <target>contacts of the tenant changed</target>
+        <target>changes of the contact of the tenant</target>
       </trans-unit>
       <trans-unit id="055e3e45e9" resname="page.title">
         <source>page.title</source>
