@@ -1102,6 +1102,10 @@ La réponse revient à {redirect_uri}.</target>
         <source>act.address.confirmation_sent</source>
         <target>codes de confirmation envoyés</target>
       </trans-unit>
+      <trans-unit id="d40a83fb31" resname="act.address.confirmation_withheld">
+        <source>act.address.confirmation_withheld</source>
+        <target>codes de confirmation retenus, limite atteinte</target>
+      </trans-unit>
       <trans-unit id="71cc5de027" resname="act.address.established">
         <source>act.address.established</source>
         <target>adresses confirmées</target>
