@@ -27,7 +27,7 @@
         "symfony/http-client": "8.2.*",
         "symfony/translation": "8.2.*",
         "symfony/tui": "^8.1",
-        "web-token/jwt-library": "^4.2"
+        "web-token/jwt-library": "^4.2.7"
     },
     "autoload": {
         "psr-4": {
