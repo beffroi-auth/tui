@@ -27,6 +27,8 @@ use Beffroi\Tui\Screen\Widget\TableWidget;
 use Beffroi\Tui\Text\TerminalText;
 use function count;
 use function in_array;
+use function intdiv;
+use function max;
 use function rawurlencode;
 use function sprintf;
 use function strcmp;
@@ -38,8 +40,8 @@ use function usort;
 /**
  * The groups of the tenant in a table, by their name, with where each came from, how many members it holds and
  * whether its members administer the tenant, which delivers nobody. Enter reads the members of a group beside it or
- * under it: each member read is an act in their journal that names the administrator (decisions 0022 and 0038), which
- * the screen says before the first one.
+ * under it, a page at a time, `]` the next page and `[` the one before: each member read is an act in their journal
+ * that names the administrator (decisions 0022 and 0038), which the screen says before the first one.
  *
  * `n` asks for the name of a group to create, `a` for the username of a member to add to the group chosen, and `x`
  * asks to take the member chosen out, made once `y` confirms it. Each change is an act that names the administrator,
@@ -83,6 +85,17 @@ final class GroupsSection implements SectionInterface
      * The identifier of the group whose members are shown, null until one is opened.
      */
     private ?string $shown = null;
+
+    /**
+     * The page of the members shown, and how many pages and members the group holds, as the API last answered.
+     */
+    private int $page = 1;
+
+    private int $pages = 1;
+
+    private int $perPage = 1;
+
+    private int $total = 0;
 
     /**
      * The identifier of the group a member is added to while the field asks for their username.
@@ -182,7 +195,7 @@ final class GroupsSection implements SectionInterface
         $this->hideFields();
         $this->frame->reading->again($context, fn (AdministrationApi $api) => $this->read($api, $context));
         if ($this->shown !== null) {
-            $this->readMembers($context, $this->shown);
+            $this->readMembers($context, $this->shown, $this->page);
         }
     }
 
@@ -217,7 +230,12 @@ final class GroupsSection implements SectionInterface
             $context->translate('member.added_at'),
         ]);
         $this->groupsTable->setSectionKeys([['n', $context->translate('keys.new_group')], ['a', $context->translate('keys.add_member')]]);
-        $this->membersTable->setSectionKeys([['x', $context->translate('keys.take_out')], ['a', $context->translate('keys.add_member')]]);
+        $this->membersTable->setSectionKeys([
+            ['x', $context->translate('keys.take_out')],
+            ['a', $context->translate('keys.add_member')],
+            ['[', $context->translate('keys.previous_page')],
+            [']', $context->translate('keys.next_page')],
+        ]);
         if ($this->shown === null) {
             $this->members->title($context->translate('groups.members'));
             $this->notice->say($context->translate('groups.notice'));
@@ -267,6 +285,15 @@ final class GroupsSection implements SectionInterface
 
             return true;
         }
+        if (($data === ']' || $data === '[') && $table === $this->membersTable && $this->shown !== null) {
+            $page = $this->page + ($data === ']' ? 1 : -1);
+            if ($page >= 1 && $page <= $this->pages) {
+                $this->confirmation->forget();
+                $this->readMembers($context, $this->shown, $page);
+            }
+
+            return true;
+        }
 
         return false;
     }
@@ -293,25 +320,50 @@ final class GroupsSection implements SectionInterface
         $this->confirmation->forget();
         $this->shown = $group['id'];
         $this->shownMembers = [];
+        $this->page = 1;
+        $this->pages = 1;
+        $this->perPage = 1;
+        $this->total = 0;
         $this->membersTable->setRows([], $context->translate('groups.no_member'));
         $this->members->title($context->translate('groups.members_of', ['group' => $group['name']]));
-        $this->readMembers($context, $group['id']);
+        $this->readMembers($context, $group['id'], 1);
     }
 
-    private function readMembers(SectionContext $context, string $group): void
+    /**
+     * One page of the members of the group, the API answering the page it served and how many the group holds.
+     */
+    private function readMembers(SectionContext $context, string $group, int $page): void
     {
-        $this->membersReading->again($context, function (AdministrationApi $api) use ($context, $group): void {
-            $members = array_map(self::member(...), $api->read(sprintf('/groups/%s/members', rawurlencode($group)))->documents('members'));
+        $this->membersReading->again($context, function (AdministrationApi $api) use ($context, $group, $page): void {
+            $answer = $api->read(sprintf('/groups/%s/members', rawurlencode($group)), ['page' => (string) $page]);
+            $members = array_map(self::member(...), $answer->documents('members'));
             if ($this->shown !== $group) {
                 return;
             }
             $this->shownMembers = $members;
+            $this->page = $answer->nullableInt('page') ?? $page;
+            $this->pages = $answer->nullableInt('pages') ?? 1;
+            $this->perPage = max(1, $answer->nullableInt('per_page') ?? count($members));
+            $this->total = $answer->nullableInt('total') ?? count($members);
             $this->membersTable->setRows(array_column($members, 'cells'), $context->translate('groups.no_member'));
+            $this->paged($context, $group);
             $this->notice->say('');
             if ($members !== []) {
                 $this->hand($context, $this->groupsTable, $this->membersTable);
             }
         });
+    }
+
+    /**
+     * The title of the members says which page is shown once there is more than one.
+     */
+    private function paged(SectionContext $context, string $group): void
+    {
+        $this->members->title(
+            $this->pages > 1
+                ? $context->translate('groups.members_page', ['group' => $this->nameOf($group), 'page' => $this->page, 'pages' => $this->pages])
+                : $context->translate('groups.members_of', ['group' => $this->nameOf($group)]),
+        );
     }
 
     /**
@@ -360,8 +412,7 @@ final class GroupsSection implements SectionInterface
                 }
                 $this->counted($context, $group, 1);
                 if ($this->shown === $group) {
-                    $this->shownMembers[] = self::member($added);
-                    $this->membersTable->setRows(array_column($this->shownMembers, 'cells'), $context->translate('groups.no_member'));
+                    $this->joined($context, $group, self::member($added));
                 }
                 $this->doneWith($context, $this->member);
                 $this->notice->say($context->translate('groups.member_added', [
@@ -411,10 +462,32 @@ final class GroupsSection implements SectionInterface
                 $this->counted($context, $group, -1);
                 $this->shownMembers = array_values(array_filter($this->shownMembers, static fn (array $shown): bool => $shown['id'] !== $member['id']));
                 $this->membersTable->setRows(array_column($this->shownMembers, 'cells'), $context->translate('groups.no_member'));
+                $this->counting($context, $group, max(0, $this->total - 1));
                 $this->notice->say($context->translate('groups.taken_out', ['username' => $member['cells'][0], 'group' => $this->nameOf($group)]));
             },
             'api.writing',
         );
+    }
+
+    /**
+     * A member added goes last: on the page shown when it is the last one and has room, and in the count otherwise.
+     *
+     * @param array{id: string, cells: list<string>} $member
+     */
+    private function joined(SectionContext $context, string $group, array $member): void
+    {
+        if ($this->page === $this->pages && count($this->shownMembers) < $this->perPage) {
+            $this->shownMembers[] = $member;
+            $this->membersTable->setRows(array_column($this->shownMembers, 'cells'), $context->translate('groups.no_member'));
+        }
+        $this->counting($context, $group, $this->total + 1);
+    }
+
+    private function counting(SectionContext $context, string $group, int $total): void
+    {
+        $this->total = $total;
+        $this->pages = max(1, intdiv($total + $this->perPage - 1, $this->perPage));
+        $this->paged($context, $group);
     }
 
     private function counted(SectionContext $context, string $group, int $change): void
