@@ -29,9 +29,9 @@ use function str_starts_with;
 final readonly class GpgvSignature implements SignatureVerifierInterface
 {
     /**
-     * The key the release workflow signs `SHA256SUMS` with, published at https://github.com/Spomky.gpg.
+     * The key the release workflow signs `SHA256SUMS` and the release tags with, the one `RELEASES_KEYRING` holds.
      */
-    public const string RELEASES = '5E85361FC66BB177139388310B2A1B9931D62A89';
+    public const string RELEASES = 'FAFA4D7E39BAB0AE08EE4439544F6C7929EA07AF';
 
     public const string RELEASES_KEYRING = 'release-signing-key.gpg';
 

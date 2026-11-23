@@ -197,11 +197,12 @@ being on the screen. Its OpenSSL trusts the certificate authorities the system k
 Windows build: symfony/tui drives the terminal through `stty`.
 
 `SHA256SUMS` holds the digests of the four, and `SHA256SUMS.asc` is its signature by the key that signs the release
-tags, `5E85 361F C66B B177 1393  8831 0B2A 1B99 31D6 2A89`, published at <https://github.com/Spomky.gpg>:
+tags, `Beffroi releases <releases@beffroi.tech>`, `FAFA 4D7E 39BA B0AE 08EE  4439 544F 6C79 29EA 07AF`, which
+`resources/release-signing-key.gpg` holds:
 
 ```bash
-curl -fsSL https://github.com/Spomky.gpg | gpg --import
-gpg --verify SHA256SUMS.asc SHA256SUMS                   # "Good signature", from the key 0B2A1B9931D62A89
+curl -fsSL https://raw.githubusercontent.com/beffroi-auth/beffroi/HEAD/apps/tui/resources/release-signing-key.gpg | gpg --import
+gpg --verify SHA256SUMS.asc SHA256SUMS                   # "Good signature" from "Beffroi releases <releases@beffroi.tech>"
 sha256sum --check --ignore-missing SHA256SUMS            # shasum -a 256 --check --ignore-missing SHA256SUMS on macOS
 chmod +x beffroi-tui-linux-x86_64
 ./beffroi-tui-linux-x86_64 register https://op.example https://admin.example
