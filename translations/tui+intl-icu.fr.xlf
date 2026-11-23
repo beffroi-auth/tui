@@ -1220,11 +1220,11 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="act.tenant.mail_signing_key_set" resname="act.tenant.mail_signing_key_set">
         <source>act.tenant.mail_signing_key_set</source>
-        <target>clés de signature des e-mails définies</target>
+        <target>clés de signature des courriels définies</target>
       </trans-unit>
       <trans-unit id="act.tenant.mail_signing_key_removed" resname="act.tenant.mail_signing_key_removed">
         <source>act.tenant.mail_signing_key_removed</source>
-        <target>clés de signature des e-mails retirées</target>
+        <target>clés de signature des courriels retirées</target>
       </trans-unit>
       <trans-unit id="055e3e45e9" resname="page.title">
         <source>page.title</source>
@@ -1376,7 +1376,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="07539fc4f7" resname="section.mail_signing_keys">
         <source>section.mail_signing_keys</source>
-        <target>Clés des e-mails</target>
+        <target>Clés des courriels</target>
       </trans-unit>
       <trans-unit id="3b751dd492" resname="keys.draw_pgp">
         <source>keys.draw_pgp</source>
@@ -1404,7 +1404,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="673a87b132" resname="mail_keys.none">
         <source>mail_keys.none</source>
-        <target>Aucune clé de signature des e-mails : ils partent non signés.</target>
+        <target>Aucune clé de signature des courriels : ils partent non signés.</target>
       </trans-unit>
       <trans-unit id="279baac597" resname="mail_keys.count">
         <source>mail_keys.count</source>
@@ -1456,7 +1456,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="ccfe2d5f7b" resname="mail_keys.draw_asked">
         <source>mail_keys.draw_asked</source>
-        <target>Générer une clé OpenPGP ? Elle signera les e-mails OpenPGP du tenant. y confirme, toute autre touche annule.</target>
+        <target>Générer une clé OpenPGP ? Elle signera les courriels OpenPGP du tenant. y confirme, toute autre touche annule.</target>
       </trans-unit>
       <trans-unit id="ec1fa99eea" resname="mail_keys.draw_replacing_asked">
         <source>mail_keys.draw_replacing_asked</source>
@@ -1464,11 +1464,11 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="00c3d7be52" resname="mail_keys.pgp_drawn">
         <source>mail_keys.pgp_drawn</source>
-        <target>Les e-mails OpenPGP sont signés avec la clé {fingerprint}, publiée à {url}. Journalisé sous votre nom.</target>
+        <target>Les courriels OpenPGP sont signés avec la clé {fingerprint}, publiée à {url}. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="30c62647f6" resname="mail_keys.smime_set">
         <source>mail_keys.smime_set</source>
-        <target>Les e-mails S/MIME sont signés avec la clé {fingerprint}. Journalisé sous votre nom.</target>
+        <target>Les courriels S/MIME sont signés avec la clé {fingerprint}. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="e758e24135" resname="mail_keys.remove_asked">
         <source>mail_keys.remove_asked</source>
