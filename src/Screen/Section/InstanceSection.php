@@ -17,7 +17,8 @@ use Symfony\Component\Tui\Widget\AbstractWidget;
 /**
  * The instance this program administers and the client it is there: the issuer and the administration API, the
  * identifier and the redirect URI the client registered, the key it authenticates with, the key the tokens of this run
- * are bound to, and the endpoints a sign-in went through. It reads nothing of the API.
+ * are bound to, the endpoints a sign-in went through, then the build of this program and whether a newer release is
+ * out. It reads nothing of the API.
  */
 final readonly class InstanceSection implements SectionInterface
 {
@@ -61,7 +62,25 @@ final readonly class InstanceSection implements SectionInterface
             Definition::heading($context->translate('instance.endpoints')),
             new Definition($context->translate('instance.pushed_requests'), TerminalText::line($session->provider->pushedAuthorizationRequestEndpoint)->value),
             new Definition($context->translate('instance.token_endpoint'), TerminalText::line($session->provider->tokenEndpoint)->value),
+            ...self::program($context),
         ], $context->translate('value.more'));
+    }
+
+    /**
+     * @return list<Definition>
+     */
+    private static function program(SectionContext $context): array
+    {
+        $definitions = [
+            Definition::heading($context->translate('instance.this_program')),
+            new Definition($context->translate('instance.version'), $context->translate(...$context->program->version())),
+        ];
+        $update = $context->program->update();
+        if ($update !== null) {
+            $definitions[] = new Definition($context->translate('instance.update'), $context->translate(...$update));
+        }
+
+        return $definitions;
     }
 
     public function reload(SectionContext $context): void

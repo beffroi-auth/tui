@@ -18,6 +18,7 @@ use Beffroi\Tui\Screen\Section\SessionSection;
 use Beffroi\Tui\Screen\Section\TenantSection;
 use Beffroi\Tui\Screen\Section\UsersSection;
 use Beffroi\Tui\Screen\SectionInterface;
+use Beffroi\Tui\Screen\ThisProgram;
 use Beffroi\Tui\SignIn\SystemBrowser;
 use Beffroi\Tui\Text\Catalogue;
 use Beffroi\Tui\Text\TerminalColours;
@@ -28,13 +29,14 @@ use Beffroi\Tui\Update\GpgvSignature;
 use Beffroi\Tui\Update\ProgramReplacement;
 use Beffroi\Tui\Update\RunningProgram;
 use Beffroi\Tui\Update\SelfUpdate;
+use Beffroi\Tui\Update\ThisBuild;
 use Symfony\Component\Clock\NativeClock;
 use Symfony\Component\Console\Application;
 
 /**
  * The program, put together from the environment it runs in: where its profiles are kept, the language of the
- * terminal, the browser of the system, and the sections of the screen in the order they are listed. There is no
- * container: a handful of objects built once.
+ * terminal, the browser of the system, the build it was compiled as, and the sections of the screen in the order they
+ * are listed. There is no container: a handful of objects built once.
  */
 final readonly class Wiring
 {
@@ -46,7 +48,8 @@ final readonly class Wiring
         $profiles = ProfileStore::inConfigurationHome($environment);
         $locale = TerminalLocale::of($environment);
         $program = RunningProgram::current();
-        $application = new Application('beffroi-tui', $program->version->tag ?? 'UNKNOWN');
+        $thisProgram = new ThisProgram($program->version, ThisBuild::build(), self::releases());
+        $application = new Application('beffroi-tui', $thisProgram->name() ?? 'UNKNOWN');
         $application->addCommand(new RegisterCommand($profiles, $environment));
         $application->addCommand(new AdministerCommand(
             $profiles,
@@ -56,6 +59,7 @@ final readonly class Wiring
             $locale,
             self::sections(),
             TerminalColours::allowed($environment),
+            $thisProgram,
         ));
         $application->addCommand(new SelfUpdateCommand(self::selfUpdate($environment), $program));
         $application->setDefaultCommand(AdministerCommand::NAME);
@@ -64,19 +68,27 @@ final readonly class Wiring
     }
 
     /**
-     * The update of the program from the releases of its repository: their list read with the client of every
-     * other request, their files downloaded with the one of large files, under the key the releases are signed with.
+     * The update of the program from the releases of its repository, their files downloaded with the client of large
+     * files, under the key the releases are signed with.
      *
      * @param array<array-key, mixed> $environment
      */
     public static function selfUpdate(array $environment): SelfUpdate
     {
         return new SelfUpdate(
-            new GitHubReleases(HttpClients::create(null)),
+            self::releases(),
             new AssetDownload(HttpClients::releaseAssets()),
             GpgvSignature::ofTheReleases($environment),
             new ProgramReplacement(),
         );
+    }
+
+    /**
+     * The releases of this program, their list read with the client of every other request.
+     */
+    private static function releases(): GitHubReleases
+    {
+        return new GitHubReleases(HttpClients::create(null));
     }
 
     /**

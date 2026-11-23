@@ -38,9 +38,10 @@ use Throwable;
 /**
  * The screen of the administration, as tall and as wide as the terminal and never more, so that nothing pushes it up.
  * Until the administrator is signed in it is the home page: the symbol, the task as its title, the instance and the
- * profile it is read from, and where the sign-in stands. Once signed in, a header line names the instance and who is
- * signed in, the sections are listed in a column beside the one shown or in tabs above it, whichever the width allows
- * (`Theme`), and the last line says the keys the screen answers to there, following the widget that has the focus.
+ * profile it is read from, the build of this program and whether a newer release is out, and where the sign-in
+ * stands. Once signed in, a header line names the instance and who is signed in, the sections are listed in a column
+ * beside the one shown or in tabs above it, whichever the width allows (`Theme`), and the last line says the keys the
+ * screen answers to there, following the widget that has the focus.
  *
  * The symbol is drawn mono until the terminal says the colour of its background, then in the colourway the brand
  * gives that background (`TerminalBackground`), as are the accents of the screen; a terminal that does not answer, or
@@ -83,6 +84,8 @@ final class Shell
 
     private readonly TextWidget $instance;
 
+    private readonly TextWidget $version;
+
     private readonly MessageWidget $status;
 
     private readonly BarWidget $header;
@@ -115,17 +118,20 @@ final class Shell
         private readonly ClockInterface $clock,
         private readonly array $sections,
         private readonly bool $colours,
+        private readonly ThisProgram $program,
     ) {
         $this->page = new ContainerWidget()
             ->addStyleClass('page')
             ->expandVertically(true);
         $this->instance = new TextWidget()->addStyleClass('instance');
+        $this->version = new TextWidget()->addStyleClass('version');
         $this->status = new MessageWidget(true);
         $welcome = new ContainerWidget()
             ->addStyleClass('welcome')
             ->expandVertically(true);
         $welcome->add(new TextWidget($this->translate('home.title'), true)->addStyleClass('title'));
         $welcome->add($this->instance);
+        $welcome->add($this->version);
         $welcome->add($this->status);
         $this->home = new ContainerWidget()
             ->addStyleClass('home')
@@ -231,11 +237,22 @@ final class Shell
             'issuer' => TerminalText::line($profile->issuer)->value,
             'profile' => TerminalText::line($name)->value,
         ]));
+        $this->sayTheVersion();
         $this->status->say($this->translate('home.invitation'));
         $this->homeKeys = [['⏎', $this->translate('keys.sign_in')], ['q', $this->translate('keys.quit')]];
         $this->page->clear();
         $this->page->add($this->home);
         $this->page->add($this->footer);
+    }
+
+    /**
+     * Looked for beside the screen: the home page says what came of it, and so does the instance section shown after.
+     */
+    public function lookForANewerRelease(Tui $tui): void
+    {
+        $this->program->lookForANewerRelease();
+        $this->sayTheVersion();
+        $tui->requestRender();
     }
 
     /**
@@ -283,7 +300,7 @@ final class Shell
 
     public function signedIn(AdministratorSession $session, Tui $tui): void
     {
-        $this->context = new SectionContext($session, $session->api(), $this->translator, $this->clock, $this->colours, $tui);
+        $this->context = new SectionContext($session, $session->api(), $this->translator, $this->clock, $this->colours, $tui, $this->program);
         $this->header->set(
             ' ' . $this->translate('header.title', ['issuer' => TerminalText::line($session->provider->issuer)->value]),
             $this->translate('header.administrator', [
@@ -401,6 +418,14 @@ final class Shell
         $at = array_search($tui->getFocus(), $round, true);
         $next = ((is_int($at) ? $at : 0) + $step + count($round)) % count($round);
         $tui->setFocus($round[$next]);
+    }
+
+    private function sayTheVersion(): void
+    {
+        $update = $this->program->update();
+        $this->version->setText(
+            $this->translate(...$this->program->version()) . ($update === null ? '' : ' · ' . $this->translate(...$update)),
+        );
     }
 
     private function shownSection(): ?SectionInterface

@@ -27,6 +27,8 @@ use Symfony\Component\Tui\Tui;
  * the wait for the browser suspend it and hold up nothing the screen does). The sections are shown once the
  * administrator is signed in; a sign-in that failed leaves the home page up, and can be started again from it.
  *
+ * A newer release of this program is looked for beside the screen too, from the moment it has started.
+ *
  * Quitting gives up a sign-in that still waits for the browser. One that is past it, exchanging its code, is let
  * finish for a few seconds, so that the tokens it obtains are ended with the session
  * rather than left valid at the provider; the session is handed back to whoever ran the screen, to be ended. The
@@ -97,6 +99,7 @@ final readonly class Administration
         // once the screen has started, which is when the loop runs what is deferred
         EventLoop::defer(function () use ($tui): void {
             $this->shell->askTheBackground($tui);
+            $this->shell->lookForANewerRelease($tui);
         });
         $tui->run();
         $cancellation->cancel();

@@ -182,6 +182,46 @@ The answer comes back to {redirect_uri}.</target>
         <source>instance.token_endpoint</source>
         <target>Token endpoint</target>
       </trans-unit>
+      <trans-unit id="4fe62cd95c" resname="instance.this_program">
+        <source>instance.this_program</source>
+        <target>This program</target>
+      </trans-unit>
+      <trans-unit id="88210c8f74" resname="instance.version">
+        <source>instance.version</source>
+        <target>Version</target>
+      </trans-unit>
+      <trans-unit id="05c143033d" resname="instance.update">
+        <source>instance.update</source>
+        <target>Update</target>
+      </trans-unit>
+      <trans-unit id="d3e48ece8c" resname="program.release">
+        <source>program.release</source>
+        <target>beffroi-tui {version}</target>
+      </trans-unit>
+      <trans-unit id="03afb7fa56" resname="program.build">
+        <source>program.build</source>
+        <target>beffroi-tui {build}, not a release</target>
+      </trans-unit>
+      <trans-unit id="f7620d83f6" resname="program.sources">
+        <source>program.sources</source>
+        <target>beffroi-tui, from its sources</target>
+      </trans-unit>
+      <trans-unit id="1653d21614" resname="program.looking">
+        <source>program.looking</source>
+        <target>looking for a newer release</target>
+      </trans-unit>
+      <trans-unit id="799c24f1c7" resname="program.newer">
+        <source>program.newer</source>
+        <target>{version} is out: beffroi-tui self-update</target>
+      </trans-unit>
+      <trans-unit id="b895561f1e" resname="program.newest">
+        <source>program.newest</source>
+        <target>newest of the {line} releases</target>
+      </trans-unit>
+      <trans-unit id="392b47f3a9" resname="program.unchecked">
+        <source>program.unchecked</source>
+        <target>update not checked: {reason}</target>
+      </trans-unit>
       <trans-unit id="10d7f06ead" resname="session.administrator">
         <source>session.administrator</source>
         <target>Administrator</target>

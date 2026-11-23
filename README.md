@@ -80,7 +80,7 @@ last line says the keys that answer where the focus is, and what lies between ad
 
 | Section | What it shows | Read from |
 |---|---|---|
-| Instance | the issuer, the administration API, the client, its redirect URI and its key, the key the tokens are bound to | the profile and the session |
+| Instance | the issuer, the administration API, the client, its redirect URI and its key, the key the tokens are bound to, the version of this program and, for a release, whether a newer one of its line is out | the profile, the session and the releases |
 | Session | who signed in, by which proof (`acr`, `amr`), the scope and the expiry of the access token held | the session |
 | Tenant | its name, issuer, login floor, groups of administrators, administration API and how long the journal keeps an act, beside the classes of authentication | `GET /tenant` |
 | Clients | a table of the clients, by name, identifier, source and dates; Enter on one opens what it registered beside or under it, with what the registration policy assigned it and what its initial access token gave it; `x` on a client asks to delete it; `i` shows the initial access tokens of the tenant in its place, each with its state, the registrations it served of those it allows, when it expires and whether its clients are clients of the administration, and `c` the clients again; `n` opens the form of a new token, which `s` issues, and `x` on a token asks to revoke it | `GET /clients`, `GET /clients/{client_id}`, `DELETE /clients/{client_id}`, `GET /initial-access-tokens`, `POST /initial-access-tokens`, `DELETE /initial-access-tokens/{id}` |
@@ -210,6 +210,19 @@ chmod +x beffroi-tui-linux-x86_64
 The PHAR is built from a checkout with [Box](https://github.com/box-project/box), whose `box.json` is here:
 `composer install --no-dev --classmap-authoritative`, then `box compile`.
 
+`beffroi-tui --version` prints the release a file was built from, or `<ref>-<commit>` for a build of another ref. The
+home page and the instance section say it too, and a release looks once per run for a newer release of its line
+(`A.B.*`), read from the GitHub API without any credential; the screen names it with the command that installs it:
+
+```bash
+beffroi-tui self-update
+```
+
+`self-update` replaces the PHAR or the executable that runs by the same file of the newest release of its line, once
+`gpgv` has verified `SHA256SUMS.asc` under the release key the client carries and the file matches its line of
+`SHA256SUMS`; it needs `gpgv` on the machine and a directory the user can write to, and it never moves to another line.
+A run from the sources is updated by Composer, and a build of another ref than a release tag by a new download.
+
 ## Running it
 
 ```bash
@@ -237,7 +250,7 @@ php apps/tui/bin/beffroi-tui register https://op.localhost https://admin.op.loca
 php apps/tui/bin/beffroi-tui administer --profile dev
 ```
 
-The home page shows the symbol, the instance and the profile; Enter opens the sign-in in the browser, and starts it
+The home page shows the symbol, the instance, the profile and the version; Enter opens the sign-in in the browser, and starts it
 again after a failure. The administrator signs in with a passkey: a password alone is answered
 `unmet_authentication_requirements`. On a machine without a browser, the address of the sign-in is shown, and the loopback port can be forwarded from the
 machine where the browser is (`ssh -L <port>:127.0.0.1:<port>`).

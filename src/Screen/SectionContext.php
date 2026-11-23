@@ -16,8 +16,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * What a section is given to show itself: the session of the administrator signed in, the administration API read
- * with its tokens, the catalogue, the clock, whether the screen may draw in colours, and the screen itself, which it
- * asks to be drawn again once what it shows changed and to hand the keys from one of its widgets to another.
+ * with its tokens, the catalogue, the clock, whether the screen may draw in colours, the screen itself, which it
+ * asks to be drawn again once what it shows changed and to hand the keys from one of its widgets to another, and the
+ * build of this program.
  */
 final readonly class SectionContext
 {
@@ -31,6 +32,7 @@ final readonly class SectionContext
         public ClockInterface $clock,
         public bool $colours,
         private Tui $tui,
+        public ThisProgram $program,
     ) {
     }
 

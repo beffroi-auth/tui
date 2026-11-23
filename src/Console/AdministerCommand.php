@@ -12,6 +12,7 @@ use Beffroi\Tui\Screen\Administration;
 use Beffroi\Tui\Screen\ClosingPage;
 use Beffroi\Tui\Screen\SectionInterface;
 use Beffroi\Tui\Screen\Shell;
+use Beffroi\Tui\Screen\ThisProgram;
 use Beffroi\Tui\SignIn\BrowserInterface;
 use Beffroi\Tui\SignIn\SignIn;
 use Psr\Clock\ClockInterface;
@@ -50,6 +51,7 @@ final readonly class AdministerCommand
         private string $locale,
         private array $sections,
         private bool $colours,
+        private ThisProgram $program,
     ) {
     }
 
@@ -73,7 +75,7 @@ final readonly class AdministerCommand
 
         $http = HttpClients::create($loaded->certificateAuthority);
         $signIn = new SignIn(new ProviderMetadataReader($http), $http, $this->clock, $this->browser, ClosingPage::html($this->translator, $this->locale));
-        $session = new Administration($signIn, new Shell($this->translator, $this->clock, $this->sections, $this->colours), $this->locale)->run(
+        $session = new Administration($signIn, new Shell($this->translator, $this->clock, $this->sections, $this->colours, $this->program), $this->locale)->run(
             new Tui(Shell::styleSheet($this->colours)),
             $loaded,
             $profile,
