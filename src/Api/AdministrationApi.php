@@ -92,16 +92,21 @@ final readonly class AdministrationApi
     }
 
     /**
-     * What the API answers once the resource of the path holds what it names, a request without a body: the account of a
-     * person disabled.
+     * What the API answers once the resource of the path holds what it names: the account of a person disabled, from a
+     * request without a body, or the S/MIME key of the tenant, from the document sent.
      *
-     * @param string $path the path of the resource under the API, its segments already encoded
+     * @param string                    $path     the path of the resource under the API, its segments already encoded
+     * @param array<string, mixed>|null $document what the resource is to hold, sent as a JSON object; no body when null
      *
      * @throws ProtocolException when the API refuses the request, answers what this program does not read, or answers nothing
      */
-    public function put(string $path): Document
+    public function put(string $path, #[SensitiveParameter] ?array $document = null): Document
     {
-        return $this->request('PUT', $this->url($path))->expect(200);
+        return $this->request(
+            'PUT',
+            $this->url($path),
+            $document === null ? null : json_encode($document, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+        )->expect(200);
     }
 
     /**
@@ -133,7 +138,7 @@ final readonly class AdministrationApi
      *
      * @throws ProtocolException when the provider refuses to refresh the token, or the API cannot be reached
      */
-    private function request(string $method, string $url, ?string $body = null, string $type = self::JSON): ProviderAnswer
+    private function request(string $method, string $url, #[SensitiveParameter] ?string $body = null, string $type = self::JSON): ProviderAnswer
     {
         $token = $this->tokens->accessToken();
         $answer = $this->send($method, $url, $token, $body, $type);
@@ -149,7 +154,7 @@ final readonly class AdministrationApi
      *
      * @throws UnreachableEndpointException
      */
-    private function send(string $method, string $url, #[SensitiveParameter] string $token, ?string $body, string $type): ProviderAnswer
+    private function send(string $method, string $url, #[SensitiveParameter] string $token, #[SensitiveParameter] ?string $body, string $type): ProviderAnswer
     {
         $answer = $this->once($method, $url, $token, $body, $type);
         if ($answer->status === 401 && $answer->error() === 'use_dpop_nonce') {
@@ -162,7 +167,7 @@ final readonly class AdministrationApi
     /**
      * @throws UnreachableEndpointException
      */
-    private function once(string $method, string $url, #[SensitiveParameter] string $token, ?string $body, string $type): ProviderAnswer
+    private function once(string $method, string $url, #[SensitiveParameter] string $token, #[SensitiveParameter] ?string $body, string $type): ProviderAnswer
     {
         $headers = [
             'Accept' => 'application/json',

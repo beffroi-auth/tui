@@ -1334,6 +1334,126 @@ The answer comes back to {redirect_uri}.</target>
         <source>account_form.saved</source>
         <target>The account of {username} is saved. The change is an act that names you in their journal.</target>
       </trans-unit>
+      <trans-unit id="07539fc4f7" resname="section.mail_signing_keys">
+        <source>section.mail_signing_keys</source>
+        <target>Mail signing keys</target>
+      </trans-unit>
+      <trans-unit id="3b751dd492" resname="keys.draw_pgp">
+        <source>keys.draw_pgp</source>
+        <target>draw an OpenPGP key</target>
+      </trans-unit>
+      <trans-unit id="3a9c083bb7" resname="keys.set_smime">
+        <source>keys.set_smime</source>
+        <target>set an S/MIME key</target>
+      </trans-unit>
+      <trans-unit id="b82c23b924" resname="keys.remove">
+        <source>keys.remove</source>
+        <target>remove</target>
+      </trans-unit>
+      <trans-unit id="5bb28c1d2b" resname="keys.set">
+        <source>keys.set</source>
+        <target>set the key</target>
+      </trans-unit>
+      <trans-unit id="bec098f59f" resname="mail_keys.key_file_prompt">
+        <source>mail_keys.key_file_prompt</source>
+        <target>File of the S/MIME private key, PEM: </target>
+      </trans-unit>
+      <trans-unit id="c386b2215c" resname="mail_keys.certificates_file_prompt">
+        <source>mail_keys.certificates_file_prompt</source>
+        <target>File of its certificate followed by its chain, PEM: </target>
+      </trans-unit>
+      <trans-unit id="673a87b132" resname="mail_keys.none">
+        <source>mail_keys.none</source>
+        <target>The tenant holds no mail signing key: its mail leaves unsigned.</target>
+      </trans-unit>
+      <trans-unit id="279baac597" resname="mail_keys.count">
+        <source>mail_keys.count</source>
+        <target>{count, plural, one {# key} other {# keys}} · read at {time}</target>
+      </trans-unit>
+      <trans-unit id="30c589d34a" resname="mail_key.state">
+        <source>mail_key.state</source>
+        <target>State</target>
+      </trans-unit>
+      <trans-unit id="c9222158ab" resname="mail_key.format">
+        <source>mail_key.format</source>
+        <target>Format</target>
+      </trans-unit>
+      <trans-unit id="6df2b6ff5b" resname="mail_key.fingerprint">
+        <source>mail_key.fingerprint</source>
+        <target>Fingerprint</target>
+      </trans-unit>
+      <trans-unit id="88ef24f154" resname="mail_key.senders">
+        <source>mail_key.senders</source>
+        <target>Senders</target>
+      </trans-unit>
+      <trans-unit id="75766f0db6" resname="mail_key.set_at">
+        <source>mail_key.set_at</source>
+        <target>Set (UTC)</target>
+      </trans-unit>
+      <trans-unit id="47449edff0" resname="mail_key.not_after">
+        <source>mail_key.not_after</source>
+        <target>Valid until (UTC)</target>
+      </trans-unit>
+      <trans-unit id="1916fe04cf" resname="mail_key.replaced_at">
+        <source>mail_key.replaced_at</source>
+        <target>Replaced (UTC)</target>
+      </trans-unit>
+      <trans-unit id="32804364d8" resname="mail_key.current">
+        <source>mail_key.current</source>
+        <target>current</target>
+      </trans-unit>
+      <trans-unit id="d3f3d20592" resname="mail_key.replaced">
+        <source>mail_key.replaced</source>
+        <target>replaced</target>
+      </trans-unit>
+      <trans-unit id="8ebc46ae84" resname="mail_key.format.smime">
+        <source>mail_key.format.smime</source>
+        <target>S/MIME</target>
+      </trans-unit>
+      <trans-unit id="dc66fa59fc" resname="mail_key.format.pgp">
+        <source>mail_key.format.pgp</source>
+        <target>OpenPGP</target>
+      </trans-unit>
+      <trans-unit id="ccfe2d5f7b" resname="mail_keys.draw_asked">
+        <source>mail_keys.draw_asked</source>
+        <target>Draw an OpenPGP key? The mail the tenant signs in OpenPGP is signed with it from then on. y confirms, any other key cancels.</target>
+      </trans-unit>
+      <trans-unit id="ec1fa99eea" resname="mail_keys.draw_replacing_asked">
+        <source>mail_keys.draw_replacing_asked</source>
+        <target>Draw an OpenPGP key? It replaces the key {fingerprint}, which then signs nothing and stays served until you remove it. y confirms, any other key cancels.</target>
+      </trans-unit>
+      <trans-unit id="00c3d7be52" resname="mail_keys.pgp_drawn">
+        <source>mail_keys.pgp_drawn</source>
+        <target>The mail the tenant signs in OpenPGP is signed with the key {fingerprint}, served at {url} for whoever verifies it. The act names you in the journal of the tenant.</target>
+      </trans-unit>
+      <trans-unit id="30c62647f6" resname="mail_keys.smime_set">
+        <source>mail_keys.smime_set</source>
+        <target>The mail the tenant signs in S/MIME is signed with the key {fingerprint}. The act names you in the journal of the tenant.</target>
+      </trans-unit>
+      <trans-unit id="e758e24135" resname="mail_keys.remove_asked">
+        <source>mail_keys.remove_asked</source>
+        <target>Remove the {format} key {fingerprint}, which signs nothing? y confirms, any other key cancels.</target>
+      </trans-unit>
+      <trans-unit id="c021138fd4" resname="mail_keys.remove_current_asked">
+        <source>mail_keys.remove_current_asked</source>
+        <target>Remove the {format} key {fingerprint}? It is the current one: the tenant then signs nothing in {format}. y confirms, any other key cancels.</target>
+      </trans-unit>
+      <trans-unit id="f7f4d24d4e" resname="mail_keys.removed">
+        <source>mail_keys.removed</source>
+        <target>The {format} key {fingerprint} is removed. The act names you in the journal of the tenant.</target>
+      </trans-unit>
+      <trans-unit id="74bbe6ee74" resname="pem_file.not_a_file">
+        <source>pem_file.not_a_file</source>
+        <target>Nothing was sent: {file} is not a file that can be read.</target>
+      </trans-unit>
+      <trans-unit id="03cec602d2" resname="pem_file.too_large">
+        <source>pem_file.too_large</source>
+        <target>Nothing was sent: {file} holds more than 64 KiB, far more than a key and its certificates.</target>
+      </trans-unit>
+      <trans-unit id="d15e4ac7a5" resname="pem_file.open_to_others">
+        <source>pem_file.open_to_others</source>
+        <target>Nothing was sent: others may open the private key {file}. It is read once "chmod 600 {file}" closes it.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
