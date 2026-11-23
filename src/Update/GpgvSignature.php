@@ -31,7 +31,7 @@ final readonly class GpgvSignature implements SignatureVerifierInterface
     /**
      * The key the release workflow signs `SHA256SUMS` and the release tags with, the one `RELEASES_KEYRING` holds.
      */
-    public const string RELEASES = 'FAFA4D7E39BAB0AE08EE4439544F6C7929EA07AF';
+    public const string RELEASES = '71E895E3E2F61952D19087F58B4BA35E2D6191D9';
 
     public const string RELEASES_KEYRING = 'release-signing-key.gpg';
 

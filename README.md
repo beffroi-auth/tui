@@ -198,7 +198,7 @@ Windows build: symfony/tui drives the terminal through `stty`.
 
 `SHA256SUMS` holds the digests of the four and of `release`, which holds the tag of the release followed by a line
 feed, so that the signature names the release it vouches for. `SHA256SUMS.asc` is its signature by the key that signs
-the release tags, `Beffroi releases <releases@beffroi.tech>`, `FAFA 4D7E 39BA B0AE 08EE  4439 544F 6C79 29EA 07AF`, which
+the release tags, `Beffroi releases <releases@beffroi.tech>`, `71E8 95E3 E2F6 1952 D190  87F5 8B4B A35E 2D61 91D9`, which
 `resources/release-signing-key.gpg` holds:
 
 ```bash
