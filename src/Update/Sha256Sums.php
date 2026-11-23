@@ -6,6 +6,8 @@ namespace Beffroi\Tui\Update;
 
 use function array_key_exists;
 use function explode;
+use function hash;
+use function hash_equals;
 use function preg_match;
 use function rtrim;
 use function sprintf;
@@ -17,6 +19,12 @@ use function sprintf;
  */
 final readonly class Sha256Sums
 {
+    /**
+     * The file the release workflow writes the tag of the release into, followed by a line feed, as it writes
+     * `resources/release` of the PHAR, and lists with the others: what ties the signature of the sums to one release.
+     */
+    public const string RELEASE = 'release';
+
     /**
      * @param array<string, string> $digests by the name of the file
      */
@@ -42,6 +50,16 @@ final readonly class Sha256Sums
         }
 
         return new self($digests);
+    }
+
+    /**
+     * Whether these are the sums of that release, and not those of another one served under its tag.
+     */
+    public function areOf(ReleaseVersion $version): bool
+    {
+        $named = $this->digests[self::RELEASE] ?? null;
+
+        return $named !== null && hash_equals($named, hash('sha256', $version->tag . "\n"));
     }
 
     /**

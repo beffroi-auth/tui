@@ -196,14 +196,16 @@ being on the screen. Its OpenSSL trusts the certificate authorities the system k
 `certs/`), or the file `SSL_CERT_FILE` names, and `register --cafile` names another for one instance. There is no
 Windows build: symfony/tui drives the terminal through `stty`.
 
-`SHA256SUMS` holds the digests of the four, and `SHA256SUMS.asc` is its signature by the key that signs the release
-tags, `Beffroi releases <releases@beffroi.tech>`, `FAFA 4D7E 39BA B0AE 08EE  4439 544F 6C79 29EA 07AF`, which
+`SHA256SUMS` holds the digests of the four and of `release`, which holds the tag of the release followed by a line
+feed, so that the signature names the release it vouches for. `SHA256SUMS.asc` is its signature by the key that signs
+the release tags, `Beffroi releases <releases@beffroi.tech>`, `FAFA 4D7E 39BA B0AE 08EE  4439 544F 6C79 29EA 07AF`, which
 `resources/release-signing-key.gpg` holds:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/beffroi-auth/beffroi/HEAD/apps/tui/resources/release-signing-key.gpg | gpg --import
 gpg --verify SHA256SUMS.asc SHA256SUMS                   # "Good signature" from "Beffroi releases <releases@beffroi.tech>"
 sha256sum --check --ignore-missing SHA256SUMS            # shasum -a 256 --check --ignore-missing SHA256SUMS on macOS
+cat release                                              # the tag of the release downloaded, and no other
 chmod +x beffroi-tui-linux-x86_64
 ./beffroi-tui-linux-x86_64 register https://op.example https://admin.example
 ```
@@ -220,8 +222,8 @@ beffroi-tui self-update
 ```
 
 `self-update` replaces the PHAR or the executable that runs by the same file of the newest release of its line, once
-`gpgv` has verified `SHA256SUMS.asc` under the release key the client carries and the file matches its line of
-`SHA256SUMS`; it needs `gpgv` on the machine and a directory the user can write to, and it never moves to another line.
+`gpgv` has verified `SHA256SUMS.asc` under the release key the client carries, `SHA256SUMS` names the tag of that
+release, and the file matches its line of `SHA256SUMS`; it needs `gpgv` on the machine and a directory the user can write to, and it never moves to another line.
 A run from the sources is updated by Composer, and a build of another ref than a release tag by a new download.
 
 ## Running it
