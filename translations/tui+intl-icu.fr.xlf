@@ -27,7 +27,7 @@
       </trans-unit>
       <trans-unit id="6f0d427562" resname="keys.reload">
         <source>keys.reload</source>
-        <target>relire</target>
+        <target>recharger</target>
       </trans-unit>
       <trans-unit id="c25602ecdc" resname="keys.revoke">
         <source>keys.revoke</source>
@@ -80,7 +80,7 @@ Profil {profile}</target>
       </trans-unit>
       <trans-unit id="a2df7e1152" resname="home.invitation">
         <source>home.invitation</source>
-        <target>Entrée ouvre la page de connexion de l'instance dans le navigateur. Un administrateur s'y connecte par passkey.</target>
+        <target>Entrée ouvre la connexion de l'instance dans le navigateur. Un administrateur se connecte par passkey.</target>
       </trans-unit>
       <trans-unit id="06ffb53ff8" resname="signin.reading">
         <source>signin.reading</source>
@@ -148,7 +148,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="dabe208357" resname="instance.endpoints">
         <source>instance.endpoints</source>
-        <target>Points de la connexion</target>
+        <target>Points de terminaison</target>
       </trans-unit>
       <trans-unit id="f38b6a964a" resname="instance.issuer">
         <source>instance.issuer</source>
@@ -248,7 +248,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="4a9826a68e" resname="session.no_expiry">
         <source>session.no_expiry</source>
-        <target>le fournisseur n'a pas dit jusqu'à quand</target>
+        <target>durée inconnue</target>
       </trans-unit>
       <trans-unit id="6ecbe4f30e" resname="session.expires_in">
         <source>session.expires_in</source>
@@ -272,7 +272,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="c9e7f73bfc" resname="api.refusal.invalid_token">
         <source>api.refusal.invalid_token</source>
-        <target>L'API d'administration n'accepte plus les jetons de cette session : quittez, puis reconnectez-vous.</target>
+        <target>L'API d'administration refuse les jetons de cette session : quittez, puis reconnectez-vous.</target>
       </trans-unit>
       <trans-unit id="8c09aca3b1" resname="value.yes">
         <source>value.yes</source>
@@ -340,7 +340,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="c58373cbd4" resname="tenant.journal">
         <source>tenant.journal</source>
-        <target>Journal conservé</target>
+        <target>Conservation du journal</target>
       </trans-unit>
       <trans-unit id="558a3c83aa" resname="clients.list">
         <source>clients.list</source>
@@ -356,11 +356,11 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="a38983f00d" resname="clients.choose">
         <source>clients.choose</source>
-        <target>Entrée sur un client lit ce qu'il a enregistré.</target>
+        <target>Entrée sur un client affiche ce qu'il a enregistré.</target>
       </trans-unit>
       <trans-unit id="511a9666e9" resname="clients.none">
         <source>clients.none</source>
-        <target>Le tenant n'a aucun client.</target>
+        <target>Aucun client.</target>
       </trans-unit>
       <trans-unit id="6f068168a0" resname="clients.count">
         <source>clients.count</source>
@@ -392,11 +392,11 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="c982ae51d5" resname="client.metadata">
         <source>client.metadata</source>
-        <target>Ce qu'il a enregistré</target>
+        <target>Métadonnées enregistrées</target>
       </trans-unit>
       <trans-unit id="6240ef01ca" resname="client.assigned">
         <source>client.assigned</source>
-        <target>Ce que la politique d'enregistrement lui a donné</target>
+        <target>Attribué par la politique d'enregistrement</target>
       </trans-unit>
       <trans-unit id="17d13cd4d6" resname="clients.views">
         <source>clients.views</source>
@@ -404,15 +404,15 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="8f09de3f8f" resname="client.granted">
         <source>client.granted</source>
-        <target>Ce que son jeton initial lui a donné</target>
+        <target>Accordé par son jeton initial</target>
       </trans-unit>
       <trans-unit id="0cd9d479ac" resname="clients.delete_asked">
         <source>clients.delete_asked</source>
-        <target>Supprimer le client {client} ? Plus rien de ce qui lui a été émis ne pourra servir. y confirme, toute autre touche annule.</target>
+        <target>Supprimer le client {client} ? Tout ce qui lui a été émis devient inutilisable. y confirme, toute autre touche annule.</target>
       </trans-unit>
       <trans-unit id="5034c9b5d0" resname="clients.deleted_now">
         <source>clients.deleted_now</source>
-        <target>Le client {client} est supprimé : plus rien de ce qui lui a été émis ne peut servir. L'acte vous nomme dans le journal du tenant.</target>
+        <target>Client {client} supprimé. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="6571ca7bcd" resname="initial_access_tokens.list">
         <source>initial_access_tokens.list</source>
@@ -420,7 +420,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="df868d1b5e" resname="initial_access_tokens.none">
         <source>initial_access_tokens.none</source>
-        <target>Le tenant n'a émis aucun jeton initial.</target>
+        <target>Aucun jeton initial émis.</target>
       </trans-unit>
       <trans-unit id="3b9ee1ace4" resname="initial_access_token.name">
         <source>initial_access_token.name</source>
@@ -468,11 +468,11 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="6a4cccf786" resname="initial_access_tokens.revoke_asked">
         <source>initial_access_tokens.revoke_asked</source>
-        <target>Révoquer le jeton initial {name} ? Il n'autorise plus aucune inscription, et les clients qu'il a inscrits restent. y confirme, toute autre touche annule.</target>
+        <target>Révoquer le jeton initial {name} ? Il n'autorisera plus d'inscription ; les clients déjà inscrits restent. y confirme, toute autre touche annule.</target>
       </trans-unit>
       <trans-unit id="a7c0331050" resname="initial_access_tokens.revoked_now">
         <source>initial_access_tokens.revoked_now</source>
-        <target>Le jeton initial {name} est révoqué : il n'autorise plus aucune inscription, et les clients qu'il a inscrits restent. L'acte vous nomme dans le journal du tenant.</target>
+        <target>Jeton initial {name} révoqué. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="bec2317c6e" resname="initial_access_tokens.issued_title">
         <source>initial_access_tokens.issued_title</source>
@@ -480,7 +480,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="71363590e7" resname="initial_access_tokens.issued_shown">
         <source>initial_access_tokens.issued_shown</source>
-        <target>Sa valeur n'est montrée qu'ici, une fois, et plus jamais : copiez-la pour qui inscrit le client. Entrée la ferme, comme le focus qui s'en va. L'acte vous nomme dans le journal du tenant.</target>
+        <target>Copiez cette valeur maintenant pour qui inscrit le client : elle ne sera plus affichée. Entrée la ferme. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="7f8f03b5a3" resname="token_form.title">
         <source>token_form.title</source>
@@ -488,11 +488,11 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="84fac4128c" resname="token_form.notice">
         <source>token_form.notice</source>
-        <target>Entrée change le membre choisi, et s émet le jeton : sa valeur n'est alors montrée qu'une fois, et plus jamais.</target>
+        <target>Entrée modifie le champ choisi, s émet le jeton. Sa valeur ne sera affichée qu'une fois.</target>
       </trans-unit>
       <trans-unit id="e5dda30b89" resname="token_form.member">
         <source>token_form.member</source>
-        <target>Membre</target>
+        <target>Champ</target>
       </trans-unit>
       <trans-unit id="ba8e6111af" resname="token_form.value">
         <source>token_form.value</source>
@@ -524,7 +524,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="1342831ceb" resname="keys.none">
         <source>keys.none</source>
-        <target>Le tenant n'a aucune clé de signature : rien ne peut être signé.</target>
+        <target>Aucune clé de signature : rien ne peut être signé.</target>
       </trans-unit>
       <trans-unit id="787664176f" resname="keys.count">
         <source>keys.count</source>
@@ -588,11 +588,11 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="74585bf6c6" resname="users.notice">
         <source>users.notice</source>
-        <target>Tapez un nom d'utilisateur, puis Entrée. Lire une personne, ses sessions ou son journal est un acte écrit dans son journal, qui vous nomme (décisions 0022 et 0038) : rien n'est lu avant que vous le demandiez.</target>
+        <target>Tapez un nom d'utilisateur, puis Entrée. Chaque lecture d'une personne est journalisée sous votre nom.</target>
       </trans-unit>
       <trans-unit id="5bda661977" resname="users.none">
         <source>users.none</source>
-        <target>Personne dans le tenant ne porte le nom d'utilisateur {username}.</target>
+        <target>Aucun utilisateur nommé {username}.</target>
       </trans-unit>
       <trans-unit id="4112d6dac9" resname="users.person">
         <source>users.person</source>
@@ -600,23 +600,23 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="8077bbff29" resname="users.view.credentials">
         <source>users.view.credentials</source>
-        <target>Credentials</target>
+        <target>Moyens de connexion</target>
       </trans-unit>
       <trans-unit id="7ffa95b07a" resname="users.view.sessions">
         <source>users.view.sessions</source>
-        <target>Sessions ouvertes · lecture inscrite à son journal</target>
+        <target>Sessions ouvertes · lecture journalisée</target>
       </trans-unit>
       <trans-unit id="66ef14d4ce" resname="users.view.journal">
         <source>users.view.journal</source>
-        <target>Derniers actes · lecture inscrite à son journal</target>
+        <target>Derniers actes · lecture journalisée</target>
       </trans-unit>
       <trans-unit id="f52346556b" resname="users.view.consents">
         <source>users.view.consents</source>
-        <target>Applications autorisées · lecture inscrite à son journal</target>
+        <target>Applications autorisées · lecture journalisée</target>
       </trans-unit>
       <trans-unit id="5006d0443c" resname="users.views">
         <source>users.views</source>
-        <target>c credentials · s sessions · j journal · a applications · e modifier · d désactiver ou réactiver · t lien d'enrôlement · p lien de mot de passe · o lien d'OTP</target>
+        <target>c moyens de connexion · s sessions · j journal · a applications · e modifier · d désactiver ou réactiver · t lien de passkey · p lien de mot de passe · o lien d'OTP</target>
       </trans-unit>
       <trans-unit id="d1c1ad850b" resname="groups.list">
         <source>groups.list</source>
@@ -632,11 +632,11 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="7588f71eef" resname="groups.notice">
         <source>groups.notice</source>
-        <target>Entrée sur un groupe lit ses membres. Lire un membre est un acte écrit dans son journal qui vous nomme (décisions 0022 et 0038) : rien n'est lu avant que vous le demandiez.</target>
+        <target>Entrée sur un groupe affiche ses membres. Chaque lecture d'un membre est journalisée sous votre nom.</target>
       </trans-unit>
       <trans-unit id="f691ac20d4" resname="groups.none">
         <source>groups.none</source>
-        <target>Le tenant ne tient aucun groupe.</target>
+        <target>Aucun groupe.</target>
       </trans-unit>
       <trans-unit id="6a13210d18" resname="groups.no_member">
         <source>groups.no_member</source>
@@ -656,11 +656,11 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="5f3ff834ea" resname="groups.created">
         <source>groups.created</source>
-        <target>Le groupe {group} est créé. L'acte vous nomme dans le journal du tenant.</target>
+        <target>Groupe {group} créé. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="26fecbddc7" resname="groups.member_added">
         <source>groups.member_added</source>
-        <target>{username} est membre de {group}. L'acte vous nomme dans son journal.</target>
+        <target>{username} est membre de {group}. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="40b0875ec2" resname="groups.take_out_asked">
         <source>groups.take_out_asked</source>
@@ -668,11 +668,11 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="f1544a2a6a" resname="groups.take_out_administrator_asked">
         <source>groups.take_out_administrator_asked</source>
-        <target>Retirer {username} de {group} ? Hors du dernier groupe qui administre le tenant, cette personne ne l'administre plus. y confirme, toute autre touche annule.</target>
+        <target>Retirer {username} de {group} ? C'est son dernier groupe d'administration : cette personne n'administrera plus le tenant. y confirme, toute autre touche annule.</target>
       </trans-unit>
       <trans-unit id="45ef216650" resname="groups.taken_out">
         <source>groups.taken_out</source>
-        <target>{username} n'est plus membre de {group}. L'acte vous nomme dans son journal.</target>
+        <target>{username} n'est plus membre de {group}. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="37e17bee8c" resname="group.name">
         <source>group.name</source>
@@ -760,11 +760,11 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="4859efd371" resname="user.no_credential">
         <source>user.no_credential</source>
-        <target>Aucun credential.</target>
+        <target>Aucun moyen de connexion.</target>
       </trans-unit>
       <trans-unit id="7d0f9f4141" resname="credential.kind">
         <source>credential.kind</source>
-        <target>Sorte</target>
+        <target>Type</target>
       </trans-unit>
       <trans-unit id="b80d10e063" resname="credential.name">
         <source>credential.name</source>
@@ -776,7 +776,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="b7c5eed5af" resname="credential.created_at">
         <source>credential.created_at</source>
-        <target>Enrôlé (UTC)</target>
+        <target>Ajouté (UTC)</target>
       </trans-unit>
       <trans-unit id="b24187d2ec" resname="credential.last_used_at">
         <source>credential.last_used_at</source>
@@ -788,35 +788,35 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="175d0f2f6f" resname="credential.revoke_asked">
         <source>credential.revoke_asked</source>
-        <target>Révoquer le credential {kind} {name} de {username} ? Il ne servira plus jamais à se connecter. y confirme, toute autre touche annule.</target>
+        <target>Révoquer le moyen de connexion {kind} {name} de {username} ? Il ne pourra plus servir. y confirme, toute autre touche annule.</target>
       </trans-unit>
       <trans-unit id="007d52a0ec" resname="user.disable_asked">
         <source>user.disable_asked</source>
-        <target>Désactiver {username} ? Cette personne ne peut plus se connecter, et chacune de ses sessions prend fin, les applications où elle s'était connectée en étant averties par le back-channel. y confirme, toute autre touche annule.</target>
+        <target>Désactiver {username} ? Ses sessions prennent fin et ses applications en sont prévenues. y confirme, toute autre touche annule.</target>
       </trans-unit>
       <trans-unit id="2d34b34147" resname="user.enable_asked">
         <source>user.enable_asked</source>
-        <target>Réactiver {username} ? Cette personne peut de nouveau se connecter, et aucune de ses sessions ne revient. y confirme, toute autre touche annule.</target>
+        <target>Réactiver {username} ? Ses anciennes sessions ne reviennent pas. y confirme, toute autre touche annule.</target>
       </trans-unit>
       <trans-unit id="d1fecc6b7f" resname="user.disabled_now">
         <source>user.disabled_now</source>
-        <target>Le compte de {username} est désactivé, et chacune de ses sessions a pris fin. L'acte vous nomme dans son journal.</target>
+        <target>Compte de {username} désactivé, ses sessions fermées. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="57a28227e3" resname="user.enabled_now">
         <source>user.enabled_now</source>
-        <target>Le compte de {username} est réactivé. L'acte vous nomme dans son journal.</target>
+        <target>Compte de {username} réactivé. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="3e0dd68604" resname="credential.revoked_now">
         <source>credential.revoked_now</source>
-        <target>Le credential {kind} {name} de {username} est révoqué : il ne servira plus jamais à se connecter. L'acte vous nomme dans son journal.</target>
+        <target>Moyen de connexion {kind} {name} de {username} révoqué. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="8c01143ee9" resname="credential.not_revocable">
         <source>credential.not_revocable</source>
-        <target>Un mot de passe se remplace, il ne se révoque pas, et un credential révoqué le reste.</target>
+        <target>Un mot de passe ne se révoque pas, il se remplace, et un moyen de connexion révoqué le reste.</target>
       </trans-unit>
       <trans-unit id="73e96ee47c" resname="user_sessions.none">
         <source>user_sessions.none</source>
-        <target>Aucune session n'est ouverte à son nom.</target>
+        <target>Aucune session ouverte.</target>
       </trans-unit>
       <trans-unit id="09b25a4110" resname="user_sessions.proof">
         <source>user_sessions.proof</source>
@@ -836,15 +836,15 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="76fa0fb8d7" resname="user_sessions.end_asked">
         <source>user_sessions.end_asked</source>
-        <target>Terminer la session de {username} authentifiée le {time} depuis {address} ? Les applications où elle s'est connectée en sont averties par le back-channel. y confirme, toute autre touche annule.</target>
+        <target>Terminer la session de {username} authentifiée le {time} depuis {address} ? Ses applications en sont prévenues. y confirme, toute autre touche annule.</target>
       </trans-unit>
       <trans-unit id="e92672de75" resname="user_sessions.ended_now">
         <source>user_sessions.ended_now</source>
-        <target>La session de {username} est terminée, et les applications où elle s'était connectée en sont averties par le back-channel. L'acte vous nomme dans son journal.</target>
+        <target>Session de {username} terminée, ses applications prévenues. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="2263941e06" resname="user_consents.none">
         <source>user_consents.none</source>
-        <target>Aucune application ne tient de consentement de cette personne.</target>
+        <target>Aucun consentement.</target>
       </trans-unit>
       <trans-unit id="00d691bb9b" resname="user_consents.application">
         <source>user_consents.application</source>
@@ -856,7 +856,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="b32ccd0a71" resname="user_consents.scope">
         <source>user_consents.scope</source>
-        <target>Portée</target>
+        <target>Scope</target>
       </trans-unit>
       <trans-unit id="c8ce920326" resname="user_consents.granted_at">
         <source>user_consents.granted_at</source>
@@ -872,11 +872,11 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="409cc43649" resname="user_consents.revoke_asked">
         <source>user_consents.revoke_asked</source>
-        <target>Retirer ce que {username} a accordé à {application} ? Ce qui lui a été émis sous ce consentement est révoqué, un access token déjà émis vit jusqu'à son expiration, et sa prochaine demande redemande à cette personne. y confirme, toute autre touche annule.</target>
+        <target>Retirer le consentement de {username} à {application} ? Ce qui lui a été émis est révoqué, sauf un access token déjà émis, valable jusqu'à son expiration. y confirme, toute autre touche annule.</target>
       </trans-unit>
       <trans-unit id="24195785e7" resname="user_consents.revoked_now">
         <source>user_consents.revoked_now</source>
-        <target>Ce que {username} avait accordé à {application} est retiré, et ce qui lui a été émis sous ce consentement est révoqué. L'acte vous nomme dans son journal.</target>
+        <target>Consentement de {username} à {application} retiré. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="6212d9308b" resname="provenance.address">
         <source>provenance.address</source>
@@ -892,7 +892,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="cd716f827a" resname="journal.none">
         <source>journal.none</source>
-        <target>Aucun acte dans ce que le journal garde.</target>
+        <target>Aucun acte journalisé.</target>
       </trans-unit>
       <trans-unit id="9d57b0f689" resname="journal.when">
         <source>journal.when</source>
@@ -924,7 +924,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="5cb84362c7" resname="health.none">
         <source>health.none</source>
-        <target>Rien n'est branché pour examiner ce déploiement.</target>
+        <target>Aucune vérification de santé n'est configurée.</target>
       </trans-unit>
       <trans-unit id="59f33622cb" resname="statistics.acts">
         <source>statistics.acts</source>
@@ -1052,11 +1052,11 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="46166caffb" resname="act.credential.enrolled">
         <source>act.credential.enrolled</source>
-        <target>credentials enrôlés</target>
+        <target>moyens de connexion ajoutés</target>
       </trans-unit>
       <trans-unit id="7385452647" resname="act.credential.revoked">
         <source>act.credential.revoked</source>
-        <target>credentials révoqués</target>
+        <target>moyens de connexion révoqués</target>
       </trans-unit>
       <trans-unit id="c3e6a8d96e" resname="act.administration.person_read">
         <source>act.administration.person_read</source>
@@ -1100,11 +1100,11 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="3733fdc585" resname="act.address.confirmation_sent">
         <source>act.address.confirmation_sent</source>
-        <target>code de confirmation envoyé à une adresse de la personne</target>
+        <target>codes de confirmation envoyés</target>
       </trans-unit>
       <trans-unit id="71cc5de027" resname="act.address.established">
         <source>act.address.established</source>
-        <target>adresse de la personne confirmée</target>
+        <target>adresses confirmées</target>
       </trans-unit>
       <trans-unit id="ce3c8d864e" resname="act.person.disabled">
         <source>act.person.disabled</source>
@@ -1128,7 +1128,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="ee56b59992" resname="act.enrolment_ticket.issued">
         <source>act.enrolment_ticket.issued</source>
-        <target>liens d'enrôlement émis</target>
+        <target>liens de passkey émis</target>
       </trans-unit>
       <trans-unit id="96ae4a0753" resname="act.password_ticket.issued">
         <source>act.password_ticket.issued</source>
@@ -1148,11 +1148,11 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="d7310f0c95" resname="act.credential.renamed">
         <source>act.credential.renamed</source>
-        <target>credentials renommés</target>
+        <target>moyens de connexion renommés</target>
       </trans-unit>
       <trans-unit id="f41d9a364d" resname="act.credential.forgotten">
         <source>act.credential.forgotten</source>
-        <target>credentials oubliés</target>
+        <target>moyens de connexion oubliés</target>
       </trans-unit>
       <trans-unit id="07e482ce81" resname="act.backup_codes.renewed">
         <source>act.backup_codes.renewed</source>
@@ -1160,23 +1160,23 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="44eb3dd840" resname="act.archive.asked">
         <source>act.archive.asked</source>
-        <target>dossiers de données demandés</target>
+        <target>copies des données demandées</target>
       </trans-unit>
       <trans-unit id="79712a8c78" resname="act.archive.taken">
         <source>act.archive.taken</source>
-        <target>dossiers de données téléchargés</target>
+        <target>copies des données téléchargées</target>
       </trans-unit>
       <trans-unit id="399667f18a" resname="act.archive.dropped">
         <source>act.archive.dropped</source>
-        <target>dossiers de données supprimés</target>
+        <target>copies des données supprimées</target>
       </trans-unit>
       <trans-unit id="171ab1fc56" resname="act.backchannel_request.answered">
         <source>act.backchannel_request.answered</source>
-        <target>réponses aux demandes en canal arrière</target>
+        <target>réponses aux demandes backchannel</target>
       </trans-unit>
       <trans-unit id="4b387fc63e" resname="act.refresh_token.outlived_its_session">
         <source>act.refresh_token.outlived_its_session</source>
-        <target>jetons de rafraîchissement après leur session</target>
+        <target>jetons de rafraîchissement survivant à leur session</target>
       </trans-unit>
       <trans-unit id="774c2cb006" resname="act.registered_client.deleted">
         <source>act.registered_client.deleted</source>
@@ -1220,11 +1220,11 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="act.tenant.mail_signing_key_set" resname="act.tenant.mail_signing_key_set">
         <source>act.tenant.mail_signing_key_set</source>
-        <target>clés de signature du courriel posées</target>
+        <target>clés de signature des e-mails définies</target>
       </trans-unit>
       <trans-unit id="act.tenant.mail_signing_key_removed" resname="act.tenant.mail_signing_key_removed">
         <source>act.tenant.mail_signing_key_removed</source>
-        <target>clés de signature du courriel retirées</target>
+        <target>clés de signature des e-mails retirées</target>
       </trans-unit>
       <trans-unit id="055e3e45e9" resname="page.title">
         <source>page.title</source>
@@ -1236,15 +1236,15 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="a359e78581" resname="refusal.unmet_authentication_requirements">
         <source>refusal.unmet_authentication_requirements</source>
-        <target>Un administrateur se connecte par passkey : sur la page de connexion, choisissez la passkey, un mot de passe seul étant refusé. Une passkey s'ajoute sur la page des passkeys de votre compte.</target>
+        <target>Un administrateur se connecte par passkey, jamais par mot de passe seul. Ajoutez-en une sur la page des passkeys de votre compte.</target>
       </trans-unit>
       <trans-unit id="0f0b1e980f" resname="refusal.access_denied">
         <source>refusal.access_denied</source>
-        <target>Ce compte n'administre pas l'instance : un administrateur est membre d'un groupe que le déploiement de l'instance nomme (BEFFROI_TENANT_ADMINISTRATORS). Si la page de consentement a été refusée, recommencez et acceptez-la.</target>
+        <target>Ce compte n'administre pas l'instance : il doit être membre d'un groupe de BEFFROI_TENANT_ADMINISTRATORS. Si vous avez refusé le consentement, recommencez et acceptez-le.</target>
       </trans-unit>
       <trans-unit id="4cb6dccf46" resname="refusal.invalid_target">
         <source>refusal.invalid_target</source>
-        <target>L'instance ne laisse pas ce client demander son API d'administration : enregistrez de nouveau ce poste avec l'identifiant que le déploiement de l'instance nomme (BEFFROI_TENANT_ADMINISTRATION_RESOURCE).</target>
+        <target>Ce client ne peut pas demander l'API d'administration : enregistrez de nouveau ce poste avec l'identifiant de BEFFROI_TENANT_ADMINISTRATION_RESOURCE.</target>
       </trans-unit>
       <trans-unit id="d294c4e880" resname="users.create_prompt">
         <source>users.create_prompt</source>
@@ -1256,15 +1256,15 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="ec96e2480b" resname="users.created">
         <source>users.created</source>
-        <target>{username} est créée, sans credential : t émet le lien qui lui fait poser une passkey. L'acte vous nomme dans son journal.</target>
+        <target>Compte {username} créé, sans moyen de connexion : t émet un lien pour ajouter une passkey. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="ca31f9ed2c" resname="users.taken">
         <source>users.taken</source>
-        <target>Le tenant a déjà une personne du nom d'utilisateur {username}.</target>
+        <target>Le nom d'utilisateur {username} est déjà pris.</target>
       </trans-unit>
       <trans-unit id="9efde57f13" resname="keys.ticket">
         <source>keys.ticket</source>
-        <target>lien d'enrôlement</target>
+        <target>lien de passkey</target>
       </trans-unit>
       <trans-unit id="4f217845f9" resname="keys.close">
         <source>keys.close</source>
@@ -1272,15 +1272,15 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="7e9fa6ef26" resname="ticket.issue_asked">
         <source>ticket.issue_asked</source>
-        <target>Émettre un lien qui permet à {username} de poser une passkey ? Qui le détient en pose une sur son compte jusqu'à son expiration, et un lien émis avant pour cette personne n'ouvre plus rien. y confirme, toute autre touche annule.</target>
+        <target>Émettre un lien pour ajouter une passkey à {username} ? Quiconque le détient peut en ajouter une jusqu'à son expiration. Le lien précédent cesse de fonctionner. y confirme, toute autre touche annule.</target>
       </trans-unit>
       <trans-unit id="ed47535515" resname="ticket.title">
         <source>ticket.title</source>
-        <target>Lien d'enrôlement de {username}</target>
+        <target>Lien de passkey de {username}</target>
       </trans-unit>
       <trans-unit id="86b6d0f5ff" resname="ticket.shown">
         <source>ticket.shown</source>
-        <target>{link} ouvre jusqu'au {time}. Scannez le code avec l'appareil qui tiendra la passkey : le lien quitte l'écran avec le focus. L'acte vous nomme dans son journal.</target>
+        <target>{link} est valable jusqu'au {time}. Scannez le code avec l'appareil qui portera la passkey ; le lien disparaît quand le focus change. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="32368ee43d" resname="ticket.too_small">
         <source>ticket.too_small</source>
@@ -1320,7 +1320,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="30bca564e9" resname="password_ticket.issue_asked">
         <source>password_ticket.issue_asked</source>
-        <target>Émettre un lien qui permet à {username} de poser un nouveau mot de passe ? Qui le détient en pose un sur son compte jusqu'à son expiration, ce qui termine chacune de ses sessions, et un lien de mot de passe émis avant pour cette personne n'ouvre plus rien. y confirme, toute autre touche annule.</target>
+        <target>Émettre un lien de nouveau mot de passe pour {username} ? Quiconque le détient peut en définir un jusqu'à son expiration, ce qui ferme toutes ses sessions. Le lien précédent cesse de fonctionner. y confirme, toute autre touche annule.</target>
       </trans-unit>
       <trans-unit id="a4f1bff86b" resname="password_ticket.title">
         <source>password_ticket.title</source>
@@ -1328,11 +1328,11 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="7b95b18006" resname="password_ticket.shown">
         <source>password_ticket.shown</source>
-        <target>{link} ouvre jusqu'au {time}. Scannez le code avec l'appareil où la personne tapera son nouveau mot de passe : le lien quitte l'écran avec le focus. L'acte vous nomme dans son journal.</target>
+        <target>{link} est valable jusqu'au {time}. Scannez le code avec l'appareil où la personne tapera son mot de passe ; le lien disparaît quand le focus change. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="d281743a63" resname="totp_ticket.issue_asked">
         <source>totp_ticket.issue_asked</source>
-        <target>Émettre un lien qui permet à {username} de configurer une application d'authentification à la place de la sienne ? Qui le détient en configure une sur son compte jusqu'à son expiration, ce qui révoque l'application que la personne tenait et termine chacune de ses sessions, et un lien d'OTP émis avant pour cette personne n'ouvre plus rien. y confirme, toute autre touche annule.</target>
+        <target>Émettre un lien de nouvelle application d'authentification pour {username} ? Quiconque le détient peut en configurer une jusqu'à son expiration, ce qui révoque l'ancienne et ferme toutes ses sessions. Le lien précédent cesse de fonctionner. y confirme, toute autre touche annule.</target>
       </trans-unit>
       <trans-unit id="9b777ad67c" resname="totp_ticket.title">
         <source>totp_ticket.title</source>
@@ -1340,7 +1340,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="4acbe4a398" resname="totp_ticket.shown">
         <source>totp_ticket.shown</source>
-        <target>{link} ouvre jusqu'au {time}. Scannez le code avec l'appareil où la personne configurera son application : le lien quitte l'écran avec le focus. L'acte vous nomme dans son journal.</target>
+        <target>{link} est valable jusqu'au {time}. Scannez le code avec l'appareil où la personne configurera son application ; le lien disparaît quand le focus change. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="e753982b5c" resname="account_form.title">
         <source>account_form.title</source>
@@ -1348,7 +1348,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="a7ea433390" resname="account_form.member">
         <source>account_form.member</source>
-        <target>Membre</target>
+        <target>Champ</target>
       </trans-unit>
       <trans-unit id="bb2dbcf2f6" resname="account_form.value">
         <source>account_form.value</source>
@@ -1364,7 +1364,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="e43460ecaf" resname="account_form.unchanged">
         <source>account_form.unchanged</source>
-        <target>Rien n'est encore changé : Entrée change le membre choisi, s enregistre ce qui a changé.</target>
+        <target>Rien n'a changé : Entrée modifie le champ choisi, s enregistre.</target>
       </trans-unit>
       <trans-unit id="9d2de71d7f" resname="account_form.refused">
         <source>account_form.refused</source>
@@ -1372,19 +1372,19 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="9ad5bd91d2" resname="account_form.saved">
         <source>account_form.saved</source>
-        <target>Le compte de {username} est enregistré. Le changement est un acte qui vous nomme dans son journal.</target>
+        <target>Modifications de {username} enregistrées. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="07539fc4f7" resname="section.mail_signing_keys">
         <source>section.mail_signing_keys</source>
-        <target>Clés du courriel</target>
+        <target>Clés des e-mails</target>
       </trans-unit>
       <trans-unit id="3b751dd492" resname="keys.draw_pgp">
         <source>keys.draw_pgp</source>
-        <target>tirer une clé OpenPGP</target>
+        <target>générer une clé OpenPGP</target>
       </trans-unit>
       <trans-unit id="3a9c083bb7" resname="keys.set_smime">
         <source>keys.set_smime</source>
-        <target>poser une clé S/MIME</target>
+        <target>définir une clé S/MIME</target>
       </trans-unit>
       <trans-unit id="b82c23b924" resname="keys.remove">
         <source>keys.remove</source>
@@ -1392,7 +1392,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="5bb28c1d2b" resname="keys.set">
         <source>keys.set</source>
-        <target>poser la clé</target>
+        <target>enregistrer la clé</target>
       </trans-unit>
       <trans-unit id="bec098f59f" resname="mail_keys.key_file_prompt">
         <source>mail_keys.key_file_prompt</source>
@@ -1404,7 +1404,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="673a87b132" resname="mail_keys.none">
         <source>mail_keys.none</source>
-        <target>Le tenant ne tient aucune clé de signature du courriel : son courriel part sans signature.</target>
+        <target>Aucune clé de signature des e-mails : ils partent non signés.</target>
       </trans-unit>
       <trans-unit id="279baac597" resname="mail_keys.count">
         <source>mail_keys.count</source>
@@ -1428,7 +1428,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="75766f0db6" resname="mail_key.set_at">
         <source>mail_key.set_at</source>
-        <target>Posée (UTC)</target>
+        <target>Définie (UTC)</target>
       </trans-unit>
       <trans-unit id="47449edff0" resname="mail_key.not_after">
         <source>mail_key.not_after</source>
@@ -1440,7 +1440,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="32804364d8" resname="mail_key.current">
         <source>mail_key.current</source>
-        <target>courante</target>
+        <target>en service</target>
       </trans-unit>
       <trans-unit id="d3f3d20592" resname="mail_key.replaced">
         <source>mail_key.replaced</source>
@@ -1456,43 +1456,43 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="ccfe2d5f7b" resname="mail_keys.draw_asked">
         <source>mail_keys.draw_asked</source>
-        <target>Tirer une clé OpenPGP ? Le courriel que le tenant signe en OpenPGP est désormais signé avec elle. y confirme, toute autre touche annule.</target>
+        <target>Générer une clé OpenPGP ? Elle signera les e-mails OpenPGP du tenant. y confirme, toute autre touche annule.</target>
       </trans-unit>
       <trans-unit id="ec1fa99eea" resname="mail_keys.draw_replacing_asked">
         <source>mail_keys.draw_replacing_asked</source>
-        <target>Tirer une clé OpenPGP ? Elle remplace la clé {fingerprint}, qui ne signe alors plus rien et reste servie jusqu'à ce que vous la retiriez. y confirme, toute autre touche annule.</target>
+        <target>Générer une clé OpenPGP ? Elle remplace la clé {fingerprint}, qui reste publiée jusqu'à ce que vous la retiriez. y confirme, toute autre touche annule.</target>
       </trans-unit>
       <trans-unit id="00c3d7be52" resname="mail_keys.pgp_drawn">
         <source>mail_keys.pgp_drawn</source>
-        <target>Le courriel que le tenant signe en OpenPGP est signé avec la clé {fingerprint}, servie à {url} pour qui le vérifie. L'acte vous nomme dans le journal du tenant.</target>
+        <target>Les e-mails OpenPGP sont signés avec la clé {fingerprint}, publiée à {url}. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="30c62647f6" resname="mail_keys.smime_set">
         <source>mail_keys.smime_set</source>
-        <target>Le courriel que le tenant signe en S/MIME est signé avec la clé {fingerprint}. L'acte vous nomme dans le journal du tenant.</target>
+        <target>Les e-mails S/MIME sont signés avec la clé {fingerprint}. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="e758e24135" resname="mail_keys.remove_asked">
         <source>mail_keys.remove_asked</source>
-        <target>Retirer la clé {format} {fingerprint}, qui ne signe rien ? y confirme, toute autre touche annule.</target>
+        <target>Retirer la clé {format} {fingerprint} ? Elle ne signe rien. y confirme, toute autre touche annule.</target>
       </trans-unit>
       <trans-unit id="c021138fd4" resname="mail_keys.remove_current_asked">
         <source>mail_keys.remove_current_asked</source>
-        <target>Retirer la clé {format} {fingerprint} ? C'est la courante : le tenant ne signe alors plus rien en {format}. y confirme, toute autre touche annule.</target>
+        <target>Retirer la clé {format} {fingerprint} ? C'est la clé en service : plus rien ne sera signé en {format}. y confirme, toute autre touche annule.</target>
       </trans-unit>
       <trans-unit id="f7f4d24d4e" resname="mail_keys.removed">
         <source>mail_keys.removed</source>
-        <target>La clé {format} {fingerprint} est retirée. L'acte vous nomme dans le journal du tenant.</target>
+        <target>Clé {format} {fingerprint} retirée. Journalisé sous votre nom.</target>
       </trans-unit>
       <trans-unit id="74bbe6ee74" resname="pem_file.not_a_file">
         <source>pem_file.not_a_file</source>
-        <target>Rien n'a été envoyé : {file} n'est pas un fichier qui se lit.</target>
+        <target>Rien n'a été envoyé : {file} est illisible.</target>
       </trans-unit>
       <trans-unit id="03cec602d2" resname="pem_file.too_large">
         <source>pem_file.too_large</source>
-        <target>Rien n'a été envoyé : {file} dépasse 64 Kio, bien plus qu'une clé et ses certificats.</target>
+        <target>Rien n'a été envoyé : {file} dépasse 64 Kio.</target>
       </trans-unit>
       <trans-unit id="d15e4ac7a5" resname="pem_file.open_to_others">
         <source>pem_file.open_to_others</source>
-        <target>Rien n'a été envoyé : d'autres peuvent ouvrir la clé privée {file}. Elle se lit une fois que « chmod 600 {file} » la ferme.</target>
+        <target>Rien n'a été envoyé : la clé privée {file} est lisible par d'autres. Lancez « chmod 600 {file} ».</target>
       </trans-unit>
     </body>
   </file>
