@@ -2,7 +2,7 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file source-language="en" target-language="fr" datatype="plaintext" original="tui">
     <header>
-      <note>Every string the terminal administration shows, and the page of the loopback interface the browser is answered with once it brought the authorization response back. ICU message format: {issuer} is the issuer of the tenant, {profile} the name the profile of the instance was kept under, {administrator} the name of who signed in, {acr} the class of their authentication, {url} the address of the authorization endpoint, {redirect_uri} the redirect URI of the client, {reason} why the sign-in or a read of the administration API failed, {minutes} and {time} how long the access token is worth and until when, {time} also when a session was authenticated, {days} a number of days, {count} a number of rows, {client} the identifier of a client, {username} the username the administrator typed or the API answered, {kind} and {name} the kind and the name of a credential, {address} the address a session was last seen from, {since} the start of the window the statistics count over. value.more is a printf pattern, %d being how many items were left out. A string named refusal.&lt;error&gt; is what the screen says to do when the provider refuses a sign-in with that error, api.refusal.&lt;error&gt; when the administration API refuses a request with it, act.&lt;name&gt; how the screen names an act of the journal, and key.status.&lt;state&gt; how it names the state of a signing key.</note>
+      <note>Every string the terminal administration shows, and the page of the loopback interface the browser is answered with once it brought the authorization response back. ICU message format: {issuer} is the issuer of the tenant, {profile} the name the profile of the instance was kept under, {administrator} the name of who signed in, {acr} the class of their authentication, {url} the address of the authorization endpoint, {redirect_uri} the redirect URI of the client, {reason} why the sign-in or a read of the administration API failed, {minutes} and {time} how long the access token is worth and until when, {time} also when a session was authenticated, {days} a number of days, {count} a number of rows, {page} and {pages} the page of a list shown and how many there are, {client} the identifier of a client, {username} the username the administrator typed or the API answered, {kind} and {name} the kind and the name of a credential, {address} the address a session was last seen from, {since} the start of the window the statistics count over. value.more is a printf pattern, %d being how many items were left out. A string named refusal.&lt;error&gt; is what the screen says to do when the provider refuses a sign-in with that error, api.refusal.&lt;error&gt; when the administration API refuses a request with it, act.&lt;name&gt; how the screen names an act of the journal, and key.status.&lt;state&gt; how it names the state of a signing key.</note>
     </header>
     <body>
       <trans-unit id="4a92db3047" resname="keys.sign_in">
@@ -634,6 +634,10 @@ La réponse revient à {redirect_uri}.</target>
         <source>groups.members_of</source>
         <target>Membres de {group}</target>
       </trans-unit>
+      <trans-unit id="b916bc5aa5" resname="groups.members_page">
+        <source>groups.members_page</source>
+        <target>Membres de {group} · page {page} sur {pages}</target>
+      </trans-unit>
       <trans-unit id="7588f71eef" resname="groups.notice">
         <source>groups.notice</source>
         <target>Entrée sur un groupe affiche ses membres. Chaque lecture d'un membre est journalisée sous votre nom.</target>
@@ -725,6 +729,14 @@ La réponse revient à {redirect_uri}.</target>
       <trans-unit id="c434872d8b" resname="keys.take_out">
         <source>keys.take_out</source>
         <target>retirer</target>
+      </trans-unit>
+      <trans-unit id="5ba7e44131" resname="keys.next_page">
+        <source>keys.next_page</source>
+        <target>page suivante</target>
+      </trans-unit>
+      <trans-unit id="ec9981fb5b" resname="keys.previous_page">
+        <source>keys.previous_page</source>
+        <target>page précédente</target>
       </trans-unit>
       <trans-unit id="5b18f73fa3" resname="keys.add">
         <source>keys.add</source>
@@ -1085,6 +1097,10 @@ La réponse revient à {redirect_uri}.</target>
       <trans-unit id="b4a4247bb4" resname="act.administration.journal_read">
         <source>act.administration.journal_read</source>
         <target>journaux lus par un administrateur</target>
+      </trans-unit>
+      <trans-unit id="60c386b71c" resname="act.administration.read_refused">
+        <source>act.administration.read_refused</source>
+        <target>lectures refusées à un administrateur</target>
       </trans-unit>
       <trans-unit id="8e808543fd" resname="act.person.created">
         <source>act.person.created</source>
