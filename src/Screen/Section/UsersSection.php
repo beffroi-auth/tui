@@ -40,12 +40,12 @@ use function trim;
 
 /**
  * A person of the tenant, looked up by their username: who they are on one side, with the claims their account holds
- * and their groups, and on the other their credentials, or, when the administrator asks for them, their open sessions,
- * their last acts or the applications they agreed to. Each of those reads is an act in the journal of the person that
- * names the administrator (decisions 0022 and 0038), which the screen says before the first one, and the sessions, the
- * journal and the applications are read only when asked for.
+ * and their groups, and on the other their credentials, or, when the administrator asks for them, their sessions that
+ * have not ended, their last acts or the applications they agreed to. Each of those reads is an act in the journal of
+ * the person that names the administrator (decisions 0022 and 0038), which the screen says before the first one, and
+ * the sessions, the journal and the applications are read only when asked for.
  *
- * The administrator revokes a credential, ends an open session or takes a consent back from its row, once they
+ * The administrator revokes a credential, ends a session or takes a consent back from its row, once they
  * confirmed it: each change is an act of the person that names them too, and the row says what the API answered without
  * reading the person again.
  * They create a person from a field of their own, and issue the link that lets the person shown pose a passkey or a new
@@ -161,7 +161,7 @@ final class UsersSection implements SectionInterface
     private array $credentials = [];
 
     /**
-     * @var list<array{id: string, cells: list<string>}> each open session shown, in the order of its row
+     * @var list<array{id: string, cells: list<string>}> each session shown, in the order of its row
      */
     private array $sessions = [];
 
@@ -344,7 +344,7 @@ final class UsersSection implements SectionInterface
     }
 
     /**
-     * The keys of a view of the access of the person: `c` its credentials, `s` its open sessions, `j` its journal, `x`
+     * The keys of a view of the access of the person: `c` its credentials, `s` its sessions, `j` its journal, `x`
      * the change of the row chosen, `e` the form of their account, `d` their disabling or enabling, `t` a link that lets
      * the person pose a passkey, `p` one that lets them pose a new password and `o` one that lets them set up an
      * authenticator app, each change but the form confirmed by `y` and forgotten by any other key.
@@ -400,7 +400,7 @@ final class UsersSection implements SectionInterface
     }
 
     /**
-     * The change of the row chosen, asked to be confirmed: an open session is ended, a consent is taken back, a
+     * The change of the row chosen, asked to be confirmed: a session is ended, a consent is taken back, a
      * credential a revocation applies to is revoked, and an act of the journal changes nothing.
      */
     private function askToChange(SectionContext $context): void
