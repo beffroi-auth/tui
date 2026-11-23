@@ -604,7 +604,7 @@ The answer comes back to {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="7ffa95b07a" resname="users.view.sessions">
         <source>users.view.sessions</source>
-        <target>Open sessions · read logged</target>
+        <target>Sessions · read logged</target>
       </trans-unit>
       <trans-unit id="66ef14d4ce" resname="users.view.journal">
         <source>users.view.journal</source>
@@ -816,7 +816,7 @@ The answer comes back to {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="73e96ee47c" resname="user_sessions.none">
         <source>user_sessions.none</source>
-        <target>No open session.</target>
+        <target>No session.</target>
       </trans-unit>
       <trans-unit id="09b25a4110" resname="user_sessions.proof">
         <source>user_sessions.proof</source>
