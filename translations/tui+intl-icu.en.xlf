@@ -1050,6 +1050,10 @@ The answer comes back to {redirect_uri}.</target>
         <source>act.logout_token.given_up</source>
         <target>logout tokens given up</target>
       </trans-unit>
+      <trans-unit id="292c52432d" resname="act.credential_change.not_told">
+        <source>act.credential_change.not_told</source>
+        <target>change notifications not delivered</target>
+      </trans-unit>
       <trans-unit id="46166caffb" resname="act.credential.enrolled">
         <source>act.credential.enrolled</source>
         <target>credentials enrolled</target>

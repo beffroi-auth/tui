@@ -1050,6 +1050,10 @@ La réponse revient à {redirect_uri}.</target>
         <source>act.logout_token.given_up</source>
         <target>jetons de déconnexion abandonnés</target>
       </trans-unit>
+      <trans-unit id="292c52432d" resname="act.credential_change.not_told">
+        <source>act.credential_change.not_told</source>
+        <target>notifications de changement non remises</target>
+      </trans-unit>
       <trans-unit id="46166caffb" resname="act.credential.enrolled">
         <source>act.credential.enrolled</source>
         <target>moyens de connexion ajoutés</target>

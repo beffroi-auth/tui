@@ -44,6 +44,7 @@ final readonly class MonitoringSection implements SectionInterface
         'kms.unavailable',
         'load.budget_spent',
         'logout_token.given_up',
+        'credential_change.not_told',
     ];
 
     private SectionFrame $frame;
