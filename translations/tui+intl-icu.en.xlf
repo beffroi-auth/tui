@@ -1336,7 +1336,7 @@ The answer comes back to {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="07539fc4f7" resname="section.mail_signing_keys">
         <source>section.mail_signing_keys</source>
-        <target>Mail signing keys</target>
+        <target>Mail keys</target>
       </trans-unit>
       <trans-unit id="3b751dd492" resname="keys.draw_pgp">
         <source>keys.draw_pgp</source>
