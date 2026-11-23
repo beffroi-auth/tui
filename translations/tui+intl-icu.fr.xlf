@@ -270,6 +270,10 @@ La réponse revient à {redirect_uri}.</target>
         <source>api.unreadable</source>
         <target>L'API d'administration a répondu un document que ce programme ne sait pas lire : {reason}</target>
       </trans-unit>
+      <trans-unit id="542585cc1e" resname="api.refusal.invalid_grant">
+        <source>api.refusal.invalid_grant</source>
+        <target>Le fournisseur ne renouvelle plus les jetons de cette session : quittez, puis reconnectez-vous.</target>
+      </trans-unit>
       <trans-unit id="c9e7f73bfc" resname="api.refusal.invalid_token">
         <source>api.refusal.invalid_token</source>
         <target>L'API d'administration refuse les jetons de cette session : quittez, puis reconnectez-vous.</target>

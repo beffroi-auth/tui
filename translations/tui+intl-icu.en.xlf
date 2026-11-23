@@ -270,6 +270,10 @@ The answer comes back to {redirect_uri}.</target>
         <source>api.unreadable</source>
         <target>The administration API answered a document this program cannot read: {reason}</target>
       </trans-unit>
+      <trans-unit id="542585cc1e" resname="api.refusal.invalid_grant">
+        <source>api.refusal.invalid_grant</source>
+        <target>The provider no longer renews the tokens of this session: quit, then sign in again.</target>
+      </trans-unit>
       <trans-unit id="c9e7f73bfc" resname="api.refusal.invalid_token">
         <source>api.refusal.invalid_token</source>
         <target>The administration API refuses the tokens of this session: quit, then sign in again.</target>
