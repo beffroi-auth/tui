@@ -157,7 +157,7 @@ final readonly class RegisterCommand
             return $token;
         }
         $typed = $io->askHidden(
-            'The initial access token the tenant issued for this registration (empty when the tenant registers anyone)',
+            'The initial access token issued for the administration (a client registered without one cannot administer)',
             static fn (mixed $value): mixed => $value,
         );
 

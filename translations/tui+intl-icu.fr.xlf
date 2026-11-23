@@ -668,7 +668,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="f1544a2a6a" resname="groups.take_out_administrator_asked">
         <source>groups.take_out_administrator_asked</source>
-        <target>Retirer {username} de {group} ? C'est son dernier groupe d'administration : cette personne n'administrera plus le tenant. y confirme, toute autre touche annule.</target>
+        <target>Retirer {username} de {group}, qui administre le tenant ? Sauf si un autre de ses groupes l'administre, cette personne ne l'administrera plus. y confirme, toute autre touche annule.</target>
       </trans-unit>
       <trans-unit id="45ef216650" resname="groups.taken_out">
         <source>groups.taken_out</source>
@@ -1244,7 +1244,7 @@ La réponse revient à {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="4cb6dccf46" resname="refusal.invalid_target">
         <source>refusal.invalid_target</source>
-        <target>Ce client ne peut pas demander l'API d'administration : enregistrez de nouveau ce poste avec l'identifiant de BEFFROI_TENANT_ADMINISTRATION_RESOURCE.</target>
+        <target>Ce client ne peut pas demander l'API d'administration : enregistrez de nouveau ce poste avec un jeton initial émis pour l'administration, et l'identifiant de BEFFROI_TENANT_ADMINISTRATION_RESOURCE.</target>
       </trans-unit>
       <trans-unit id="d294c4e880" resname="users.create_prompt">
         <source>users.create_prompt</source>

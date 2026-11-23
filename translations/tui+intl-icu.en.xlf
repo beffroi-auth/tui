@@ -668,7 +668,7 @@ The answer comes back to {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="f1544a2a6a" resname="groups.take_out_administrator_asked">
         <source>groups.take_out_administrator_asked</source>
-        <target>Take {username} out of {group}? It is their last administering group: they will no longer administer the tenant. y confirms, any other key cancels.</target>
+        <target>Take {username} out of {group}, which administers the tenant? Unless another of their groups does, they will no longer administer it. y confirms, any other key cancels.</target>
       </trans-unit>
       <trans-unit id="45ef216650" resname="groups.taken_out">
         <source>groups.taken_out</source>
@@ -1244,7 +1244,7 @@ The answer comes back to {redirect_uri}.</target>
       </trans-unit>
       <trans-unit id="4cb6dccf46" resname="refusal.invalid_target">
         <source>refusal.invalid_target</source>
-        <target>This client cannot ask for the administration API: register this machine again with the identifier in BEFFROI_TENANT_ADMINISTRATION_RESOURCE.</target>
+        <target>This client cannot ask for the administration API: register this machine again with an initial access token issued for the administration, and the identifier in BEFFROI_TENANT_ADMINISTRATION_RESOURCE.</target>
       </trans-unit>
       <trans-unit id="d294c4e880" resname="users.create_prompt">
         <source>users.create_prompt</source>
