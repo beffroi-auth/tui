@@ -11,9 +11,10 @@ use function sprintf;
 use Throwable;
 
 /**
- * The program replaced by the newest release of its line. The order is the guarantee: `SHA256SUMS` is downloaded
- * and its signature verified before the file of the program is downloaded, the file is held to its digest, and only
- * then does it take the place of the program. Every failure leaves the program as it was.
+ * The program replaced by the newest release of its line. The order is the guarantee: `SHA256SUMS` is downloaded,
+ * its signature verified and its tag held to the one of the release before the file of the program is downloaded,
+ * the file is held to its digest, and only then does it take the place of the program. Every failure leaves the
+ * program as it was.
  */
 final readonly class SelfUpdate
 {
@@ -81,7 +82,16 @@ final readonly class SelfUpdate
                 throw new SelfUpdateException(sprintf('The %s of the release %s cannot be read.', self::SUMS, $release->version->tag));
             }
 
-            return Sha256Sums::parse($sums)->digestOf($asset);
+            $signed = Sha256Sums::parse($sums);
+            if (! $signed->areOf($release->version)) {
+                throw new SelfUpdateException(sprintf(
+                    'The signed %s served as the release %s are those of another release: nothing is replaced.',
+                    self::SUMS,
+                    $release->version->tag,
+                ));
+            }
+
+            return $signed->digestOf($asset);
         } finally {
             $work->remove();
         }
