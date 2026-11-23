@@ -1242,6 +1242,10 @@ La réponse revient à {redirect_uri}.</target>
         <source>act.tenant.data_keys_destroyed</source>
         <target>clés de données détruites</target>
       </trans-unit>
+      <trans-unit id="50678f14c2" resname="act.tenant.chain_signed_anew">
+        <source>act.tenant.chain_signed_anew</source>
+        <target>chaîne signée de nouveau</target>
+      </trans-unit>
       <trans-unit id="399784fb2a" resname="act.tenant.contact_changed">
         <source>act.tenant.contact_changed</source>
         <target>changements du contact du tenant</target>
