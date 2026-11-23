@@ -6,8 +6,12 @@ declare(strict_types=1);
 use Beffroi\Tui\Profile\ProfileException;
 use Beffroi\Tui\Wiring;
 
-// Installed on its own (apps/tui/vendor) or run from the monorepo, whose autoloader maps it too.
-$autoloader = is_file(__DIR__ . '/../vendor/autoload.php') ? __DIR__ . '/../vendor/autoload.php' : __DIR__ . '/../../../vendor/autoload.php';
+// The one the proxy of Composer names when it installed the program as a dependency, then the one of the program
+// installed on its own (apps/tui/vendor), then the monorepo's, which maps it too.
+$autoloader = $GLOBALS['_composer_autoload_path'] ?? null;
+if (! is_string($autoloader)) {
+    $autoloader = is_file(__DIR__ . '/../vendor/autoload.php') ? __DIR__ . '/../vendor/autoload.php' : __DIR__ . '/../../../vendor/autoload.php';
+}
 require $autoloader;
 
 try {
